@@ -1,7 +1,21 @@
 [project]
-name = "poe2clifilter"
+name = "poeclifilter"
 version = "0.1.0"
-description = "A POE 2 loot filter generating file locally with changes made via CLI"
+description = "A Path of Exile loot filter generating file locally with changes made via CLI, supporting both PoE 1 and PoE 2"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pyyaml>=6.0.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+poeclifilter = "poeclifilter.cli:main"

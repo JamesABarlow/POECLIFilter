@@ -1,5 +1,5 @@
 def main():
-    print("Hello from poe2clifilter!")
+    print("Hello from poeclifilter!")
 
 
 if __name__ == "__main__":
