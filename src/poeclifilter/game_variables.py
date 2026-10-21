@@ -1,0 +1,30 @@
+
+class IconColor():
+    RED = "Red"
+    GREEN = "Green"
+    BLUE = "Blue"
+    BROWN = "Brown"
+    WHITE = "White"
+    YELLOW = "Yellow"
+    CYAN = "Cyan"
+    GREY = "Grey"
+    ORANGE = "Orange"
+    PINK = "Pink"
+    PURPLE = "Purple"
+
+
+class IconShape():
+    CIRCLE = "Circle"
+    DIAMOND = "Diamond"
+    HEXAGON = "Hexagon"
+    SQUARE = "Square"
+    STAR = "Star"
+    TRIANGLE = "Triangle"
+    CROSS = "Cross"
+    MOON = "Moon"
+    RAINDROP = "Raindrop"
+    KITE = "Kite"
+    PENTAGON = "Pentagon"
+    UPSIDE_DOWN_HOUSE = "UpsideDownHouse"
+
+

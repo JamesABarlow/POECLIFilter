@@ -1,0 +1,13 @@
+schema: 1
+colors:
+  background:
+    purple: [79, 0, 122, 240]
+    white: [237, 233, 222, 230]
+  border:
+    purple: [79, 0, 122, 255]
+  text:
+    purple: [79, 0, 122, 255]
+font_size:
+  normal: 36
+sound_alert:
+  major: { id: 6, volume: 300 }

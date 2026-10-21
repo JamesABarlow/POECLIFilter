@@ -1,0 +1,10 @@
+schema: 1
+game_version: '3.25'
+basetypes:
+  base:
+    Divine Orb: {band: A}
+    Chaos Orb: {band: B}
+    Scroll of Wisdom: {band: E}
+  fossils:
+    Hollow Fossil: {band: S}
+

@@ -1,0 +1,26 @@
+schema: 1
+bands:
+  S:
+    hide: false
+    display:
+      play_effect: {color: Purple, temp: false}
+      minimap_icon: {size: 1, color: Purple, shape: Circle}
+      text_color: $purple
+      background_color: $white
+      border_color: $purple
+      font_size: $normal
+      sound_alert: $major
+  A:
+    hide: false
+    display:
+      font_size: $normal
+  B:
+    hide: false
+  C:
+    hide: false
+  D:
+    hide: false
+  E:
+    hide: false
+  F:
+    hide: true
