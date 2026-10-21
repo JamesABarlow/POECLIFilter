@@ -4,7 +4,7 @@ from poeclifilter.models import display
 
 
 def test_load_success():
-    result = display.getDisplayVariables()
+    result = display.get_display_variables()
     assert result.colors != None
     assert result.font_size != None
     assert result.sound_alert != None

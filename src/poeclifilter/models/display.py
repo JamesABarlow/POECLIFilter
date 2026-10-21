@@ -30,7 +30,7 @@ class DisplayVariables:
     sound_alert: dict[str, SoundAlert]
 
 
-def getDisplayVariables():
+def get_display_variables():
     raw = loader.load(file_path.read_text())
     return parse(raw)
 
