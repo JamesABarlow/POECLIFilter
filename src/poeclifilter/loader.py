@@ -18,5 +18,5 @@ class UniqueKeyLoader(yaml.SafeLoader):
         return super().construct_mapping(node, deep=deep)
 
 
-def parse(string: str):
+def load(string: str):
     return yaml.load(string, UniqueKeyLoader)
