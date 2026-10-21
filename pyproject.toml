@@ -24,9 +24,10 @@ poeclifilter = "poeclifilter.cli:main"
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+extraPaths = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tst"]
 addopts = "--import-mode=importlib"
 
 [tool.coverage.run]
