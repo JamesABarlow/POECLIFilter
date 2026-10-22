@@ -1,8 +1,8 @@
 schema: 1
 bands:
   S:
-    hide: false
     display:
+      hide: false
       play_effect: {color: Purple, temp: false}
       minimap_icon: {size: 1, color: Purple, shape: Circle}
       text_color: $purple
@@ -11,16 +11,23 @@ bands:
       font_size: $normal
       sound_alert: $major
   A:
-    hide: false
     display:
       font_size: $normal
+      hide: false
   B:
-    hide: false
+    display:
+      hide: false
   C:
-    hide: false
+    display:
+      hide: false
   D:
-    hide: false
+    display:
+      hide: false
   E:
-    hide: false
+    display:
+      hide: false
   F:
-    hide: true
+    display:
+      hide: true
+    items: ["Scroll of Wisdom"]
+    stacked_items: {"Scroll of Wisdom": [5, 10]}
