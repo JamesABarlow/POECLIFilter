@@ -1,6 +1,7 @@
 # Builders for test objects. Each call returns a fresh object, so tests can
 # mutate what they get without affecting each other.
 
+from poeclifilter.blocks import Block
 from poeclifilter.models.banded_items import (
     Band,
     BandedItemClass,
@@ -34,6 +35,22 @@ def make_display(hide=False, **overrides):
 
 def make_resolved_display(**overrides):
     return ResolvedDisplay(**overrides)
+
+
+def make_block(
+    comment="",
+    hide=False,
+    item_class="Stackable Currency",
+    base_type=None,
+    display=None,
+):
+    return Block(
+        comment=comment,
+        hide=hide,
+        item_class=item_class,
+        base_type=[] if base_type is None else base_type,
+        display=make_resolved_display() if display is None else display,
+    )
 
 
 def make_band(**overrides):
