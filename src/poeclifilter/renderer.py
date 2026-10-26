@@ -16,7 +16,6 @@ def write_to_filter(text: str):
 def render_filter(blocks: list[Block]):
 
     sections = [render_block(block) for block in blocks]
-    sections.append(f"Show\n  SetBackgroundColor  237 233 222 230")
 
     write_to_filter("\n\n".join(sections))
 
@@ -26,6 +25,9 @@ def render_block(block: Block):
     if block.base_type:
         base_type = " ".join(f'"{item}"' for item in sorted(block.base_type))
         lines.append(f"  BaseType == {base_type}")
+        lines.extend(render_display(block.display))
+    # Assume this is the catch all for now
+    else:
         lines.extend(render_display(block.display))
 
     return "\n".join(lines)

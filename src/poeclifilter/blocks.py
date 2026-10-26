@@ -21,8 +21,8 @@ from poeclifilter.models.display_variables import (
 class Block:
     comment: str
     hide: bool
-    item_class: str
-    base_type: list[str]
+    item_class: str | None
+    base_type: list[str] | None
     display: ResolvedDisplay
 
 
@@ -37,6 +37,18 @@ def build_blocks():
     blocks.extend(build_banded_items_blocks(banded_items, display_variables))
 
     # Add misc filter blocks including the final catch all here
+    # TODO: This needs to be built better but here for now
+    blocks.extend(
+        [
+            Block(
+                comment="",
+                hide=False,
+                item_class=None,
+                base_type=None,
+                display=ResolvedDisplay(background_color="237 233 222 230"),
+            )
+        ]
+    )
 
     return blocks
 
