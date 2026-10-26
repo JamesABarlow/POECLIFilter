@@ -29,6 +29,7 @@ extraPaths = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tst"]
 addopts = "--import-mode=importlib"
+pythonpath = ["tst"]
 
 [tool.coverage.run]
 source = ["poeclifilter"]

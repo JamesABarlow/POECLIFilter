@@ -1,10 +1,10 @@
 import pytest
 
-from poeclifilter.models import display
+from poeclifilter.models import display_variables
 
 
 def test_load_success():
-    result = display.get_display_variables()
+    result = display_variables.get_display_variables()
     assert result.colors != None
     assert result.font_size != None
     assert result.sound_alert != None

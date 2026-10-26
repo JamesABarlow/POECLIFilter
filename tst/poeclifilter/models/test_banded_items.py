@@ -2,7 +2,8 @@ import pytest
 
 from poeclifilter.game import IconColor, IconShape
 from poeclifilter.models import banded_items
-from poeclifilter.models.banded_items import Band, BandNames, MinimapIcon, PlayEffect
+from poeclifilter.models.banded_items import Band, BandNames
+from poeclifilter.models.display import MinimapIcon, PlayEffect
 
 MINIMAL_BAND = {"display": {"hide": False}}
 
