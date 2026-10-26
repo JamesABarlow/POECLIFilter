@@ -5,6 +5,7 @@ basetypes:
     Divine Orb: {band: A}
     Chaos Orb: {band: B}
     Scroll of Wisdom: {band: E}
+    # Divine Orb: {band: F}
   fossils:
     Hollow Fossil: {band: S}
-
+    Divine Orb: {band: F}

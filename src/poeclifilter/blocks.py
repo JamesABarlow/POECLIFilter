@@ -30,8 +30,8 @@ class Block:
 
 def build_blocks():
     # These should be input as args, simplifies the testing
-    display_variables = get_display_variables(base_config_dir())
-    banded_items = get_banded_items(base_config_dir())
+    display_variables = get_display_variables(base_config_dir("poe1"))
+    banded_items = get_banded_items(base_config_dir("poe1"))
 
     blocks = []
 

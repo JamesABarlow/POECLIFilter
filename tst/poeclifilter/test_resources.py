@@ -4,11 +4,13 @@ from poeclifilter import resources
 
 
 def test_base_config_dir():
-    assert resources.base_config_dir().endswith("poeclifilter/base_filter_config")
+    assert resources.base_config_dir("poe1").endswith(
+        "poeclifilter/poe1/base_filter_config"
+    )
 
 
 def test_item_data_dir():
-    assert resources.item_data_dir().endswith("poeclifilter/item_data")
+    assert resources.item_data_dir("poe1").endswith("poeclifilter/poe1/item_data")
 
 
 def test_filters_root():

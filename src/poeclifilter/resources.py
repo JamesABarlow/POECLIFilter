@@ -7,12 +7,12 @@ import poeclifilter
 FILTERS_ROOT = Path("filters")
 
 
-def base_config_dir():
-    return str(files(poeclifilter).joinpath("base_filter_config"))
+def base_config_dir(game_version: str):
+    return str(files(poeclifilter).joinpath(game_version, "base_filter_config"))
 
 
-def item_data_dir():
-    return str(files(poeclifilter).joinpath("item_data"))
+def item_data_dir(game_version: str):
+    return str(files(poeclifilter).joinpath(game_version, "item_data"))
 
 
 def filters_root() -> Path:
