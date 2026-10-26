@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+from poeclifilter.game import GameVersion
 from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import (
     BandedItemClass,
@@ -28,10 +29,10 @@ class Block:
     display: ResolvedDisplay
 
 
-def build_blocks():
+def build_blocks(game_version: GameVersion):
     # These should be input as args, simplifies the testing
-    display_variables = get_display_variables(base_config_dir("poe1"))
-    banded_items = get_banded_items(base_config_dir("poe1"))
+    display_variables = get_display_variables(base_config_dir(game_version))
+    banded_items = get_banded_items(base_config_dir(game_version))
 
     blocks = []
 
