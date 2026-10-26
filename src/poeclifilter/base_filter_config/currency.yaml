@@ -29,5 +29,3 @@ bands:
   F:
     display:
       hide: true
-    items: ["Scroll of Wisdom"]
-    stacked_items: {"Scroll of Wisdom": [5, 10]}

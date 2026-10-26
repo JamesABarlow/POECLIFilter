@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 from importlib.resources import files
+from pathlib import Path
 
 import poeclifilter
 from poeclifilter import loader
@@ -19,9 +20,7 @@ class BandNames(StrEnum):
 
 
 # Variable for name here
-file_paths = {
-    "currency": files(poeclifilter).joinpath("base_filter_config", "currency.yaml")
-}
+file_names = {"currency": "currency.yaml"}
 
 # dataclass for banded items contains currency etc
 
@@ -44,10 +43,10 @@ class BandedItems:
     currency: BandedItemClass
 
 
-def get_banded_items():
+def get_banded_items(config_dir: str):
     raw = {}
-    for name, file in file_paths.items():
-        raw[name] = loader.load(file.read_text())
+    for name, file in file_names.items():
+        raw[name] = loader.load(Path(f"{config_dir}/{file}").read_text())
 
     return BandedItems(currency=parse(raw["currency"]))
 

@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import (
     BandedItemClass,
     BandedItems,
@@ -15,6 +16,7 @@ from poeclifilter.models.display_variables import (
     SoundAlert,
     get_display_variables,
 )
+from poeclifilter.resources import base_config_dir
 
 
 @dataclass(frozen=True)
@@ -28,8 +30,8 @@ class Block:
 
 def build_blocks():
     # These should be input as args, simplifies the testing
-    display_variables = get_display_variables()
-    banded_items = get_banded_items()
+    display_variables = get_display_variables(base_config_dir())
+    banded_items = get_banded_items(base_config_dir())
 
     blocks = []
 

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from importlib.resources import files
+from pathlib import Path
 
 import poeclifilter
 from poeclifilter import loader
 
-file_path = files(poeclifilter).joinpath("base_filter_config", "display_variables.yaml")
+file_name = "display_variables.yaml"
 
 Color = tuple[int, int, int, int]
 
@@ -30,8 +30,8 @@ class DisplayVariables:
     sound_alert: dict[str, SoundAlert]
 
 
-def get_display_variables():
-    raw = loader.load(file_path.read_text())
+def get_display_variables(config_dir: str):
+    raw = loader.load(Path(f"{config_dir}/{file_name}").read_text())
     return parse(raw)
 
 

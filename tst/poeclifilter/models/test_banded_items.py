@@ -4,6 +4,7 @@ from poeclifilter.game import IconColor, IconShape
 from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import Band, BandNames
 from poeclifilter.models.display import MinimapIcon, PlayEffect
+from poeclifilter.resources import base_config_dir
 
 MINIMAL_BAND = {"display": {"hide": False}}
 
@@ -26,14 +27,14 @@ def raw_config(**bands):
 
 
 def test_load_success():
-    result = banded_items.get_banded_items()
+    result = banded_items.get_banded_items(base_config_dir())
     assert result.currency is not None
     assert result.currency.schema is not None
     assert result.currency.bands is not None
 
 
 def test_load_defines_every_band():
-    result = banded_items.get_banded_items()
+    result = banded_items.get_banded_items(base_config_dir())
     for band in BandNames:
         assert isinstance(result.currency.bands[band], Band)
 
@@ -92,9 +93,9 @@ def test_parse_display_converts_game_values_to_enum_members():
     display = banded_items.parse(raw).bands[BandNames.S].display
     # Equality alone cannot prove this: StrEnum members compare equal to their
     # values, so the assertions above pass on plain strings too.
-    assert isinstance(display.play_effect.color, IconColor)
-    assert isinstance(display.minimap_icon.color, IconColor)
-    assert isinstance(display.minimap_icon.shape, IconShape)
+    assert display.play_effect and isinstance(display.play_effect.color, IconColor)
+    assert display.minimap_icon and isinstance(display.minimap_icon.color, IconColor)
+    assert display.minimap_icon and isinstance(display.minimap_icon.shape, IconShape)
 
 
 def test_parse_display_rejects_unknown_color():
@@ -156,9 +157,3 @@ def test_parse_missing_band_raises():
     with pytest.raises(KeyError) as error:
         banded_items.parse(raw)
     assert "D" in str(error.value)
-
-
-# TODO: Deliberately untested until implemented — stacked items, and the §10.6
-# validation rules. Two gaps those rules will close: a band with no `display` key
-# at all raises AttributeError, and a display with no `hide` silently parses as
-# None rather than being rejected (§5.3 makes it mandatory).
