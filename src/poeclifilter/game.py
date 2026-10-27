@@ -1,11 +1,6 @@
 from enum import StrEnum
 
 
-class GameVersion(StrEnum):
-    POE1 = "poe1"
-    POE2 = "poe2"
-
-
 class IconColor(StrEnum):
     RED = "Red"
     GREEN = "Green"

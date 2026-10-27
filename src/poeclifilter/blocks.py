@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from poeclifilter.game import GameVersion
+from poeclifilter.filters import GameVersion
 from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import (
     BandedItemClass,

@@ -1,7 +1,7 @@
 from pathlib import PosixPath
 
 from poeclifilter import resources
-from poeclifilter.game import GameVersion
+from poeclifilter.filters import FilterRef, GameVersion
 
 
 def test_base_config_dir():
@@ -21,9 +21,8 @@ def test_filters_root():
 
 
 def test_filter_dir():
-    assert resources.filter_dir("testDir", GameVersion.POE1) == PosixPath(
-        "filters/poe1/testDir"
-    )
+    filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
+    assert resources.filter_dir(filter_ref) == PosixPath("filters/poe1/test")
 
 
 # TODO: fix this test

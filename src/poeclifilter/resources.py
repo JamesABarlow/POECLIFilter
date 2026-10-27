@@ -3,7 +3,7 @@ from importlib.resources.abc import Traversable
 from pathlib import Path
 
 import poeclifilter
-from poeclifilter.game import GameVersion
+from poeclifilter.filters import FilterRef, GameVersion
 
 FILTERS_ROOT = Path("filters")
 
@@ -20,8 +20,8 @@ def filters_root(game_version: GameVersion) -> Path:
     return FILTERS_ROOT.joinpath(game_version)
 
 
-def filter_dir(name: str, game_version: GameVersion) -> Path:
-    return filters_root(game_version) / name
+def filter_dir(filter: FilterRef) -> Path:
+    return filters_root(filter.game_version) / filter.name
 
 
 def list_filter_names(game_version: GameVersion) -> list[str]:
