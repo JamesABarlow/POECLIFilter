@@ -1,3 +1,4 @@
+import os
 from importlib.resources import files
 from importlib.resources.abc import Traversable
 from pathlib import Path
@@ -5,7 +6,11 @@ from pathlib import Path
 import poeclifilter
 from poeclifilter.filters import FilterRef, GameVersion
 
-FILTERS_ROOT = Path("filters")
+
+def config_root() -> Path:
+    xdg_config_home = os.environ.get("XDG_CONFIG_HOME")
+    base = Path(xdg_config_home) if xdg_config_home else Path.home() / ".config"
+    return base / "poeclifilter"
 
 
 def base_config_dir(game_version: GameVersion):
@@ -17,11 +22,11 @@ def item_data_dir(game_version: GameVersion):
 
 
 def filters_root(game_version: GameVersion) -> Path:
-    return FILTERS_ROOT.joinpath(game_version)
+    return config_root().joinpath("filters", game_version)
 
 
 def filter_dir(filter: FilterRef) -> Path:
-    return filters_root(filter.game_version) / filter.name
+    return filters_root(filter.game_version).joinpath(filter.name)
 
 
 def list_filter_names(game_version: GameVersion) -> list[str]:
