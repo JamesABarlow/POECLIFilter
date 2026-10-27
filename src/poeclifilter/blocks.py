@@ -56,9 +56,7 @@ def build_blocks(game_version: GameVersion):
     return blocks
 
 
-def build_banded_items_blocks(
-    banded_items: BandedItems, display_variables: DisplayVariables
-):
+def build_banded_items_blocks(banded_items: BandedItems, display_variables: DisplayVariables):
     blocks = []
 
     blocks.extend(build_bands(banded_items.currency, display_variables))
@@ -90,29 +88,23 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
 # Handle color substitions
 def build_display(display: Display, display_variables: DisplayVariables):
 
-    resolved_text_color = resolve_color(
-        display.text_color, display_variables.colors.text
-    )
-    resolved_border_color = resolve_color(
-        display.border_color, display_variables.colors.border
-    )
+    resolved_text_color = resolve_color(display.text_color, display_variables.colors.text)
+    resolved_border_color = resolve_color(display.border_color, display_variables.colors.border)
     resolved_background_color = resolve_color(
         display.background_color, display_variables.colors.background
     )
 
-    resolved_font_size = resolve_font_size(
-        display.font_size, display_variables.font_size
-    )
-    resolved_sound_alert = resolve_sound_alert(
-        display.sound_alert, display_variables.sound_alert
-    )
+    resolved_font_size = resolve_font_size(display.font_size, display_variables.font_size)
+    resolved_sound_alert = resolve_sound_alert(display.sound_alert, display_variables.sound_alert)
     resolved_play_effect = None
     resolved_minimap_icon = None
     if display.play_effect:
         temp = f" Temp" if display.play_effect.temp else ""
         resolved_play_effect = f"{display.play_effect.color}{temp}"
     if display.minimap_icon:
-        resolved_minimap_icon = f"{display.minimap_icon.size} {display.minimap_icon.color} {display.minimap_icon.shape}"
+        resolved_minimap_icon = (
+            f"{display.minimap_icon.size} {display.minimap_icon.color} {display.minimap_icon.shape}"
+        )
 
     return ResolvedDisplay(
         play_effect=resolved_play_effect,

@@ -11,9 +11,7 @@ def test_base_config_dir():
 
 
 def test_item_data_dir():
-    assert resources.item_data_dir(GameVersion.POE1).endswith(
-        "poeclifilter/poe1/item_data"
-    )
+    assert resources.item_data_dir(GameVersion.POE1).endswith("poeclifilter/poe1/item_data")
 
 
 def test_filters_root():

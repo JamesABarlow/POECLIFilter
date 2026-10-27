@@ -1,5 +1,4 @@
-
-class IconColor():
+class IconColor:
     RED = "Red"
     GREEN = "Green"
     BLUE = "Blue"
@@ -13,7 +12,7 @@ class IconColor():
     PURPLE = "Purple"
 
 
-class IconShape():
+class IconShape:
     CIRCLE = "Circle"
     DIAMOND = "Diamond"
     HEXAGON = "Hexagon"
@@ -26,5 +25,3 @@ class IconShape():
     KITE = "Kite"
     PENTAGON = "Pentagon"
     UPSIDE_DOWN_HOUSE = "UpsideDownHouse"
-
-

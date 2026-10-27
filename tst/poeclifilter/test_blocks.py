@@ -14,9 +14,7 @@ from poeclifilter.models.display import ResolvedDisplay
 
 # TODO: Add correct full testing
 def test_no_bands_produces_no_blocks():
-    result = blocks.build_banded_items_blocks(
-        make_banded_items(), make_display_variables()
-    )
+    result = blocks.build_banded_items_blocks(make_banded_items(), make_display_variables())
 
     assert result == []
 

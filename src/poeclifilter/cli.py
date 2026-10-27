@@ -49,9 +49,7 @@ def pick_filter_to_use(game_version: GameVersion) -> str:
             choices=[
                 *existing_filter_choices,
                 questionary.Separator(),
-                questionary.Choice(
-                    title="Create new filter", value=Actions.CREATE_NEW_FILTER
-                ),
+                questionary.Choice(title="Create new filter", value=Actions.CREATE_NEW_FILTER),
             ],
         ).ask()
 
