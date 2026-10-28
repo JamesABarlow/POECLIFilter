@@ -1,6 +1,5 @@
 import os
 from importlib.resources import files
-from importlib.resources.abc import Traversable
 from pathlib import Path
 
 import poeclifilter
@@ -13,12 +12,12 @@ def config_root() -> Path:
     return base / "poeclifilter"
 
 
-def base_config_dir(game_version: GameVersion):
-    return str(files(poeclifilter).joinpath(game_version, "base_filter_config"))
+def base_config_dir(game_version: GameVersion) -> Path:
+    return Path(files(poeclifilter).joinpath(game_version, "base_filter_config"))
 
 
-def item_data_dir(game_version: GameVersion):
-    return str(files(poeclifilter).joinpath(game_version, "item_data"))
+def item_data_dir(game_version: GameVersion) -> Path:
+    return Path(files(poeclifilter).joinpath(game_version, "item_data"))
 
 
 def filters_root(game_version: GameVersion) -> Path:

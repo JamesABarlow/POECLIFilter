@@ -3,13 +3,13 @@ from poeclifilter.filters import FilterRef, GameVersion
 
 
 def test_base_config_dir():
-    assert resources.base_config_dir(GameVersion.POE1).endswith(
+    assert str(resources.base_config_dir(GameVersion.POE1)).endswith(
         "poeclifilter/poe1/base_filter_config"
     )
 
 
 def test_item_data_dir():
-    assert resources.item_data_dir(GameVersion.POE1).endswith("poeclifilter/poe1/item_data")
+    assert str(resources.item_data_dir(GameVersion.POE1)).endswith("poeclifilter/poe1/item_data")
 
 
 def test_filters_root(in_tmp_config_home):

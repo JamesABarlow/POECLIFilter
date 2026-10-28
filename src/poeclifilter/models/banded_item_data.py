@@ -24,7 +24,7 @@ class BandedItemData:
     currency: BandedItemDataClass
 
 
-def get_banded_item_data(config_dir: str):
+def get_banded_item_data(config_dir: Path):
     raw = {}
     for name, file in file_names.items():
         raw[name] = loader.load(Path(f"{config_dir}/{file}").read_text())

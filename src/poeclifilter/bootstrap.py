@@ -44,5 +44,7 @@ def _safe_filter_dir(filter_ref: FilterRef) -> Path:
 
 # TODO: Do this better. Handle other files that need to be copied
 def copy_files(filter_ref: FilterRef, dest: Path) -> None:
-    src = Path(resources.base_config_dir(filter_ref.game_version)) / "display_variables.yaml"
-    (dest / "display_variables.yaml").write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    src = resources.base_config_dir(filter_ref.game_version).joinpath("display_variables.yaml")
+    dest.joinpath("display_variables.yaml").write_text(
+        src.read_text(encoding="utf-8"), encoding="utf-8"
+    )
