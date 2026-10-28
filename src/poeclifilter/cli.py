@@ -18,6 +18,7 @@ from poeclifilter.resources import list_filter_names
 class Actions(StrEnum):
     CREATE_NEW_FILTER = "create_new_filter"
     RESET_FILTER_TO_DEFAULT = "reset_filter_to_default"
+    BUILD_FILTER = "build_filter"
 
 
 def ask_game_version() -> GameVersion | None:
@@ -71,7 +72,7 @@ def top_level_filter_actions(filter_ref: FilterRef):
         "What would you like to do?",
         choices=[
             questionary.Choice(title="Edit"),
-            questionary.Choice(title="Publish"),
+            questionary.Choice(title="Build", value=Actions.BUILD_FILTER),
             questionary.Choice(
                 title="Reset filter to default", value=Actions.RESET_FILTER_TO_DEFAULT
             ),
@@ -81,6 +82,8 @@ def top_level_filter_actions(filter_ref: FilterRef):
 
     if choice == Actions.RESET_FILTER_TO_DEFAULT:
         bootstrap_new_filter(filter_ref)
+    elif choice == Actions.BUILD_FILTER:
+        render_filter(build_blocks(filter_ref))
 
 
 def main():
@@ -92,8 +95,6 @@ def main():
     filter_ref = FilterRef(game_version=game_version, name=filter_name)
 
     top_level_filter_actions(filter_ref)
-
-    render_filter(build_blocks(game_version))
 
 
 if __name__ == "__main__":

@@ -1,9 +1,15 @@
 from dataclasses import asdict
+from enum import Enum
 
 import yaml
 
-from poeclifilter.models.display_variables import DisplayVariables
+
+def _represent_enum(dumper: yaml.SafeDumper, data: Enum):
+    return dumper.represent_data(data.value)
 
 
-def write(string: DisplayVariables):
-    print(yaml.safe_dump(asdict(string), sort_keys=False, default_flow_style=None))
+yaml.SafeDumper.add_multi_representer(Enum, _represent_enum)
+
+
+def dump(string):
+    return yaml.safe_dump(asdict(string), sort_keys=False, default_flow_style=None)

@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from poeclifilter.filters import GameVersion
+from poeclifilter.filters import FilterRef
 from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import (
     BandedItemClass,
@@ -17,7 +17,7 @@ from poeclifilter.models.display_variables import (
     SoundAlert,
     get_display_variables,
 )
-from poeclifilter.resources import base_config_dir
+from poeclifilter.resources import filter_dir
 
 
 @dataclass(frozen=True)
@@ -29,10 +29,10 @@ class Block:
     display: ResolvedDisplay
 
 
-def build_blocks(game_version: GameVersion):
+def build_blocks(filter_ref: FilterRef):
     # These should be input as args, simplifies the testing
-    display_variables = get_display_variables(base_config_dir(game_version))
-    banded_items = get_banded_items(base_config_dir(game_version))
+    display_variables = get_display_variables(filter_dir(filter_ref))
+    banded_items = get_banded_items(filter_dir(filter_ref))
 
     blocks = []
 

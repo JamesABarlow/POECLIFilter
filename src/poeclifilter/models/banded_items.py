@@ -4,7 +4,7 @@ from importlib.resources import files
 from pathlib import Path
 
 import poeclifilter
-from poeclifilter import loader
+from poeclifilter import loader, writer
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
 
@@ -43,7 +43,7 @@ class BandedItems:
     currency: BandedItemClass
 
 
-def get_banded_items(config_dir: str):
+def get_banded_items(config_dir: Path):
     raw = {}
     for name, file in file_names.items():
         raw[name] = loader.load(Path(f"{config_dir}/{file}").read_text())
@@ -66,3 +66,9 @@ def parse_band(raw_band):
     band_display = display.parse(raw_band.get("display"))
     items = raw_band.get("items", [])
     return Band(display=band_display, items=items, stacked_items={})
+
+
+def write_banded_items(banded_items: BandedItems, filter_dir: Path):
+    for name, file in file_names.items():
+        section = getattr(banded_items, name)
+        Path(f"{filter_dir}/{file}").write_text(writer.dump(section))
