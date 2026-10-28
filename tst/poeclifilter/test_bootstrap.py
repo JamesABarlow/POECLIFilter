@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import pytest
 
 from poeclifilter import bootstrap
@@ -51,3 +53,18 @@ def test_resolve_guard_still_blocks_escape_if_name_check_bypassed(in_tmp_config_
 
     with pytest.raises(ValueError, match="unsafe filter name"):
         bootstrap.prepare_filter_dir(ref)
+
+
+def test_copy_files_writes_display_variables(tmp_path):
+    bootstrap.copy_files(filter_ref, tmp_path)
+
+    assert (tmp_path / "display_variables.yaml").exists()
+
+
+def test_bootstrap_calls_merge_filter(in_tmp_config_home, monkeypatch):
+    mock_merge_filter = Mock()
+    monkeypatch.setattr(bootstrap, "merge_filter", mock_merge_filter)
+
+    bootstrap.bootstrap_new_filter(filter_ref)
+
+    mock_merge_filter.assert_called_once_with(filter_ref, False)

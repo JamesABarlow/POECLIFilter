@@ -3,7 +3,7 @@ from pathlib import Path
 
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef, is_valid_filter_name
-from poeclifilter.writer import write
+from poeclifilter.merger import merge_filter
 
 
 def bootstrap_new_filter(filter_ref: FilterRef):
@@ -13,6 +13,7 @@ def bootstrap_new_filter(filter_ref: FilterRef):
     copy_files(filter_ref, new_filter_path)
 
     # Write files with default item data
+    merge_filter(filter_ref, False)
     return False
 
 
