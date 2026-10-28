@@ -55,14 +55,18 @@ def pick_filter_to_use(game_version: GameVersion) -> str:
         ).ask()
 
     if choice == Actions.CREATE_NEW_FILTER:
-        return create_new_filter()
+        return create_new_filter(game_version)
     else:
         return choice
 
 
-def create_new_filter():
+def create_new_filter(game_version: GameVersion):
+    # TODO: input validation here to avoid throwing later
     new_filter_name = questionary.text("Enter name of new filter:").ask()
-    # TODO: Actually bootstrap the new filter
+
+    filter_ref = FilterRef(game_version=game_version, name=new_filter_name)
+    bootstrap_new_filter(filter_ref)
+
     return new_filter_name
 
 
