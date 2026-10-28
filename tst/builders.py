@@ -19,6 +19,11 @@ from poeclifilter.models.display_variables import (
     DisplayVariables,
     SoundAlert,
 )
+from poeclifilter.models.banded_item_data import (
+    BandedItemData,
+    BandedItemDataClass,
+    ItemEntry,
+)
 
 
 def make_play_effect(**overrides):
@@ -88,3 +93,21 @@ def make_display_variables(**overrides):
         "sound_alert": {"major": SoundAlert(id=6, volume=300)},
     }
     return DisplayVariables(**defaults | overrides)
+
+
+def make_item_entry(band="A", stacks=None):
+    return ItemEntry(band=band, stacks=stacks)
+
+
+def make_banded_item_data_class(basetypes=None, schema=1, game_version="3.25"):
+    return BandedItemDataClass(
+        schema=schema,
+        game_version=game_version,
+        basetypes=basetypes if basetypes is not None else {},
+    )
+
+
+def make_banded_item_data(basetypes=None, schema=1, game_version="3.25"):
+    return BandedItemData(
+        currency=make_banded_item_data_class(basetypes, schema, game_version)
+    )
