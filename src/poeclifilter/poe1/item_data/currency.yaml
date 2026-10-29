@@ -1,6 +1,6 @@
 schema: 1
 game_version: '3.25'
-base_types:
+categories:
   base:
     Divine Orb: {band: S}
     Chaos Orb: {band: A}

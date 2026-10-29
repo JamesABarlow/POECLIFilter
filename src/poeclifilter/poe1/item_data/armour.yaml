@@ -1,6 +1,6 @@
 schema: 1
 game_version: '3.25'
-armour_types:
+categories:
   str:
     Astral Plate: {band: A}
   dex:

@@ -102,13 +102,13 @@ def make_item_entry(band="A", stacks=None):
     return ItemEntry(band=band, stacks=stacks)
 
 
-def make_banded_item_data_class(base_types=None, schema=1, game_version="3.25"):
+def make_banded_item_data_class(categories=None, schema=1, game_version="3.25"):
     return BandedItemDataClass(
         schema=schema,
         game_version=game_version,
-        base_types=base_types if base_types is not None else {},
+        categories=categories if categories is not None else {},
     )
 
 
-def make_banded_item_data(base_types=None, schema=1, game_version="3.25"):
-    return BandedItemData(currency=make_banded_item_data_class(base_types, schema, game_version))
+def make_banded_item_data(categories=None, schema=1, game_version="3.25"):
+    return BandedItemData(currency=make_banded_item_data_class(categories, schema, game_version))

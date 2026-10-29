@@ -36,7 +36,7 @@ def test_merge_filter_update_not_implemented():
 def test_merge_category_adds_missing_item_to_its_default_band():
     filter_items = make_banded_item_class({BandNames.A: make_band()})
     items_data = make_banded_item_data_class(
-        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
+        categories={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     merge_category("currency", filter_items, items_data)
@@ -52,7 +52,7 @@ def test_merge_category_leaves_existing_item_alone():
         }
     )
     items_data = make_banded_item_data_class(
-        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
+        categories={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     merge_category("currency", filter_items, items_data)
@@ -64,7 +64,7 @@ def test_merge_category_leaves_existing_item_alone():
 def test_merge_category_raises_when_band_missing_from_filter():
     filter_items = make_banded_item_class({})
     items_data = make_banded_item_data_class(
-        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
+        categories={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     with pytest.raises(ValueError, match="Band not found"):
@@ -74,7 +74,7 @@ def test_merge_category_raises_when_band_missing_from_filter():
 def test_merge_category_merges_across_multiple_categories():
     filter_items = make_banded_item_class({BandNames.A: make_band(), BandNames.S: make_band()})
     items_data = make_banded_item_data_class(
-        base_types={
+        categories={
             "base": {"Divine Orb": make_item_entry(band="A")},
             "fossils": {"Hollow Fossil": make_item_entry(band="S")},
         }

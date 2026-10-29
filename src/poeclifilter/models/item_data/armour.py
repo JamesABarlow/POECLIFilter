@@ -16,7 +16,7 @@ class ArmourEntry:
 class ArmourItemData:
     schema: int
     game_version: str
-    armour_types: dict[AttributeGroup, dict[str, ArmourEntry]]
+    categories: dict[AttributeGroup, dict[str, ArmourEntry]]
 
 
 # TODO: does this really need to be seperate from other banded items anymore?
@@ -26,13 +26,13 @@ def get_item_data(config_dir: Path):
 
 
 def parse(raw):
-    armour = {
+    categories = {
         AttributeGroup(group): {
             name: ArmourEntry(band=entry["band"]) for name, entry in items.items()
         }
-        for group, items in raw["armour_types"].items()
+        for group, items in raw["categories"].items()
     }
 
     return ArmourItemData(
-        schema=raw["schema"], game_version=raw["game_version"], armour_types=armour
+        schema=raw["schema"], game_version=raw["game_version"], categories=categories
     )

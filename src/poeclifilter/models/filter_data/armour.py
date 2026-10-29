@@ -15,7 +15,7 @@ class Band:
 @dataclass(frozen=True)
 class ArmourFilterData:
     schema: int
-    armour: dict[AttributeGroup, dict[str, Band]]
+    armour_categories: dict[AttributeGroup, dict[str, Band]]
 
 
 def get_filter_data(config_dir: Path):
@@ -27,10 +27,10 @@ def get_filter_data(config_dir: Path):
 def parse(raw):
     # TODO: finish parsing and validation
     armour_categories = {
-        AttributeGroup(name): parse_bands(bands) for name, bands in raw["armour"].items()
+        AttributeGroup(name): parse_bands(bands) for name, bands in raw["armour_categories"].items()
     }
 
-    return ArmourFilterData(schema=raw["schema"], armour=armour_categories)
+    return ArmourFilterData(schema=raw["schema"], armour_categories=armour_categories)
 
 
 def parse_bands(raw_bands):

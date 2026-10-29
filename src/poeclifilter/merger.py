@@ -31,7 +31,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
 
 def merge_category(category: str, filter_items: BandedItemClass, items_data: BandedItemDataClass):
-    for category_key, items in items_data.base_types.items():
+    for category_key, items in items_data.categories.items():
         print(f"Merging {category_key}")
         for item_name, item_data in items.items():
             print(f"Item name: {item_name} - {item_data}")
