@@ -34,8 +34,8 @@ def make_minimap_icon(**overrides):
     return MinimapIcon(**{"size": 1, "color": "Purple", "shape": "Circle"} | overrides)
 
 
-def make_display(hide=False, **overrides):
-    return Display(hide=hide, **overrides)
+def make_display(**overrides):
+    return Display(**overrides)
 
 
 def make_resolved_display(**overrides):
@@ -59,7 +59,7 @@ def make_block(
 
 
 def make_band(**overrides):
-    defaults = {"display": make_display(), "items": [], "stacked_items": {}}
+    defaults = {"hide": False, "display": make_display(), "items": [], "stacked_items": {}}
     return Band(**defaults | overrides)
 
 

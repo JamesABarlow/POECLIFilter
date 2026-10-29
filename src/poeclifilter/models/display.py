@@ -16,10 +16,8 @@ class MinimapIcon:
     shape: IconShape
 
 
-# TODO: hide here was a mistake. Not part of the display block
 @dataclass(frozen=True)
 class Display:
-    hide: bool
     play_effect: PlayEffect | None = None
     minimap_icon: MinimapIcon | None = None
     text_color: str | None = None
@@ -43,7 +41,6 @@ class ResolvedDisplay:
 
 def parse(raw_display):
     return Display(
-        hide=raw_display.get("hide"),
         play_effect=parse_play_effect(raw_display.get("play_effect")),
         minimap_icon=parse_minimap_icon(raw_display.get("minimap_icon")),
         text_color=raw_display.get("text_color"),

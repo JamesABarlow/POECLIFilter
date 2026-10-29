@@ -27,6 +27,7 @@ file_names = {"currency": "currency.yaml"}
 
 @dataclass(frozen=True)
 class Band:
+    hide: bool
     display: Display
     items: list[str]
     stacked_items: dict[str, list[int]]
@@ -65,7 +66,7 @@ def parse_band(raw_band):
     # TODO: stacked items needs doing
     band_display = display.parse(raw_band.get("display"))
     items = raw_band.get("items", [])
-    return Band(display=band_display, items=items, stacked_items={})
+    return Band(hide=raw_band["hide"], display=band_display, items=items, stacked_items={})
 
 
 def write_banded_items(banded_items: BandedItems, filter_dir: Path):

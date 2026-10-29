@@ -75,7 +75,7 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
         blocks.append(
             Block(
                 comment="",
-                hide=band.display.hide,
+                hide=band.hide,
                 item_class="Stackable Currency",
                 base_type=band.items,
                 display=build_display(band.display, display_variables),

@@ -1,8 +1,8 @@
 schema: 1
 bands:
   S:
+    hide: false
     display:
-      hide: false
       play_effect: {color: Purple, temp: false}
       minimap_icon: {size: 1, color: Purple, shape: Circle}
       text_color: $purple
@@ -11,21 +11,21 @@ bands:
       font_size: $normal
       sound_alert: $major
   A:
+    hide: false
     display:
       font_size: $normal
-      hide: false
   B:
-    display:
-      hide: false
+    hide: false
+    display: {}
   C:
-    display:
-      hide: false
+    hide: false
+    display: {}
   D:
-    display:
-      hide: false
+    hide: false
+    display: {}
   E:
-    display:
-      hide: false
+    hide: true
+    display: {}
   F:
-    display:
-      hide: true
+    hide: true
+    display: {}
