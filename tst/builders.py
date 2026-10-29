@@ -8,6 +8,8 @@ from poeclifilter.models.display import (
     MinimapIcon,
     PlayEffect,
 )
+from poeclifilter.models.filter_data.armour import ArmourFilterData
+from poeclifilter.models.filter_data.armour import Band as ArmourBand
 from poeclifilter.models.filter_data.banded_items import (
     Band,
     BandedItemClass,
@@ -18,6 +20,7 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
+from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.banded import (
     BandedItemData,
     BandedItemDataClass,
@@ -112,3 +115,26 @@ def make_banded_item_data_class(categories=None, schema=1, game_version="3.25"):
 
 def make_banded_item_data(categories=None, schema=1, game_version="3.25"):
     return BandedItemData(currency=make_banded_item_data_class(categories, schema, game_version))
+
+
+def make_armour_band(base_types=None):
+    return ArmourBand(base_types=[] if base_types is None else base_types)
+
+
+def make_armour_filter_data(armour_categories=None, schema=1):
+    return ArmourFilterData(
+        schema=schema,
+        armour_categories=armour_categories if armour_categories is not None else {},
+    )
+
+
+def make_armour_entry(band="A"):
+    return ArmourEntry(band=band)
+
+
+def make_armour_item_data(categories=None, schema=1, game_version="3.25"):
+    return ArmourItemData(
+        schema=schema,
+        game_version=game_version,
+        categories=categories if categories is not None else {},
+    )
