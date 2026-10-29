@@ -5,9 +5,8 @@ from pprint import pprint
 import questionary
 
 import poeclifilter
-from poeclifilter import game, loader
+from poeclifilter import filter_operations, game, loader
 from poeclifilter.blocks import build_blocks
-from poeclifilter.filter_operations import bootstrap_new_filter
 from poeclifilter.filters import FilterRef, GameVersion
 from poeclifilter.models import display_variables
 from poeclifilter.models.banded_items import get_banded_items
@@ -19,6 +18,7 @@ class Actions(StrEnum):
     CREATE_NEW_FILTER = "create_new_filter"
     RESET_FILTER_TO_DEFAULT = "reset_filter_to_default"
     BUILD_FILTER = "build_filter"
+    DELETE_FILTER = "delete_filter"
 
 
 def ask_game_version() -> GameVersion | None:
@@ -65,9 +65,14 @@ def create_new_filter(game_version: GameVersion):
     new_filter_name = questionary.text("Enter name of new filter:").ask()
 
     filter_ref = FilterRef(game_version=game_version, name=new_filter_name)
-    bootstrap_new_filter(filter_ref)
+    filter_operations.bootstrap_new_filter(filter_ref)
 
     return new_filter_name
+
+
+def delete_filter(filter_ref: FilterRef):
+    filter_operations.delete_filter(filter_ref)
+    print(f"{filter_ref.name} deleted")
 
 
 def top_level_filter_actions(filter_ref: FilterRef):
@@ -81,13 +86,16 @@ def top_level_filter_actions(filter_ref: FilterRef):
                 title="Reset filter to default", value=Actions.RESET_FILTER_TO_DEFAULT
             ),
             questionary.Choice(title="Change filter"),
+            questionary.Choice(title="Delete filter", value=Actions.DELETE_FILTER),
         ],
     ).ask()
 
     if choice == Actions.RESET_FILTER_TO_DEFAULT:
-        bootstrap_new_filter(filter_ref)
+        filter_operations.bootstrap_new_filter(filter_ref)
     elif choice == Actions.BUILD_FILTER:
         render_filter(filter_ref, build_blocks(filter_ref))
+    elif choice == Actions.DELETE_FILTER:
+        delete_filter(filter_ref)
 
 
 def main():

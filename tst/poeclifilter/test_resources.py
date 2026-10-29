@@ -41,3 +41,11 @@ def test_game_filter_dir_poe1():
 def test_game_filter_dir_unsupported():
     with pytest.raises(NotImplementedError):
         resources.game_filter_dir(GameVersion.POE2)
+
+
+def test_built_filter_path():
+    filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
+
+    assert resources.built_filter_path(filter_ref) == resources.game_filter_dir(
+        GameVersion.POE1
+    ).joinpath("test.filter")

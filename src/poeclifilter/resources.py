@@ -49,3 +49,7 @@ def game_filter_dir(game_version: GameVersion) -> Path:
         .joinpath(app_id, "pfx/drive_c/users/steamuser/My Documents/My Games/Path of Exile")
         .expanduser()
     )
+
+
+def built_filter_path(filter_ref: FilterRef) -> Path:
+    return game_filter_dir(filter_ref.game_version).joinpath(f"{filter_ref.name}.filter")

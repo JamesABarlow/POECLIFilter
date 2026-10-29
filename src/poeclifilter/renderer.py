@@ -5,7 +5,7 @@ from poeclifilter.models.display import Display, PlayEffect, ResolvedDisplay
 
 
 def write_to_filter(filter_ref: FilterRef, text: str):
-    dest = resources.game_filter_dir(filter_ref.game_version).joinpath(f"{filter_ref.name}.filter")
+    dest = resources.built_filter_path(filter_ref)
     dest.write_text(text)
 
 

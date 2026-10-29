@@ -10,7 +10,7 @@ def bootstrap_new_filter(filter_ref: FilterRef):
     new_filter_path = prepare_filter_dir(filter_ref)
 
     # Copy files over
-    copy_files(filter_ref, new_filter_path)
+    copy_files_for_new_filter(filter_ref, new_filter_path)
 
     # Write files with default item data
     merge_filter(filter_ref, False)
@@ -47,8 +47,16 @@ def is_safe_filter_path(root: Path, path: Path) -> bool:
 
 
 # TODO: Do this better. Handle other files that need to be copied
-def copy_files(filter_ref: FilterRef, dest: Path) -> None:
+def copy_files_for_new_filter(filter_ref: FilterRef, dest: Path) -> None:
     src = resources.base_config_dir(filter_ref.game_version).joinpath("display_variables.yaml")
     dest.joinpath("display_variables.yaml").write_text(
         src.read_text(encoding="utf-8"), encoding="utf-8"
     )
+
+
+def delete_filter(filter_ref: FilterRef) -> None:
+    config_path = _safe_filter_dir(filter_ref)
+    if config_path.is_dir():
+        shutil.rmtree(config_path)
+
+    resources.built_filter_path(filter_ref).unlink(missing_ok=True)
