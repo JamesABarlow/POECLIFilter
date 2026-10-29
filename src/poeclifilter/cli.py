@@ -87,7 +87,7 @@ def top_level_filter_actions(filter_ref: FilterRef):
     if choice == Actions.RESET_FILTER_TO_DEFAULT:
         bootstrap_new_filter(filter_ref)
     elif choice == Actions.BUILD_FILTER:
-        render_filter(build_blocks(filter_ref))
+        render_filter(filter_ref, build_blocks(filter_ref))
 
 
 def main():

@@ -1,30 +1,29 @@
-from pathlib import Path
-
+from poeclifilter import resources
 from poeclifilter.blocks import Block
+from poeclifilter.filters import FilterRef
 from poeclifilter.models.display import Display, PlayEffect, ResolvedDisplay
 
-FILTER_DIR = Path(
-    "~/.steam/steam/steamapps/compatdata/238960/pfx/drive_c/users/steamuser"
-).expanduser()
+
+def write_to_filter(filter_ref: FilterRef, text: str):
+    dest = resources.game_filter_dir(filter_ref.game_version).joinpath(f"{filter_ref.name}.filter")
+    dest.write_text(text)
 
 
-def write_to_filter(text: str):
-    Path("poeclifilter.filter").write_text(text)
-
-
-# TODO: This needs to be written to a file
-def render_filter(blocks: list[Block]):
+def render_filter(filter_ref: FilterRef, blocks: list[Block]):
 
     sections = [render_block(block) for block in blocks]
 
-    write_to_filter("\n\n".join(sections))
+    write_to_filter(filter_ref, "\n\n".join(sections))
 
 
+# TODO: Work out what actual options can exist here
 def render_block(block: Block):
     lines = ["Hide" if block.hide else "Show"]
     if block.base_type:
-        base_type = " ".join(f'"{item}"' for item in sorted(block.base_type))
-        lines.append(f"  BaseType == {base_type}")
+        if block.item_class:
+            lines.append(f'  Class == "{block.item_class}"')
+        base_types = " ".join(f'"{item}"' for item in sorted(block.base_type))
+        lines.append(f"  BaseType == {base_types}")
         lines.extend(render_display(block.display))
     # Assume this is the catch all for now
     else:
