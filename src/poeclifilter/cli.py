@@ -19,6 +19,8 @@ class Actions(StrEnum):
     RESET_FILTER_TO_DEFAULT = "reset_filter_to_default"
     BUILD_FILTER = "build_filter"
     DELETE_FILTER = "delete_filter"
+    CHANGE_FILTER = "change_filter"
+    EXIT = "exit"
 
 
 def ask_game_version() -> GameVersion | None:
@@ -76,37 +78,47 @@ def delete_filter(filter_ref: FilterRef):
 
 
 def top_level_filter_actions(filter_ref: FilterRef):
-    # Edit, publish, reset to default, change filter
-    choice = questionary.select(
-        "What would you like to do?",
-        choices=[
-            questionary.Choice(title="Edit"),
-            questionary.Choice(title="Build", value=Actions.BUILD_FILTER),
-            questionary.Choice(
-                title="Reset filter to default", value=Actions.RESET_FILTER_TO_DEFAULT
-            ),
-            questionary.Choice(title="Change filter"),
-            questionary.Choice(title="Delete filter", value=Actions.DELETE_FILTER),
-        ],
-    ).ask()
+    while True:
+        # Edit, publish, reset to default, change filter
+        choice = questionary.select(
+            "What would you like to do?",
+            choices=[
+                questionary.Choice(title="Build", value=Actions.BUILD_FILTER),
+                questionary.Choice(
+                    title="Reset filter to default", value=Actions.RESET_FILTER_TO_DEFAULT
+                ),
+                questionary.Choice(title="Change filter", value=Actions.CHANGE_FILTER),
+                questionary.Choice(title="Delete filter", value=Actions.DELETE_FILTER),
+                questionary.Choice(title="Exit tool", value=Actions.EXIT),
+            ],
+        ).ask()
 
-    if choice == Actions.RESET_FILTER_TO_DEFAULT:
-        filter_operations.bootstrap_new_filter(filter_ref)
-    elif choice == Actions.BUILD_FILTER:
-        render_filter(filter_ref, build_blocks(filter_ref))
-    elif choice == Actions.DELETE_FILTER:
-        delete_filter(filter_ref)
+        if choice == Actions.RESET_FILTER_TO_DEFAULT:
+            filter_operations.bootstrap_new_filter(filter_ref)
+        elif choice == Actions.BUILD_FILTER:
+            render_filter(filter_ref, build_blocks(filter_ref))
+        elif choice == Actions.DELETE_FILTER:
+            delete_filter(filter_ref)
+            return
+        elif choice == Actions.CHANGE_FILTER:
+            return
+        elif choice == Actions.EXIT:
+            return choice
 
 
 def main():
     game_version = ask_game_version()
     if not game_version:
         return "game version not found"
-    filter_name = pick_filter_to_use(game_version)
 
-    filter_ref = FilterRef(game_version=game_version, name=filter_name)
+    while True:
+        filter_name = pick_filter_to_use(game_version)
 
-    top_level_filter_actions(filter_ref)
+        filter_ref = FilterRef(game_version=game_version, name=filter_name)
+
+        choice = top_level_filter_actions(filter_ref)
+        if choice == Actions.EXIT:
+            return
 
 
 if __name__ == "__main__":
