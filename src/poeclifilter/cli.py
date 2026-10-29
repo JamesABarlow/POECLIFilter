@@ -7,7 +7,7 @@ import questionary
 import poeclifilter
 from poeclifilter import game, loader
 from poeclifilter.blocks import build_blocks
-from poeclifilter.bootstrap import bootstrap_new_filter
+from poeclifilter.filter_operations import bootstrap_new_filter
 from poeclifilter.filters import FilterRef, GameVersion
 from poeclifilter.models import display_variables
 from poeclifilter.models.banded_items import get_banded_items

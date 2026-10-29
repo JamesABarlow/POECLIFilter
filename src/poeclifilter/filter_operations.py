@@ -36,10 +36,14 @@ def _safe_filter_dir(filter_ref: FilterRef) -> Path:
 
     root = resources.filters_root(filter_ref.game_version).resolve()
     path = resources.filter_dir(filter_ref).resolve()
-    if path == root or not path.is_relative_to(root):
+    if not is_safe_filter_path(root, path):
         # Regex above should make this impossible to reach but keeping it for safety
         raise ValueError(f"unsafe filter name: {filter_ref.name!r}")
     return path
+
+
+def is_safe_filter_path(root: Path, path: Path) -> bool:
+    return path != root and path.is_relative_to(root)
 
 
 # TODO: Do this better. Handle other files that need to be copied
