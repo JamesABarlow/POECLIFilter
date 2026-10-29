@@ -34,7 +34,7 @@ class BandedItems:
     currency: BandedItemClass
 
 
-def get_banded_items(config_dir: Path):
+def get_filter_data(config_dir: Path):
     raw = {}
     for name, file in file_names.items():
         raw[name] = loader.load(Path(f"{config_dir}/{file}").read_text())
@@ -59,7 +59,7 @@ def parse_band(raw_band):
     return Band(hide=raw_band["hide"], display=band_display, items=items, stacked_items={})
 
 
-def write_banded_items(banded_items: BandedItems, filter_dir: Path):
+def write_filter_data(banded_items: BandedItems, filter_dir: Path):
     for name, file in file_names.items():
         section = getattr(banded_items, name)
         Path(f"{filter_dir}/{file}").write_text(writer.dump(section))

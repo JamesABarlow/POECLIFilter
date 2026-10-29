@@ -27,14 +27,14 @@ def raw_config(**bands):
 
 
 def test_load_success():
-    result = banded_items.get_banded_items(base_config_dir(GameVersion.POE1))
+    result = banded_items.get_filter_data(base_config_dir(GameVersion.POE1))
     assert result.currency is not None
     assert result.currency.schema is not None
     assert result.currency.bands is not None
 
 
 def test_load_defines_every_band():
-    result = banded_items.get_banded_items(base_config_dir(GameVersion.POE1))
+    result = banded_items.get_filter_data(base_config_dir(GameVersion.POE1))
     for band in BandNames:
         assert isinstance(result.currency.bands[band], Band)
 

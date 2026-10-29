@@ -11,7 +11,7 @@ def raw_config(**armour_types):
 
 
 def test_load_success():
-    result = armour.get_armour_item_data(resources.item_data_dir(GameVersion.POE1))
+    result = armour.get_item_data(resources.item_data_dir(GameVersion.POE1))
     assert result.schema is not None
     assert result.game_version is not None
     assert result.armour_types is not None

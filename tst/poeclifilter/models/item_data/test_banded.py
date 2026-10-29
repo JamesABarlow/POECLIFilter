@@ -9,7 +9,7 @@ def raw_config(**basetypes):
 
 
 def test_load_success():
-    result = banded.get_banded_item_data(resources.item_data_dir(GameVersion.POE1))
+    result = banded.get_item_data(resources.item_data_dir(GameVersion.POE1))
     assert result.currency is not None
     assert result.currency.schema is not None
     assert result.currency.game_version is not None

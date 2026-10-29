@@ -18,7 +18,7 @@ class Armour:
     armour: dict[AttributeGroup, dict[str, Band]]
 
 
-def get_armour(config_dir: Path):
+def get_filter_data(config_dir: Path):
     raw = loader.load(Path(f"{config_dir}/{file_name}").read_text())
 
     return parse(raw)
@@ -43,5 +43,5 @@ def parse_band(raw_band):
     return Band(base_types=base_types)
 
 
-def write_armour(armour: Armour, filter_dir: Path):
+def write_filter_data(armour: Armour, filter_dir: Path):
     Path(f"{filter_dir}/{file_name}").write_text(writer.dump(armour))

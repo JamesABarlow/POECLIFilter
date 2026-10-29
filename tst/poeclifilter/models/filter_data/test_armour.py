@@ -11,7 +11,7 @@ def raw_config(**groups):
 
 
 def test_load_success():
-    result = armour.get_armour(resources.base_config_dir(GameVersion.POE1))
+    result = armour.get_filter_data(resources.base_config_dir(GameVersion.POE1))
     assert result.schema is not None
     assert result.armour is not None
 
@@ -60,7 +60,7 @@ def test_parse_band_without_base_types_is_empty():
 
 
 def test_write_creates_file(tmp_path):
-    armour.write_armour(armour.parse(raw_config()), tmp_path)
+    armour.write_filter_data(armour.parse(raw_config()), tmp_path)
     assert (tmp_path / "armour.yaml").exists()
 
 
@@ -71,5 +71,5 @@ def test_write_round_trips(tmp_path):
             dex={"A": {"base_types": ["Syndicate's Garb"]}},
         )
     )
-    armour.write_armour(original, tmp_path)
-    assert armour.get_armour(tmp_path) == original
+    armour.write_filter_data(original, tmp_path)
+    assert armour.get_filter_data(tmp_path) == original

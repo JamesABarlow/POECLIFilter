@@ -30,7 +30,7 @@ class DisplayVariables:
     sound_alert: dict[str, SoundAlert]
 
 
-def get_display_variables(config_dir: Path):
+def get_filter_data(config_dir: Path):
     raw = loader.load(Path(f"{config_dir}/{file_name}").read_text())
     return parse(raw)
 

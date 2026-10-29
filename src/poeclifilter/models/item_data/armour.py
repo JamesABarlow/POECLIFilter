@@ -20,7 +20,7 @@ class ArmourItemData:
 
 
 # TODO: does this really need to be seperate from other banded items anymore?
-def get_armour_item_data(config_dir: Path):
+def get_item_data(config_dir: Path):
     raw = loader.load(Path(f"{config_dir}/{file_name}").read_text())
     return parse(raw)
 

@@ -1,11 +1,9 @@
 from poeclifilter import resources
 from poeclifilter.filters import BandNames, FilterRef
-from poeclifilter.models.item_data.banded import BandedItemDataClass, get_banded_item_data
-from poeclifilter.models.filter_data.banded_items import (
-    BandedItemClass,
-    get_banded_items,
-    write_banded_items,
-)
+from poeclifilter.models.filter_data import banded_items
+from poeclifilter.models.filter_data.banded_items import BandedItemClass
+from poeclifilter.models.item_data import banded
+from poeclifilter.models.item_data.banded import BandedItemDataClass
 
 
 def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
@@ -17,14 +15,16 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
     if not is_filter_update:
         # load files
-        banded_items = get_banded_items(resources.base_config_dir(filter_ref.game_version))
-        banded_item_data = get_banded_item_data(resources.item_data_dir(filter_ref.game_version))
+        banded_items_filter_data = banded_items.get_filter_data(
+            resources.base_config_dir(filter_ref.game_version)
+        )
+        banded_item_data = banded.get_item_data(resources.item_data_dir(filter_ref.game_version))
     else:
         raise NotImplementedError
 
-    merge_category("currency", banded_items.currency, banded_item_data.currency)
+    merge_category("currency", banded_items_filter_data.currency, banded_item_data.currency)
 
-    write_banded_items(banded_items, resources.filter_dir(filter_ref))
+    banded_items.write_filter_data(banded_items_filter_data, resources.filter_dir(filter_ref))
 
     # Should also eventually be able to show what's changed in the filter over the default as a report
     return False

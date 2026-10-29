@@ -4,17 +4,15 @@ from dataclasses import dataclass
 
 from poeclifilter.filters import BandNames, FilterRef
 from poeclifilter.models.display import Display
-from poeclifilter.models.filter_data import banded_items
+from poeclifilter.models.filter_data import banded_items, display_variables
 from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
     BandedItems,
-    get_banded_items,
 )
 from poeclifilter.models.filter_data.display_variables import (
     Color,
     DisplayVariables,
     SoundAlert,
-    get_display_variables,
 )
 from poeclifilter.resources import filter_dir
 
@@ -42,13 +40,13 @@ class Block:
 
 def build_blocks(filter_ref: FilterRef):
     # These should be input as args, simplifies the testing
-    display_variables = get_display_variables(filter_dir(filter_ref))
-    banded_items = get_banded_items(filter_dir(filter_ref))
+    display_variables_data = display_variables.get_filter_data(filter_dir(filter_ref))
+    banded_items_data = banded_items.get_filter_data(filter_dir(filter_ref))
 
     blocks = []
 
     # Ordering matters here, will be the same ordering in the final model.
-    blocks.extend(build_banded_items_blocks(banded_items, display_variables))
+    blocks.extend(build_banded_items_blocks(banded_items_data, display_variables_data))
 
     # Add misc filter blocks including the final catch all here
     # TODO: This needs to be built better but here for now
