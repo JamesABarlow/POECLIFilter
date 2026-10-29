@@ -19,7 +19,7 @@ from poeclifilter.models.display_variables import (
     DisplayVariables,
     SoundAlert,
 )
-from poeclifilter.models.banded_item_data import (
+from poeclifilter.models.item_data.banded import (
     BandedItemData,
     BandedItemDataClass,
     ItemEntry,

@@ -1,6 +1,6 @@
 from poeclifilter import resources
 from poeclifilter.filters import BandNames, FilterRef
-from poeclifilter.models.banded_item_data import BandedItemDataClass, get_banded_item_data
+from poeclifilter.models.item_data.banded import BandedItemDataClass, get_banded_item_data
 from poeclifilter.models.banded_items import (
     BandedItemClass,
     get_banded_items,
