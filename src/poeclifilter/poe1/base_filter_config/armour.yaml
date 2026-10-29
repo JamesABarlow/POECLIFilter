@@ -1,0 +1,62 @@
+schema: 1
+armour:
+  int:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  dex:
+      S:
+        base_types: []
+      A:
+        base_types: []
+      B:
+        base_types: []
+      C:
+        base_types: []
+  str:
+      S:
+        base_types: []
+      A:
+        base_types: []
+      B:
+        base_types: []
+      C:
+        base_types: []
+  int_dex:
+      S:
+        base_types: []
+      A:
+        base_types: []
+      B:
+        base_types: []
+      C:
+        base_types: []
+  dex_str:
+      S:
+        base_types: []
+      A:
+        base_types: []
+      B:
+        base_types: []
+      C:
+        base_types: []
+  str_int:
+      S:
+        base_types: []
+      A:
+        base_types: []
+      B:
+        base_types: []
+      C:
+        base_types: []
+rules:
+  - comment: "rule explanation such as show high level rares"
+    hide: false
+    rarity: rare
+    item: ["$str_A", "$int_A"]
+

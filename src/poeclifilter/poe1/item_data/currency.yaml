@@ -2,10 +2,10 @@ schema: 1
 game_version: '3.25'
 basetypes:
   base:
-    Divine Orb: {band: A}
-    Chaos Orb: {band: B}
+    Divine Orb: {band: S}
+    Chaos Orb: {band: A}
     Scroll of Wisdom: {band: E}
     # Divine Orb: {band: F}
   fossils:
     Hollow Fossil: {band: S}
-    Divine Orb: {band: F}
+    Divine Orb: {band: B}

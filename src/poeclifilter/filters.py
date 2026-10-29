@@ -10,6 +10,15 @@ class GameVersion(StrEnum):
     POE2 = "poe2"
 
 
+class AttributeGroup(StrEnum):
+    STR = "str"
+    DEX = "dex"
+    INT = "int"
+    STR_INT = "str_int"
+    INT_DEX = "int_dex"
+    DEX_STR = "dex_str"
+
+
 @dataclass
 class FilterRef:
     game_version: GameVersion

@@ -9,6 +9,7 @@ from poeclifilter.models import display
 from poeclifilter.models.display import Display
 
 
+# TODO: This should live somewhere else
 class BandNames(StrEnum):
     S = "S"
     A = "A"

@@ -1,0 +1,15 @@
+schema: 1
+game_version: '3.25'
+armour_types:
+  str:
+    Astral Plate: {band: A}
+  dex:
+    Syndicate's Garb: {band: A}
+  int:
+    Twilight Regalia: {band: A}
+  str_int:
+    Sacred Chainmail: {band: A}
+  int_dex:
+    Necrotic Armour: {band: A}
+  dex_str:
+    Conquest Lamellar: {band: A}
