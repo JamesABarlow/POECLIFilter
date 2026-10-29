@@ -13,11 +13,11 @@ def config_root() -> Path:
 
 
 def base_config_dir(game_version: GameVersion) -> Path:
-    return Path(files(poeclifilter).joinpath(game_version, "base_filter_config"))
+    return Path(str(files(poeclifilter).joinpath(game_version, "base_filter_config")))
 
 
 def item_data_dir(game_version: GameVersion) -> Path:
-    return Path(files(poeclifilter).joinpath(game_version, "item_data"))
+    return Path(str(files(poeclifilter).joinpath(game_version, "item_data")))
 
 
 def filters_root(game_version: GameVersion) -> Path:
@@ -33,3 +33,19 @@ def list_filter_names(game_version: GameVersion) -> list[str]:
     if not filters_root_path.is_dir():
         return []
     return sorted(p.name for p in filters_root_path.iterdir() if p.is_dir())
+
+
+_STEAM_APP_ID = {
+    GameVersion.POE1: "238960",
+}
+
+
+def game_filter_dir(game_version: GameVersion) -> Path:
+    app_id = _STEAM_APP_ID.get(game_version)
+    if app_id is None:
+        raise NotImplementedError(f"No known filter directory for {game_version}")
+    return (
+        Path("~/.steam/steam/steamapps/compatdata")
+        .joinpath(app_id, "pfx/drive_c/users/steamuser/My Documents/My Games/Path of Exile")
+        .expanduser()
+    )

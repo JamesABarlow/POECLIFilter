@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import pytest
+
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef, GameVersion
 
@@ -24,3 +28,16 @@ def test_filter_dir(in_tmp_config_home):
 # TODO: fix this test
 # def list_filter_names():
 #     assert resources.list_filter_names() == []
+
+
+def test_game_filter_dir_poe1():
+    expected = Path.home() / (
+        ".steam/steam/steamapps/compatdata/238960/pfx/drive_c/users/steamuser"
+        "/My Documents/My Games/Path of Exile"
+    )
+    assert resources.game_filter_dir(GameVersion.POE1) == expected
+
+
+def test_game_filter_dir_unsupported():
+    with pytest.raises(NotImplementedError):
+        resources.game_filter_dir(GameVersion.POE2)
