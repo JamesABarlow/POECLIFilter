@@ -1,23 +1,12 @@
 from dataclasses import dataclass
-from enum import StrEnum
 from importlib.resources import files
 from pathlib import Path
 
 import poeclifilter
 from poeclifilter import loader, writer
+from poeclifilter.filters import BandNames
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
-
-
-# TODO: This should live somewhere else
-class BandNames(StrEnum):
-    S = "S"
-    A = "A"
-    B = "B"
-    C = "C"
-    D = "D"
-    E = "E"
-    F = "F"
 
 
 # Variable for name here

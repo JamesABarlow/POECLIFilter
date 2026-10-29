@@ -1,9 +1,9 @@
 import pytest
 
-from poeclifilter.filters import GameVersion
+from poeclifilter.filters import BandNames, GameVersion
 from poeclifilter.game import IconColor, IconShape
 from poeclifilter.models import banded_items
-from poeclifilter.models.banded_items import Band, BandNames
+from poeclifilter.models.banded_items import Band
 from poeclifilter.models.display import MinimapIcon, PlayEffect
 from poeclifilter.resources import base_config_dir
 

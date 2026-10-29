@@ -2,11 +2,11 @@
 # mutate what they get without affecting each other.
 
 from poeclifilter.blocks import Block
+from poeclifilter.filters import BandNames
 from poeclifilter.models.banded_items import (
     Band,
     BandedItemClass,
     BandedItems,
-    BandNames,
 )
 from poeclifilter.models.display import (
     Display,

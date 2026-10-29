@@ -8,7 +8,7 @@ from builders import (
 )
 
 from poeclifilter import blocks
-from poeclifilter.models.banded_items import BandNames
+from poeclifilter.filters import BandNames
 from poeclifilter.models.display import ResolvedDisplay
 
 

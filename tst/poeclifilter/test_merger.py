@@ -9,9 +9,8 @@ from builders import (
 )
 
 from poeclifilter import merger, resources
-from poeclifilter.filters import FilterRef, GameVersion
+from poeclifilter.filters import BandNames, FilterRef, GameVersion
 from poeclifilter.merger import merge_category
-from poeclifilter.models.banded_items import BandNames
 from tst.poeclifilter.conftest import in_tmp_config_home
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")

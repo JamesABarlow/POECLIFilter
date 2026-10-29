@@ -2,12 +2,11 @@
 
 from dataclasses import dataclass
 
-from poeclifilter.filters import FilterRef
+from poeclifilter.filters import BandNames, FilterRef
 from poeclifilter.models import banded_items
 from poeclifilter.models.banded_items import (
     BandedItemClass,
     BandedItems,
-    BandNames,
     get_banded_items,
 )
 from poeclifilter.models.display import Display, ResolvedDisplay

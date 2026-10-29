@@ -10,6 +10,16 @@ class GameVersion(StrEnum):
     POE2 = "poe2"
 
 
+class BandNames(StrEnum):
+    S = "S"
+    A = "A"
+    B = "B"
+    C = "C"
+    D = "D"
+    E = "E"
+    F = "F"
+
+
 class AttributeGroup(StrEnum):
     STR = "str"
     DEX = "dex"
