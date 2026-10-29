@@ -9,7 +9,7 @@ filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 # TODO: Add correct full testing
 def test_render_block_emits_every_display_line():
     block = make_block(
-        base_type=["Mirror of Kalandra"],
+        base_types=["Mirror of Kalandra"],
         display=make_resolved_display(
             play_effect="Purple",
             minimap_icon="1 Purple Circle",
@@ -55,7 +55,7 @@ def test_write_to_filter_writes_under_filter_name(tmp_path, monkeypatch):
 
 def test_render_filter_joins_blocks_with_blank_lines(tmp_path, monkeypatch):
     monkeypatch.setattr(renderer.resources, "game_filter_dir", lambda game_version: tmp_path)
-    blocks = [make_block(base_type=["Mirror of Kalandra"]), make_block(hide=True)]
+    blocks = [make_block(base_types=["Mirror of Kalandra"]), make_block(hide=True)]
 
     renderer.render_filter(filter_ref, blocks)
 

@@ -36,35 +36,35 @@ def test_merge_filter_update_not_implemented():
 def test_merge_category_adds_missing_item_to_its_default_band():
     filter_items = make_banded_item_class({BandNames.A: make_band()})
     items_data = make_banded_item_data_class(
-        basetypes={"base": {"Divine Orb": make_item_entry(band="A")}}
+        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     merge_category("currency", filter_items, items_data)
 
-    assert filter_items.bands[BandNames.A].items == ["Divine Orb"]
+    assert filter_items.bands[BandNames.A].base_types == ["Divine Orb"]
 
 
 def test_merge_category_leaves_existing_item_alone():
     filter_items = make_banded_item_class(
         {
             BandNames.A: make_band(),
-            BandNames.B: make_band(items=["Divine Orb"]),
+            BandNames.B: make_band(base_types=["Divine Orb"]),
         }
     )
     items_data = make_banded_item_data_class(
-        basetypes={"base": {"Divine Orb": make_item_entry(band="A")}}
+        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     merge_category("currency", filter_items, items_data)
 
-    assert filter_items.bands[BandNames.B].items == ["Divine Orb"]
-    assert filter_items.bands[BandNames.A].items == []
+    assert filter_items.bands[BandNames.B].base_types == ["Divine Orb"]
+    assert filter_items.bands[BandNames.A].base_types == []
 
 
 def test_merge_category_raises_when_band_missing_from_filter():
     filter_items = make_banded_item_class({})
     items_data = make_banded_item_data_class(
-        basetypes={"base": {"Divine Orb": make_item_entry(band="A")}}
+        base_types={"base": {"Divine Orb": make_item_entry(band="A")}}
     )
 
     with pytest.raises(ValueError, match="Band not found"):
@@ -74,7 +74,7 @@ def test_merge_category_raises_when_band_missing_from_filter():
 def test_merge_category_merges_across_multiple_categories():
     filter_items = make_banded_item_class({BandNames.A: make_band(), BandNames.S: make_band()})
     items_data = make_banded_item_data_class(
-        basetypes={
+        base_types={
             "base": {"Divine Orb": make_item_entry(band="A")},
             "fossils": {"Hollow Fossil": make_item_entry(band="S")},
         }
@@ -82,5 +82,5 @@ def test_merge_category_merges_across_multiple_categories():
 
     merge_category("currency", filter_items, items_data)
 
-    assert filter_items.bands[BandNames.A].items == ["Divine Orb"]
-    assert filter_items.bands[BandNames.S].items == ["Hollow Fossil"]
+    assert filter_items.bands[BandNames.A].base_types == ["Divine Orb"]
+    assert filter_items.bands[BandNames.S].base_types == ["Hollow Fossil"]

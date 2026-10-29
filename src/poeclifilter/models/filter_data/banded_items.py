@@ -19,8 +19,8 @@ file_names = {"currency": "currency.yaml"}
 class Band:
     hide: bool
     display: Display
-    items: list[str]
-    stacked_items: dict[str, list[int]]
+    base_types: list[str]
+    stacked_base_types: dict[str, list[int]]
 
 
 @dataclass(frozen=True)
@@ -30,7 +30,7 @@ class BandedItemClass:
 
 
 @dataclass(frozen=True)
-class BandedItems:
+class BandedItemsFilterData:
     currency: BandedItemClass
 
 
@@ -39,7 +39,7 @@ def get_filter_data(config_dir: Path):
     for name, file in file_names.items():
         raw[name] = loader.load(Path(f"{config_dir}/{file}").read_text())
 
-    return BandedItems(currency=parse(raw["currency"]))
+    return BandedItemsFilterData(currency=parse(raw["currency"]))
 
 
 def parse(raw):
@@ -55,11 +55,13 @@ def parse(raw):
 def parse_band(raw_band):
     # TODO: stacked items needs doing
     band_display = display.parse(raw_band.get("display"))
-    items = raw_band.get("items", [])
-    return Band(hide=raw_band["hide"], display=band_display, items=items, stacked_items={})
+    base_types = raw_band.get("base_types", [])
+    return Band(
+        hide=raw_band["hide"], display=band_display, base_types=base_types, stacked_base_types={}
+    )
 
 
-def write_filter_data(banded_items: BandedItems, filter_dir: Path):
+def write_filter_data(banded_items: BandedItemsFilterData, filter_dir: Path):
     for name, file in file_names.items():
         section = getattr(banded_items, name)
         Path(f"{filter_dir}/{file}").write_text(writer.dump(section))

@@ -16,7 +16,7 @@ class ItemEntry:
 class BandedItemDataClass:
     schema: int
     game_version: str
-    basetypes: dict[str, dict[str, ItemEntry]]
+    base_types: dict[str, dict[str, ItemEntry]]
 
 
 @dataclass(frozen=True)
@@ -33,13 +33,13 @@ def get_item_data(config_dir: Path):
 
 
 def parse(raw):
-    basetypes = {
+    base_types = {
         category: {
             name: ItemEntry(band=entry["band"], stacks=entry.get("stacks"))
             for name, entry in items.items()
         }
-        for category, items in raw["basetypes"].items()
+        for category, items in raw["base_types"].items()
     }
     return BandedItemDataClass(
-        schema=raw["schema"], game_version=raw["game_version"], basetypes=basetypes
+        schema=raw["schema"], game_version=raw["game_version"], base_types=base_types
     )

@@ -13,7 +13,7 @@ class Band:
 
 
 @dataclass(frozen=True)
-class Armour:
+class ArmourFilterData:
     schema: int
     armour: dict[AttributeGroup, dict[str, Band]]
 
@@ -30,7 +30,7 @@ def parse(raw):
         AttributeGroup(name): parse_bands(bands) for name, bands in raw["armour"].items()
     }
 
-    return Armour(schema=raw["schema"], armour=armour_categories)
+    return ArmourFilterData(schema=raw["schema"], armour=armour_categories)
 
 
 def parse_bands(raw_bands):
@@ -43,5 +43,5 @@ def parse_band(raw_band):
     return Band(base_types=base_types)
 
 
-def write_filter_data(armour: Armour, filter_dir: Path):
+def write_filter_data(armour: ArmourFilterData, filter_dir: Path):
     Path(f"{filter_dir}/{file_name}").write_text(writer.dump(armour))

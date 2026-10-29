@@ -18,10 +18,10 @@ def render_filter(filter_ref: FilterRef, blocks: list[Block]):
 # TODO: Work out what actual options can exist here
 def render_block(block: Block):
     lines = ["Hide" if block.hide else "Show"]
-    if block.base_type:
+    if block.base_types:
         if block.item_class:
             lines.append(f'  Class == "{block.item_class}"')
-        base_types = " ".join(f'"{item}"' for item in sorted(block.base_type))
+        base_types = " ".join(f'"{item}"' for item in sorted(block.base_types))
         lines.append(f"  BaseType == {base_types}")
         lines.extend(render_display(block.display))
     # Assume this is the catch all for now

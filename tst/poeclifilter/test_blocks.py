@@ -23,7 +23,7 @@ def test_basic_banded_blocks():
     banded_items = make_banded_items(
         {
             BandNames.S: make_band(
-                items=["Mirror of Kalandra"],
+                base_types=["Mirror of Kalandra"],
                 display=make_display(
                     play_effect=make_play_effect(),
                     minimap_icon=make_minimap_icon(),
@@ -44,7 +44,7 @@ def test_basic_banded_blocks():
             comment="",
             hide=False,
             item_class="Stackable Currency",
-            base_type=["Mirror of Kalandra"],
+            base_types=["Mirror of Kalandra"],
             display=ResolvedDisplay(
                 play_effect="Purple",
                 minimap_icon="1 Purple Circle",

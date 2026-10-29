@@ -7,11 +7,11 @@ from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import banded_items, display_variables
 from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
-    BandedItems,
+    BandedItemsFilterData,
 )
 from poeclifilter.models.filter_data.display_variables import (
     Color,
-    DisplayVariables,
+    DisplayVariablesFilterData,
     SoundAlert,
 )
 from poeclifilter.resources import filter_dir
@@ -34,7 +34,7 @@ class Block:
     comment: str
     hide: bool
     item_class: str | None
-    base_type: list[str] | None
+    base_types: list[str] | None
     display: ResolvedDisplay
 
 
@@ -56,7 +56,7 @@ def build_blocks(filter_ref: FilterRef):
                 comment="",
                 hide=False,
                 item_class=None,
-                base_type=None,
+                base_types=None,
                 display=ResolvedDisplay(background_color="237 233 222 230"),
             )
         ]
@@ -65,7 +65,9 @@ def build_blocks(filter_ref: FilterRef):
     return blocks
 
 
-def build_banded_items_blocks(banded_items: BandedItems, display_variables: DisplayVariables):
+def build_banded_items_blocks(
+    banded_items: BandedItemsFilterData, display_variables: DisplayVariablesFilterData
+):
     blocks = []
 
     blocks.extend(build_bands(banded_items.currency, display_variables))
@@ -73,12 +75,12 @@ def build_banded_items_blocks(banded_items: BandedItems, display_variables: Disp
     return blocks
 
 
-def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariables):
+def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariablesFilterData):
     blocks = []
     for band_name in BandNames:
         band = banded_class.bands.get(band_name)
 
-        if not band or not band.items:
+        if not band or not band.base_types:
             continue
 
         blocks.append(
@@ -86,7 +88,7 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
                 comment="",
                 hide=band.hide,
                 item_class="Stackable Currency",
-                base_type=band.items,
+                base_types=band.base_types,
                 display=build_display(band.display, display_variables),
             )
         )
@@ -95,7 +97,7 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
 
 
 # Handle color substitions
-def build_display(display: Display, display_variables: DisplayVariables):
+def build_display(display: Display, display_variables: DisplayVariablesFilterData):
 
     resolved_text_color = resolve_color(display.text_color, display_variables.colors.text)
     resolved_border_color = resolve_color(display.border_color, display_variables.colors.border)

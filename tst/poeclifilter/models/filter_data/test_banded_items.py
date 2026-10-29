@@ -52,14 +52,14 @@ def test_parse_returns_every_band():
 
 
 def test_parse_keeps_items():
-    raw = raw_config(F={"hide": True, "display": {}, "items": ["Scroll of Wisdom"]})
+    raw = raw_config(F={"hide": True, "display": {}, "base_types": ["Scroll of Wisdom"]})
     result = banded_items.parse(raw)
-    assert result.bands[BandNames.F].items == ["Scroll of Wisdom"]
+    assert result.bands[BandNames.F].base_types == ["Scroll of Wisdom"]
 
 
 def test_parse_band_without_items_is_empty():
     result = banded_items.parse(raw_config())
-    assert result.bands[BandNames.S].items == []
+    assert result.bands[BandNames.S].base_types == []
 
 
 def test_parse_keeps_hide():

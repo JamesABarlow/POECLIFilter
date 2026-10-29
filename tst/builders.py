@@ -3,19 +3,19 @@
 
 from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import BandNames
-from poeclifilter.models.filter_data.banded_items import (
-    Band,
-    BandedItemClass,
-    BandedItems,
-)
 from poeclifilter.models.display import (
     Display,
     MinimapIcon,
     PlayEffect,
 )
+from poeclifilter.models.filter_data.banded_items import (
+    Band,
+    BandedItemClass,
+    BandedItemsFilterData,
+)
 from poeclifilter.models.filter_data.display_variables import (
     ColorMap,
-    DisplayVariables,
+    DisplayVariablesFilterData,
     SoundAlert,
 )
 from poeclifilter.models.item_data.banded import (
@@ -45,20 +45,25 @@ def make_block(
     comment="",
     hide=False,
     item_class="Stackable Currency",
-    base_type=None,
+    base_types=None,
     display=None,
 ):
     return Block(
         comment=comment,
         hide=hide,
         item_class=item_class,
-        base_type=[] if base_type is None else base_type,
+        base_types=[] if base_types is None else base_types,
         display=make_resolved_display() if display is None else display,
     )
 
 
 def make_band(**overrides):
-    defaults = {"hide": False, "display": make_display(), "items": [], "stacked_items": {}}
+    defaults = {
+        "hide": False,
+        "display": make_display(),
+        "base_types": [],
+        "stacked_base_types": {},
+    }
     return Band(**defaults | overrides)
 
 
@@ -67,11 +72,10 @@ def make_banded_item_class(bands=None, schema=1):
 
 
 def make_banded_items(bands=None, schema=1):
-    return BandedItems(currency=make_banded_item_class(bands, schema))
+    return BandedItemsFilterData(currency=make_banded_item_class(bands, schema))
 
 
 def make_single_band(band_name=BandNames.S, **band_overrides):
-    """A BandedItems holding exactly one band — the common shape for a block test."""
     return make_banded_items({band_name: make_band(**band_overrides)})
 
 
@@ -91,22 +95,20 @@ def make_display_variables(**overrides):
         "font_size": {"normal": 36},
         "sound_alert": {"major": SoundAlert(id=6, volume=300)},
     }
-    return DisplayVariables(**defaults | overrides)
+    return DisplayVariablesFilterData(**defaults | overrides)
 
 
 def make_item_entry(band="A", stacks=None):
     return ItemEntry(band=band, stacks=stacks)
 
 
-def make_banded_item_data_class(basetypes=None, schema=1, game_version="3.25"):
+def make_banded_item_data_class(base_types=None, schema=1, game_version="3.25"):
     return BandedItemDataClass(
         schema=schema,
         game_version=game_version,
-        basetypes=basetypes if basetypes is not None else {},
+        base_types=base_types if base_types is not None else {},
     )
 
 
-def make_banded_item_data(basetypes=None, schema=1, game_version="3.25"):
-    return BandedItemData(
-        currency=make_banded_item_data_class(basetypes, schema, game_version)
-    )
+def make_banded_item_data(base_types=None, schema=1, game_version="3.25"):
+    return BandedItemData(currency=make_banded_item_data_class(base_types, schema, game_version))

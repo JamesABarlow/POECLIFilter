@@ -31,7 +31,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
 
 def merge_category(category: str, filter_items: BandedItemClass, items_data: BandedItemDataClass):
-    for category_key, items in items_data.basetypes.items():
+    for category_key, items in items_data.base_types.items():
         print(f"Merging {category_key}")
         for item_name, item_data in items.items():
             print(f"Item name: {item_name} - {item_data}")
@@ -43,7 +43,7 @@ def merge_category(category: str, filter_items: BandedItemClass, items_data: Ban
                 if not band:
                     raise ValueError(f"Band not found {band_name}")
                 else:
-                    band.items.append(item_name)
+                    band.base_types.append(item_name)
             else:
                 # If not update this means item exists twice in item_data that should be fixed or read
                 print(f"{item_name} already exists in filter can't handle this yet")
@@ -51,7 +51,7 @@ def merge_category(category: str, filter_items: BandedItemClass, items_data: Ban
 
 def check_item_exists_in_filter(item_name: str, filter_items: BandedItemClass):
     for band_name, band in filter_items.bands.items():
-        if item_name in band.items:
+        if item_name in band.base_types:
             print(f"Found {item_name} existing in filter band {band_name}")
             return True
 

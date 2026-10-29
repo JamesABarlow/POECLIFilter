@@ -23,7 +23,7 @@ class ColorMap:
 
 
 @dataclass(frozen=True)
-class DisplayVariables:
+class DisplayVariablesFilterData:
     schema: int
     colors: ColorMap
     font_size: dict[str, int]
@@ -37,7 +37,7 @@ def get_filter_data(config_dir: Path):
 
 def parse(raw):
     # TODO: Apply correct validation
-    return DisplayVariables(
+    return DisplayVariablesFilterData(
         schema=raw["schema"],
         colors=ColorMap(**raw["colors"]),
         font_size=raw["font_size"],

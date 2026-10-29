@@ -3,9 +3,9 @@ from poeclifilter.filters import GameVersion
 from poeclifilter.models.item_data import banded
 
 
-def raw_config(**basetypes):
-    raw_basetypes = basetypes or {"base": {"Divine Orb": {"band": "A"}}}
-    return {"schema": 1, "game_version": "3.25", "basetypes": raw_basetypes}
+def raw_config(**base_types):
+    raw_base_types = base_types or {"base": {"Divine Orb": {"band": "A"}}}
+    return {"schema": 1, "game_version": "3.25", "base_types": raw_base_types}
 
 
 def test_load_success():
@@ -13,7 +13,7 @@ def test_load_success():
     assert result.currency is not None
     assert result.currency.schema is not None
     assert result.currency.game_version is not None
-    assert result.currency.basetypes is not None
+    assert result.currency.base_types is not None
 
 
 def test_parse_keeps_schema():
@@ -32,22 +32,22 @@ def test_parse_keeps_categories():
         fossils={"Hollow Fossil": {"band": "S"}},
     )
     result = banded.parse(raw)
-    assert set(result.basetypes) == {"base", "fossils"}
+    assert set(result.base_types) == {"base", "fossils"}
 
 
 def test_parse_keeps_item_band():
     raw = raw_config(base={"Divine Orb": {"band": "A"}})
     result = banded.parse(raw)
-    assert result.basetypes["base"]["Divine Orb"].band == "A"
+    assert result.base_types["base"]["Divine Orb"].band == "A"
 
 
 def test_parse_item_without_stacks_is_none():
     raw = raw_config(base={"Divine Orb": {"band": "A"}})
     result = banded.parse(raw)
-    assert result.basetypes["base"]["Divine Orb"].stacks is None
+    assert result.base_types["base"]["Divine Orb"].stacks is None
 
 
 def test_parse_keeps_stacks():
     raw = raw_config(base={"Scroll of Wisdom": {"band": "E", "stacks": [20, 40]}})
     result = banded.parse(raw)
-    assert result.basetypes["base"]["Scroll of Wisdom"].stacks == [20, 40]
+    assert result.base_types["base"]["Scroll of Wisdom"].stacks == [20, 40]
