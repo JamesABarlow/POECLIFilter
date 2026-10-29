@@ -1,7 +1,6 @@
 from poeclifilter import resources
-from poeclifilter.blocks import Block
+from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.display import Display, PlayEffect, ResolvedDisplay
 
 
 def write_to_filter(filter_ref: FilterRef, text: str):

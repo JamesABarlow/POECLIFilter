@@ -2,7 +2,7 @@ import pytest
 
 from poeclifilter import resources
 from poeclifilter.filters import AttributeGroup, GameVersion
-from poeclifilter.models import armour
+from poeclifilter.models.filter_data import armour
 
 
 def raw_config(**groups):

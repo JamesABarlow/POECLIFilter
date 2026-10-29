@@ -27,18 +27,6 @@ class Display:
     sound_alert: str | None = None
 
 
-# TODO: Not sure if I like this design, can I get something better here
-@dataclass(frozen=True)
-class ResolvedDisplay:
-    play_effect: str | None = None
-    minimap_icon: str | None = None
-    text_color: str | None = None
-    background_color: str | None = None
-    border_color: str | None = None
-    font_size: str | None = None
-    sound_alert: str | None = None
-
-
 def parse(raw_display):
     return Display(
         play_effect=parse_play_effect(raw_display.get("play_effect")),

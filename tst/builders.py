@@ -1,9 +1,9 @@
 # Builders for test objects. Each call returns a fresh object, so tests can
 # mutate what they get without affecting each other.
 
-from poeclifilter.blocks import Block
+from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import BandNames
-from poeclifilter.models.banded_items import (
+from poeclifilter.models.filter_data.banded_items import (
     Band,
     BandedItemClass,
     BandedItems,
@@ -12,9 +12,8 @@ from poeclifilter.models.display import (
     Display,
     MinimapIcon,
     PlayEffect,
-    ResolvedDisplay,
 )
-from poeclifilter.models.display_variables import (
+from poeclifilter.models.filter_data.display_variables import (
     ColorMap,
     DisplayVariables,
     SoundAlert,

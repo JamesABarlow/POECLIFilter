@@ -8,8 +8,8 @@ import poeclifilter
 from poeclifilter import filter_operations, game, loader
 from poeclifilter.blocks import build_blocks
 from poeclifilter.filters import FilterRef, GameVersion
-from poeclifilter.models import display_variables
-from poeclifilter.models.banded_items import get_banded_items
+from poeclifilter.models.filter_data import display_variables
+from poeclifilter.models.filter_data.banded_items import get_banded_items
 from poeclifilter.renderer import render_filter
 from poeclifilter.resources import list_filter_names
 

@@ -1,7 +1,7 @@
 import pytest
 
 from poeclifilter import resources
-from poeclifilter.models import display_variables
+from poeclifilter.models.filter_data import display_variables
 
 
 def test_load_success():

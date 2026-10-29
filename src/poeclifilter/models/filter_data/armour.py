@@ -1,12 +1,7 @@
 from dataclasses import dataclass
-from enum import StrEnum
-from importlib.resources import files
 from pathlib import Path
 
-import poeclifilter
 from poeclifilter import loader, writer
-from poeclifilter.models import display
-from poeclifilter.models.display import Display
 from poeclifilter.filters import AttributeGroup
 
 file_name = "armour.yaml"

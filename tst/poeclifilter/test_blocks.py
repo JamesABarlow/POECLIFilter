@@ -8,8 +8,8 @@ from builders import (
 )
 
 from poeclifilter import blocks
+from poeclifilter.blocks import ResolvedDisplay
 from poeclifilter.filters import BandNames
-from poeclifilter.models.display import ResolvedDisplay
 
 
 # TODO: Add correct full testing
