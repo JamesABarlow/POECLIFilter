@@ -2,14 +2,44 @@ schema: 1
 game_version: '3.25'
 categories:
   str:
-    Astral Plate: {band: A}
+    Helmets: {}
+    Body Armours:
+      Astral Plate: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}
   dex:
-    Syndicate's Garb: {band: A}
+    Helmets: {}
+    Body Armours:
+      Syndicate's Garb: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}
   int:
-    Twilight Regalia: {band: A}
+    Helmets: {}
+    Body Armours:
+      Twilight Regalia: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}
   str_int:
-    Sacred Chainmail: {band: A}
+    Helmets: {}
+    Body Armours:
+      Sacred Chainmail: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}
   int_dex:
-    Necrotic Armour: {band: A}
+    Helmets: {}
+    Body Armours:
+      Necrotic Armour: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}
   dex_str:
-    Conquest Lamellar: {band: A}
+    Helmets: {}
+    Body Armours:
+      Conquest Lamellar: {band: A}
+    Gloves: {}
+    Boots: {}
+    Shields: {}

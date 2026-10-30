@@ -14,6 +14,7 @@ from builders import (
 
 from poeclifilter import merger, resources
 from poeclifilter.filters import AttributeGroup, BandNames, FilterRef, GameVersion
+from poeclifilter.game import ArmourClass
 from poeclifilter.merger import merge_armour, merge_banded_item_category
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
@@ -97,7 +98,11 @@ def test_merge_banded_item_category_merges_across_multiple_categories():
 def test_merge_armour_adds_missing_item_to_its_default_band():
     filter_data = make_armour_filter_data({AttributeGroup.STR: {"A": make_armour_band()}})
     item_data = make_armour_item_data(
-        {AttributeGroup.STR: {"Astral Plate": make_armour_entry(band="A")}}
+        {
+            AttributeGroup.STR: {
+                ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band="A")}
+            }
+        }
     )
 
     merge_armour(filter_data, item_data)
@@ -115,7 +120,11 @@ def test_merge_armour_leaves_existing_item_alone():
         }
     )
     item_data = make_armour_item_data(
-        {AttributeGroup.STR: {"Astral Plate": make_armour_entry(band="A")}}
+        {
+            AttributeGroup.STR: {
+                ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band="A")}
+            }
+        }
     )
 
     merge_armour(filter_data, item_data)
@@ -127,7 +136,11 @@ def test_merge_armour_leaves_existing_item_alone():
 def test_merge_armour_raises_when_band_missing_from_filter():
     filter_data = make_armour_filter_data({AttributeGroup.STR: {}})
     item_data = make_armour_item_data(
-        {AttributeGroup.STR: {"Astral Plate": make_armour_entry(band="A")}}
+        {
+            AttributeGroup.STR: {
+                ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band="A")}
+            }
+        }
     )
 
     with pytest.raises(ValueError, match="Band not found"):
@@ -143,8 +156,12 @@ def test_merge_armour_merges_across_multiple_groups():
     )
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {"Astral Plate": make_armour_entry(band="A")},
-            AttributeGroup.INT: {"Twilight Regalia": make_armour_entry(band="S")},
+            AttributeGroup.STR: {
+                ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band="A")}
+            },
+            AttributeGroup.INT: {
+                ArmourClass.BODY_ARMOURS: {"Twilight Regalia": make_armour_entry(band="S")}
+            },
         }
     )
 
@@ -152,3 +169,22 @@ def test_merge_armour_merges_across_multiple_groups():
 
     assert filter_data.armour_categories[AttributeGroup.STR]["A"].base_types == ["Astral Plate"]
     assert filter_data.armour_categories[AttributeGroup.INT]["S"].base_types == ["Twilight Regalia"]
+
+
+def test_merge_armour_merges_every_armour_class_into_the_group_bands():
+    filter_data = make_armour_filter_data({AttributeGroup.STR: {"A": make_armour_band()}})
+    item_data = make_armour_item_data(
+        {
+            AttributeGroup.STR: {
+                ArmourClass.HELMETS: {"Royal Burgonet": make_armour_entry(band="A")},
+                ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band="A")},
+            }
+        }
+    )
+
+    merge_armour(filter_data, item_data)
+
+    assert filter_data.armour_categories[AttributeGroup.STR]["A"].base_types == [
+        "Royal Burgonet",
+        "Astral Plate",
+    ]

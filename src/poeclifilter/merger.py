@@ -53,25 +53,27 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
 
 def merge_armour(filter_data: ArmourFilterData, armour_item_data: ArmourItemData):
-    for armour_category_name, items in armour_item_data.categories.items():
+    for armour_category_name, armour_classes in armour_item_data.categories.items():
         print(f"Merging armour - {armour_category_name}")
-        for item_name, item_data in items.items():
-            # check if exists
+        # Filter data has no armour class level, so every class's bases merge into the group's bands
+        for items in armour_classes.values():
+            for item_name, item_data in items.items():
+                # check if exists
 
-            exists_in_filter = check_item_exists_in_bands(
-                item_name, filter_data.armour_categories[armour_category_name]
-            )
-
-            if not exists_in_filter:
-                target_band = filter_data.armour_categories[armour_category_name].get(
-                    item_data.band
+                exists_in_filter = check_item_exists_in_bands(
+                    item_name, filter_data.armour_categories[armour_category_name]
                 )
-                if not target_band:
-                    raise ValueError(f"Band not found {item_data.band}")
+
+                if not exists_in_filter:
+                    target_band = filter_data.armour_categories[armour_category_name].get(
+                        item_data.band
+                    )
+                    if not target_band:
+                        raise ValueError(f"Band not found {item_data.band}")
+                    else:
+                        target_band.base_types.append(item_name)
                 else:
-                    target_band.base_types.append(item_name)
-            else:
-                print(f"{item_name} already exists in filter can't handle this yet")
+                    print(f"{item_name} already exists in filter can't handle this yet")
 
     return False
 

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from poeclifilter import loader
 from poeclifilter.filters import AttributeGroup
+from poeclifilter.game import ArmourClass
 
 file_name = "armour.yaml"
 
@@ -16,7 +17,7 @@ class ArmourEntry:
 class ArmourItemData:
     schema: int
     game_version: str
-    categories: dict[AttributeGroup, dict[str, ArmourEntry]]
+    categories: dict[AttributeGroup, dict[ArmourClass, dict[str, ArmourEntry]]]
 
 
 # TODO: does this really need to be seperate from other banded items anymore?
@@ -28,9 +29,12 @@ def get_item_data(config_dir: Path):
 def parse(raw):
     categories = {
         AttributeGroup(group): {
-            name: ArmourEntry(band=entry["band"]) for name, entry in items.items()
+            ArmourClass(armour_class): {
+                name: ArmourEntry(band=entry["band"]) for name, entry in bases.items()
+            }
+            for armour_class, bases in armour_classes.items()
         }
-        for group, items in raw["categories"].items()
+        for group, armour_classes in raw["categories"].items()
     }
 
     return ArmourItemData(

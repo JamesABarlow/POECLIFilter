@@ -30,6 +30,14 @@ class IconShape(StrEnum):
     UPSIDE_DOWN_HOUSE = "UpsideDownHouse"
 
 
+class ArmourClass(StrEnum):
+    HELMETS = "Helmets"
+    BODY_ARMOURS = "Body Armours"
+    GLOVES = "Gloves"
+    BOOTS = "Boots"
+    SHIELDS = "Shields"
+
+
 COLOR_CHANNEL = (0, 255)
 FONT_SIZE = (1, 45)
 ICON_SIZE = (0, 2)
