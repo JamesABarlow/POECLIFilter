@@ -55,8 +55,14 @@ armour_categories:
       C:
         base_types: []
 rules:
-  - comment: "rule explanation such as show high level rares"
+  - id: "endgame_rares"
+    comment: "Rares shown in endgame"
     hide: false
-    rarity: rare
-    item: ["$str_A", "$int_A"]
+    bands: {str: "C"}
+    rarity: Rare
+  - id: "six_link_vendor"
+    comment: "6 link vendable items"
+    hide: false
+    display: {border_color: $white}
+
 

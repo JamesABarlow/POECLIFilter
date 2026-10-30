@@ -6,7 +6,7 @@ from poeclifilter.game import IconColor, IconShape
 @dataclass(frozen=True)
 class PlayEffect:
     color: IconColor
-    temp: bool | None
+    temp: bool | None = None
 
 
 @dataclass(frozen=True)

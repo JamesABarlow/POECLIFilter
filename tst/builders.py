@@ -26,6 +26,7 @@ from poeclifilter.models.item_data.banded import (
     BandedItemDataClass,
     ItemEntry,
 )
+from poeclifilter.models.rule import Range, Rule
 
 
 def make_play_effect(**overrides):
@@ -137,4 +138,38 @@ def make_armour_item_data(categories=None, schema=1, game_version="3.25"):
         schema=schema,
         game_version=game_version,
         categories=categories if categories is not None else {},
+    )
+
+
+def make_range(min=None, max=None):
+    return Range(min=min, max=max)
+
+
+def make_rule(
+    id="rule",
+    comment="",
+    include=True,
+    hide=None,
+    bands=None,
+    base_types=None,
+    armour_classes=None,
+    rarity=None,
+    item_level=None,
+    linked_sockets=None,
+    display=None,
+    rules=None,
+):
+    return Rule(
+        id=id,
+        comment=comment,
+        include=include,
+        hide=hide,
+        bands=bands,
+        base_types=base_types,
+        armour_classes=armour_classes,
+        rarity=rarity,
+        item_level=item_level,
+        linked_sockets=linked_sockets,
+        display=display,
+        rules=rules,
     )

@@ -88,6 +88,12 @@ def test_parse_display_builds_nested_records():
     )
 
 
+def test_parse_display_play_effect_without_temp_is_none():
+    raw = raw_config(S={"hide": False, "display": {"play_effect": {"color": "Purple"}}})
+    display = banded_items.parse(raw).bands[BandNames.S].display
+    assert display.play_effect == PlayEffect(color=IconColor.PURPLE, temp=None)
+
+
 def test_parse_display_converts_game_values_to_enum_members():
     raw = raw_config(S={"hide": False, "display": FULL_DISPLAY})
     display = banded_items.parse(raw).bands[BandNames.S].display

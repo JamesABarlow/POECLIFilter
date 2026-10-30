@@ -3,6 +3,8 @@ from pathlib import Path
 
 from poeclifilter import loader, writer
 from poeclifilter.filters import AttributeGroup, BandNames
+from poeclifilter.models import rule
+from poeclifilter.models.rule import Rule
 
 file_name = "armour.yaml"
 
@@ -16,6 +18,7 @@ class Band:
 class ArmourFilterData:
     schema: int
     armour_categories: dict[AttributeGroup, dict[BandNames, Band]]
+    rules: list[Rule]
 
 
 def get_filter_data(config_dir: Path):
@@ -30,7 +33,9 @@ def parse(raw):
         AttributeGroup(name): parse_bands(bands) for name, bands in raw["armour_categories"].items()
     }
 
-    return ArmourFilterData(schema=raw["schema"], armour_categories=armour_categories)
+    rules = [rule.parse(rule_data) for rule_data in raw["rules"]]
+
+    return ArmourFilterData(schema=raw["schema"], armour_categories=armour_categories, rules=rules)
 
 
 def parse_bands(raw_bands):

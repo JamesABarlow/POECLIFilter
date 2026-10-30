@@ -38,6 +38,13 @@ class ArmourClass(StrEnum):
     SHIELDS = "Shields"
 
 
+class Rarity(StrEnum):
+    NORMAL = "Normal"
+    MAGIC = "Magic"
+    RARE = "Rare"
+    UNIQUE = "Unique"
+
+
 COLOR_CHANNEL = (0, 255)
 FONT_SIZE = (1, 45)
 ICON_SIZE = (0, 2)
