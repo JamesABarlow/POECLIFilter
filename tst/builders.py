@@ -126,6 +126,7 @@ def make_armour_filter_data(armour_categories=None, schema=1):
     return ArmourFilterData(
         schema=schema,
         armour_categories=armour_categories if armour_categories is not None else {},
+        rules=[make_rule()],
     )
 
 

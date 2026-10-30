@@ -7,7 +7,8 @@ from poeclifilter.models.filter_data import armour
 
 def raw_config(**groups):
     raw_groups = groups or {"str": {"A": {"base_types": ["Astral Plate"]}}}
-    return {"schema": 1, "armour_categories": raw_groups}
+    rule = {"id": "test_id", "comment": "test_comment", "hide": False}
+    return {"schema": 1, "armour_categories": raw_groups, "rules": [rule]}
 
 
 def test_load_success():

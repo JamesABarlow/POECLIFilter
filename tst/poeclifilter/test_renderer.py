@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 from builders import make_block, make_resolved_display
 
 from poeclifilter import renderer
@@ -37,12 +39,21 @@ def test_render_block_emits_every_display_line():
     )
 
 
-def test_empty_display():
-    block = make_block(display={})  # empty block
+def test_render_block_without_display_emits_no_display_lines():
+    # make_block treats display=None as "use the default", so set it afterwards
+    block = replace(make_block(), display=None)
 
     result = renderer.render_block(block)
 
-    assert result == ("Show")
+    assert result == "Show"
+
+
+def test_render_block_with_empty_display_emits_no_display_lines():
+    block = make_block(display=make_resolved_display())
+
+    result = renderer.render_block(block)
+
+    assert result == "Show"
 
 
 def test_write_to_filter_writes_under_filter_name(tmp_path, monkeypatch):

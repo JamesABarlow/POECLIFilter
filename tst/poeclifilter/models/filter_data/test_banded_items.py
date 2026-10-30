@@ -4,7 +4,7 @@ from poeclifilter.filters import BandNames, GameVersion
 from poeclifilter.game import IconColor, IconShape
 from poeclifilter.models.display import MinimapIcon, PlayEffect
 from poeclifilter.models.filter_data import banded_items
-from poeclifilter.models.filter_data.banded_items import Band
+from poeclifilter.models.filter_data.banded_items import Band, BandedItemsFilterData
 from poeclifilter.resources import base_config_dir
 
 MINIMAL_BAND = {"hide": False, "display": {}}
@@ -163,3 +163,19 @@ def test_parse_missing_band_raises():
     with pytest.raises(KeyError) as error:
         banded_items.parse(raw)
     assert "D" in str(error.value)
+
+
+def test_write_round_trips(tmp_path):
+    original = BandedItemsFilterData(
+        currency=banded_items.parse(
+            raw_config(
+                S={"hide": False, "display": FULL_DISPLAY, "base_types": ["Mirror of Kalandra"]},
+                A={"hide": False, "display": {"font_size": "$normal"}},
+                F={"hide": True},
+            )
+        )
+    )
+
+    banded_items.write_filter_data(original, tmp_path)
+
+    assert banded_items.get_filter_data(tmp_path) == original
