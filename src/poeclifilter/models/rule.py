@@ -18,7 +18,7 @@ class Rule:
     comment: str
     hide: bool
     include: bool = True
-    bands: dict[AttributeGroup, BandNames] | None = None
+    bands: dict[AttributeGroup, list[BandNames]] | None = None
     base_types: list[str] | None = None
     armour_classes: list[ArmourClass] | None = None
     rarity: Rarity | None = None
@@ -56,7 +56,10 @@ def parse_bands(raw_bands):
     if raw_bands is None:
         return None
 
-    return {AttributeGroup(group): BandNames(band) for group, band in raw_bands.items()}
+    return {
+        AttributeGroup(group): [BandNames(band_name) for band_name in band]
+        for group, band in raw_bands.items()
+    }
 
 
 def parse_armour_classes(raw_armour_classes):

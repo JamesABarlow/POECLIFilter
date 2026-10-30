@@ -58,7 +58,7 @@ rules:
   - id: "endgame_rares"
     comment: "Rares shown in endgame"
     hide: false
-    bands: {str: "C"}
+    bands: {str: ["C", "B", "A"]}
     rarity: Rare
   - id: "six_link_vendor"
     comment: "6 link vendable items"

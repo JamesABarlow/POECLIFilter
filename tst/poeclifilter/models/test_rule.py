@@ -43,10 +43,14 @@ def test_parse_keeps_hide_false():
 
 
 def test_parse_converts_bands_to_enums():
-    result = rule.parse(raw_rule(bands={"str": "A", "str_int": "B"}))
-    assert result.bands == {AttributeGroup.STR: BandNames.A, AttributeGroup.STR_INT: BandNames.B}
+    result = rule.parse(raw_rule(bands={"str": ["A"], "str_int": ["B"]}))
+    assert result.bands is not None
+    assert result.bands == {
+        AttributeGroup.STR: [BandNames.A],
+        AttributeGroup.STR_INT: [BandNames.B],
+    }
     assert all(type(group) is AttributeGroup for group in result.bands)
-    assert all(type(band) is BandNames for band in result.bands.values())
+    assert all(type(band) is BandNames for bands in result.bands.values() for band in bands)
 
 
 def test_parse_rejects_unknown_attribute_group():

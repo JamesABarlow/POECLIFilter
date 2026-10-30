@@ -48,14 +48,14 @@ def make_resolved_display(**overrides):
 def make_block(
     comment="",
     hide=False,
-    item_class="Stackable Currency",
+    item_classes=["Stackable Currency"],
     base_types=None,
     display=None,
 ):
     return Block(
         comment=comment,
         hide=hide,
-        item_class=item_class,
+        item_classes=item_classes,
         base_types=[] if base_types is None else base_types,
         display=make_resolved_display() if display is None else display,
     )

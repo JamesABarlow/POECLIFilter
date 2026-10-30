@@ -53,7 +53,7 @@ def test_basic_banded_blocks():
         blocks.Block(
             comment="",
             hide=False,
-            item_class="Stackable Currency",
+            item_classes=["Stackable Currency"],
             base_types=["Mirror of Kalandra"],
             display=ResolvedDisplay(
                 play_effect="Purple",

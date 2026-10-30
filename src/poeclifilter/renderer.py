@@ -19,8 +19,9 @@ def render_filter(filter_ref: FilterRef, blocks: list[Block]):
 def render_block(block: Block):
     lines = ["Hide" if block.hide else "Show"]
     if block.base_types:
-        if block.item_class:
-            lines.append(f'  Class == "{block.item_class}"')
+        if block.item_classes:
+            items_classes = " ".join(f'"{item_class}"' for item_class in sorted(block.item_classes))
+            lines.append(f"  Class == {items_classes}")
         base_types = " ".join(f'"{item}"' for item in sorted(block.base_types))
         lines.append(f"  BaseType == {base_types}")
         lines.extend(render_display(block.display))

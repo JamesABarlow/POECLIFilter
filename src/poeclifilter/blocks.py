@@ -1,10 +1,13 @@
 # Convert the filter settings to ordered block list that can be used to write the filter
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
-from poeclifilter.filters import BandNames, FilterRef
+from poeclifilter.filters import AttributeGroup, BandNames, FilterRef
 from poeclifilter.models.display import Display
+from poeclifilter.models.filter_data import armour as armour_filter_data_model
 from poeclifilter.models.filter_data import banded_items, display_variables
+from poeclifilter.models.filter_data.armour import ArmourFilterData, Band
 from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
     BandedItemsFilterData,
@@ -33,20 +36,24 @@ class ResolvedDisplay:
 class Block:
     comment: str
     hide: bool
-    item_class: str | None
+    item_classes: Sequence[str] | None
     base_types: list[str] | None
     display: ResolvedDisplay | None
 
 
 def build_blocks(filter_ref: FilterRef):
-    # These should be input as args, simplifies the testing
-    display_variables_data = display_variables.get_filter_data(filter_dir(filter_ref))
-    banded_items_data = banded_items.get_filter_data(filter_dir(filter_ref))
+    # TODO: These should be input as args, simplifies the testing
+    display_variables_filter_data = display_variables.get_filter_data(filter_dir(filter_ref))
+    banded_items_filter_data = banded_items.get_filter_data(filter_dir(filter_ref))
+    armour_filter_data = armour_filter_data_model.get_filter_data(filter_dir(filter_ref))
 
     blocks = []
 
     # Ordering matters here, will be the same ordering in the final model.
-    blocks.extend(build_banded_items_blocks(banded_items_data, display_variables_data))
+    blocks.extend(
+        build_banded_items_blocks(banded_items_filter_data, display_variables_filter_data)
+    )
+    blocks.extend(build_armour_blocks(armour_filter_data, display_variables_filter_data))
 
     # Add misc filter blocks including the final catch all here
     # TODO: This needs to be built better but here for now
@@ -55,7 +62,7 @@ def build_blocks(filter_ref: FilterRef):
             Block(
                 comment="",
                 hide=False,
-                item_class=None,
+                item_classes=None,
                 base_types=None,
                 display=ResolvedDisplay(background_color="237 233 222 230"),
             )
@@ -87,13 +94,55 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
             Block(
                 comment="",
                 hide=band.hide,
-                item_class="Stackable Currency",
+                item_classes=["Stackable Currency"],
                 base_types=band.base_types,
                 display=build_display(band.display, display_variables),
             )
         )
 
     return blocks
+
+
+def build_armour_blocks(
+    armour_filter_data: ArmourFilterData, display_variables: DisplayVariablesFilterData
+):
+    blocks = []
+    for rule in armour_filter_data.rules:
+        if isinstance(rule.display, str):
+            display = None
+        else:
+            display = build_display(rule.display, display_variables)
+
+        if rule.base_types:
+            base_types = rule.base_types
+        elif rule.bands:
+            base_types = get_bands(rule.bands, armour_filter_data.armour_categories)
+        else:
+            base_types = None
+
+        blocks.append(
+            Block(
+                comment=rule.comment,
+                hide=rule.hide,
+                display=display,
+                base_types=base_types,
+                item_classes=rule.armour_classes,
+            )
+        )
+    return blocks
+
+
+def get_bands(
+    band: dict[AttributeGroup, list[BandNames]],
+    armour_bands: dict[AttributeGroup, dict[BandNames, Band]],
+):
+    base_types = []
+    for attribute_group, band_names in band.items():
+        for band_name in band_names:
+            target_band = armour_bands[attribute_group][band_name]
+            base_types.extend(target_band.base_types)
+
+    return base_types
 
 
 # Handle color substitions
