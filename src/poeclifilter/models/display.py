@@ -28,6 +28,9 @@ class Display:
 
 
 def parse(raw_display):
+    if raw_display is None:
+        return None
+
     return Display(
         play_effect=parse_play_effect(raw_display.get("play_effect")),
         minimap_icon=parse_minimap_icon(raw_display.get("minimap_icon")),

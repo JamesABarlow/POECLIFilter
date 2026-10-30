@@ -15,7 +15,7 @@ file_names = {"currency": "currency.yaml"}
 @dataclass(frozen=True)
 class Band:
     hide: bool
-    display: Display
+    display: Display | None
     base_types: list[str]
     stacked_base_types: dict[str, list[int]]
 

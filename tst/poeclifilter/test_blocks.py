@@ -19,6 +19,16 @@ def test_no_bands_produces_no_blocks():
     assert result == []
 
 
+def test_band_without_display_has_no_display():
+    banded_items = make_banded_items(
+        {BandNames.S: make_band(base_types=["Mirror of Kalandra"], display=None)}
+    )
+
+    result = blocks.build_banded_items_blocks(banded_items, make_display_variables())
+
+    assert result[0].display is None
+
+
 def test_basic_banded_blocks():
     banded_items = make_banded_items(
         {

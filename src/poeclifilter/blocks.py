@@ -35,7 +35,7 @@ class Block:
     hide: bool
     item_class: str | None
     base_types: list[str] | None
-    display: ResolvedDisplay
+    display: ResolvedDisplay | None
 
 
 def build_blocks(filter_ref: FilterRef):
@@ -97,7 +97,9 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
 
 
 # Handle color substitions
-def build_display(display: Display, display_variables: DisplayVariablesFilterData):
+def build_display(display: Display | None, display_variables: DisplayVariablesFilterData):
+    if display is None:
+        return None
 
     resolved_text_color = resolve_color(display.text_color, display_variables.colors.text)
     resolved_border_color = resolve_color(display.border_color, display_variables.colors.border)
