@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from poeclifilter import loader, writer
-from poeclifilter.filters import AttributeGroup
+from poeclifilter.filters import AttributeGroup, BandNames
 
 file_name = "armour.yaml"
 
@@ -15,7 +15,7 @@ class Band:
 @dataclass(frozen=True)
 class ArmourFilterData:
     schema: int
-    armour_categories: dict[AttributeGroup, dict[str, Band]]
+    armour_categories: dict[AttributeGroup, dict[BandNames, Band]]
 
 
 def get_filter_data(config_dir: Path):
@@ -34,7 +34,7 @@ def parse(raw):
 
 
 def parse_bands(raw_bands):
-    bands = {name: parse_band(band) for name, band in raw_bands.items()}
+    bands = {BandNames(name): parse_band(band) for name, band in raw_bands.items()}
     return bands
 
 

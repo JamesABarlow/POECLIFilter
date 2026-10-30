@@ -17,7 +17,9 @@ def test_item_data_dir():
 
 
 def test_filters_root(in_tmp_config_home):
-    assert resources.filters_root(GameVersion.POE1) == in_tmp_config_home / "poeclifilter/filters/poe1"
+    assert (
+        resources.filters_root(GameVersion.POE1) == in_tmp_config_home / "poeclifilter/filters/poe1"
+    )
 
 
 def test_filter_dir(in_tmp_config_home):

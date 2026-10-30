@@ -101,7 +101,7 @@ def make_display_variables(**overrides):
     return DisplayVariablesFilterData(**defaults | overrides)
 
 
-def make_item_entry(band="A", stacks=None):
+def make_item_entry(band=BandNames.A, stacks=None):
     return ItemEntry(band=band, stacks=stacks)
 
 
@@ -128,7 +128,7 @@ def make_armour_filter_data(armour_categories=None, schema=1):
     )
 
 
-def make_armour_entry(band="A"):
+def make_armour_entry(band=BandNames.A):
     return ArmourEntry(band=band)
 
 

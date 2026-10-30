@@ -1,5 +1,7 @@
+import pytest
+
 from poeclifilter import resources
-from poeclifilter.filters import GameVersion
+from poeclifilter.filters import BandNames, GameVersion
 from poeclifilter.models.item_data import banded
 
 
@@ -38,7 +40,7 @@ def test_parse_keeps_categories():
 def test_parse_keeps_item_band():
     raw = raw_config(base={"Divine Orb": {"band": "A"}})
     result = banded.parse(raw)
-    assert result.categories["base"]["Divine Orb"].band == "A"
+    assert result.categories["base"]["Divine Orb"].band == BandNames.A
 
 
 def test_parse_item_without_stacks_is_none():
@@ -51,3 +53,14 @@ def test_parse_keeps_stacks():
     raw = raw_config(base={"Scroll of Wisdom": {"band": "E", "stacks": [20, 40]}})
     result = banded.parse(raw)
     assert result.categories["base"]["Scroll of Wisdom"].stacks == [20, 40]
+
+
+def test_parse_converts_band_to_enum():
+    result = banded.parse(raw_config())
+    assert type(result.categories["base"]["Divine Orb"].band) is BandNames
+
+
+def test_parse_rejects_unknown_band():
+    raw = raw_config(base={"Divine Orb": {"band": "Z"}})
+    with pytest.raises(ValueError):
+        banded.parse(raw)

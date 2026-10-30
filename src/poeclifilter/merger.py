@@ -2,7 +2,7 @@ from collections.abc import Mapping
 from typing import Protocol
 
 from poeclifilter import resources
-from poeclifilter.filters import BandNames, FilterRef
+from poeclifilter.filters import FilterRef
 from poeclifilter.models.filter_data import armour as armour_filter_data_model
 from poeclifilter.models.filter_data import banded_items
 from poeclifilter.models.filter_data.armour import ArmourFilterData
@@ -88,10 +88,9 @@ def merge_banded_item_category(
             exists_in_filter = check_item_exists_in_bands(item_name, filter_items.bands)
 
             if not exists_in_filter:
-                band_name = BandNames(item_data.band)
-                band = filter_items.bands.get(band_name)
+                band = filter_items.bands.get(item_data.band)
                 if not band:
-                    raise ValueError(f"Band not found {band_name}")
+                    raise ValueError(f"Band not found {item_data.band}")
                 else:
                     band.base_types.append(item_name)
             else:

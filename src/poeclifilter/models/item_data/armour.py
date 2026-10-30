@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from poeclifilter import loader
-from poeclifilter.filters import AttributeGroup
+from poeclifilter.filters import AttributeGroup, BandNames
 from poeclifilter.game import ArmourClass
 
 file_name = "armour.yaml"
@@ -10,7 +10,7 @@ file_name = "armour.yaml"
 
 @dataclass(frozen=True)
 class ArmourEntry:
-    band: str
+    band: BandNames
 
 
 @dataclass(frozen=True)
@@ -30,7 +30,7 @@ def parse(raw):
     categories = {
         AttributeGroup(group): {
             ArmourClass(armour_class): {
-                name: ArmourEntry(band=entry["band"]) for name, entry in bases.items()
+                name: ArmourEntry(band=BandNames(entry["band"])) for name, entry in bases.items()
             }
             for armour_class, bases in armour_classes.items()
         }

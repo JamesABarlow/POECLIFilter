@@ -1,5 +1,3 @@
-import pytest
-
 from poeclifilter import resources
 from poeclifilter.models.filter_data import display_variables
 

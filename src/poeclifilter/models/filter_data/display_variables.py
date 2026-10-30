@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-import poeclifilter
 from poeclifilter import loader
 
 file_name = "display_variables.yaml"

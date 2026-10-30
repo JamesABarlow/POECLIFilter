@@ -2,13 +2,14 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from poeclifilter import loader
+from poeclifilter.filters import BandNames
 
 file_names = {"currency": "currency.yaml"}
 
 
 @dataclass(frozen=True)
 class ItemEntry:
-    band: str
+    band: BandNames
     stacks: list[int] | None = None
 
 
@@ -35,7 +36,7 @@ def get_item_data(config_dir: Path):
 def parse(raw):
     categories = {
         category: {
-            name: ItemEntry(band=entry["band"], stacks=entry.get("stacks"))
+            name: ItemEntry(band=BandNames(entry["band"]), stacks=entry.get("stacks"))
             for name, entry in items.items()
         }
         for category, items in raw["categories"].items()

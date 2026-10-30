@@ -110,7 +110,7 @@ def build_display(display: Display, display_variables: DisplayVariablesFilterDat
     resolved_play_effect = None
     resolved_minimap_icon = None
     if display.play_effect:
-        temp = f" Temp" if display.play_effect.temp else ""
+        temp = " Temp" if display.play_effect.temp else ""
         resolved_play_effect = f"{display.play_effect.color}{temp}"
     if display.minimap_icon:
         resolved_minimap_icon = (

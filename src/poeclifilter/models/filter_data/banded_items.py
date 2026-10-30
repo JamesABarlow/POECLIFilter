@@ -1,13 +1,10 @@
 from dataclasses import dataclass
-from importlib.resources import files
 from pathlib import Path
 
-import poeclifilter
 from poeclifilter import loader, writer
 from poeclifilter.filters import BandNames
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
-
 
 # Variable for name here
 file_names = {"currency": "currency.yaml"}
@@ -47,7 +44,7 @@ def parse(raw):
     # TODO: finish parsing and validation
     bands = {}
     for band_name in BandNames:
-        bands[band_name.value] = parse_band(raw["bands"][band_name.value])
+        bands[band_name] = parse_band(raw["bands"][band_name.value])
 
     return BandedItemClass(schema=raw["schema"], bands=bands)
 

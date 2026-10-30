@@ -4,7 +4,6 @@ import pytest
 
 from poeclifilter import filter_operations
 from poeclifilter.filters import FilterRef, GameVersion
-from tst.poeclifilter.conftest import in_tmp_config_home
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 
@@ -48,7 +47,7 @@ def test_pathname_unsafe(in_tmp_config_home):
 
 
 def test_resolve_guard_still_blocks_escape_if_name_check_bypassed(in_tmp_config_home, monkeypatch):
-    monkeypatch.setattr(filter_operations,"is_valid_filter_name", lambda name: True)
+    monkeypatch.setattr(filter_operations, "is_valid_filter_name", lambda name: True)
     ref = FilterRef(game_version=GameVersion.POE1, name="..")
 
     with pytest.raises(ValueError, match="unsafe filter name"):
@@ -63,15 +62,19 @@ def test_copy_files_writes_display_variables(tmp_path):
 
 def test_bootstrap_calls_merge_filter(in_tmp_config_home, monkeypatch):
     mock_merge_filter = Mock()
-    monkeypatch.setattr(filter_operations,"merge_filter", mock_merge_filter)
+    monkeypatch.setattr(filter_operations, "merge_filter", mock_merge_filter)
 
     filter_operations.bootstrap_new_filter(filter_ref)
 
     mock_merge_filter.assert_called_once_with(filter_ref, False)
 
 
-def test_delete_filter_removes_config_dir_and_built_filter(in_tmp_config_home, tmp_path, monkeypatch):
-    monkeypatch.setattr(filter_operations.resources, "game_filter_dir", lambda game_version: tmp_path)
+def test_delete_filter_removes_config_dir_and_built_filter(
+    in_tmp_config_home, tmp_path, monkeypatch
+):
+    monkeypatch.setattr(
+        filter_operations.resources, "game_filter_dir", lambda game_version: tmp_path
+    )
     config_path = filter_operations.prepare_filter_dir(filter_ref)
     built_filter = tmp_path.joinpath("test.filter")
     built_filter.write_text("some filter text")
@@ -83,7 +86,9 @@ def test_delete_filter_removes_config_dir_and_built_filter(in_tmp_config_home, t
 
 
 def test_delete_filter_when_never_built(in_tmp_config_home, tmp_path, monkeypatch):
-    monkeypatch.setattr(filter_operations.resources, "game_filter_dir", lambda game_version: tmp_path)
+    monkeypatch.setattr(
+        filter_operations.resources, "game_filter_dir", lambda game_version: tmp_path
+    )
     config_path = filter_operations.prepare_filter_dir(filter_ref)
 
     filter_operations.delete_filter(filter_ref)

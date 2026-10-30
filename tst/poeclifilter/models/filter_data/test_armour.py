@@ -1,7 +1,7 @@
 import pytest
 
 from poeclifilter import resources
-from poeclifilter.filters import AttributeGroup, GameVersion
+from poeclifilter.filters import AttributeGroup, BandNames, GameVersion
 from poeclifilter.models.filter_data import armour
 
 
@@ -44,13 +44,26 @@ def test_parse_rejects_unknown_group():
 def test_parse_keeps_bands():
     raw = raw_config(str={"S": {"base_types": []}, "A": {"base_types": ["Astral Plate"]}})
     result = armour.parse(raw)
-    assert set(result.armour_categories[AttributeGroup.STR]) == {"S", "A"}
+    assert set(result.armour_categories[AttributeGroup.STR]) == {BandNames.S, BandNames.A}
+
+
+def test_parse_converts_band_name_to_enum():
+    result = armour.parse(raw_config())
+    assert all(
+        type(band_name) is BandNames for band_name in result.armour_categories[AttributeGroup.STR]
+    )
+
+
+def test_parse_rejects_unknown_band_name():
+    raw = raw_config(str={"Z": {"base_types": []}})
+    with pytest.raises(ValueError):
+        armour.parse(raw)
 
 
 def test_parse_keeps_band_base_types():
     raw = raw_config(str={"A": {"base_types": ["Astral Plate", "Glorious Plate"]}})
     result = armour.parse(raw)
-    assert result.armour_categories[AttributeGroup.STR]["A"].base_types == [
+    assert result.armour_categories[AttributeGroup.STR][BandNames.A].base_types == [
         "Astral Plate",
         "Glorious Plate",
     ]
@@ -59,7 +72,7 @@ def test_parse_keeps_band_base_types():
 def test_parse_band_without_base_types_is_empty():
     raw = raw_config(str={"A": {}})
     result = armour.parse(raw)
-    assert result.armour_categories[AttributeGroup.STR]["A"].base_types == []
+    assert result.armour_categories[AttributeGroup.STR][BandNames.A].base_types == []
 
 
 def test_write_creates_file(tmp_path):

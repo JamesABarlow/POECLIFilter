@@ -1,7 +1,7 @@
 import pytest
 
 from poeclifilter import resources
-from poeclifilter.filters import AttributeGroup, GameVersion
+from poeclifilter.filters import AttributeGroup, BandNames, GameVersion
 from poeclifilter.game import ArmourClass
 from poeclifilter.models.item_data import armour
 
@@ -61,7 +61,8 @@ def test_parse_keeps_item_band():
     raw = raw_config(str={"Body Armours": {"Astral Plate": {"band": "A"}}})
     result = armour.parse(raw)
     assert (
-        result.categories[AttributeGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"].band == "A"
+        result.categories[AttributeGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"].band
+        == BandNames.A
     )
 
 
@@ -87,5 +88,17 @@ def test_parse_rejects_unknown_group():
 
 def test_parse_rejects_unknown_armour_class():
     raw = raw_config(str={"Body Armour": {"Astral Plate": {"band": "A"}}})
+    with pytest.raises(ValueError):
+        armour.parse(raw)
+
+
+def test_parse_converts_band_to_enum():
+    result = armour.parse(raw_config())
+    entry = result.categories[AttributeGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"]
+    assert type(entry.band) is BandNames
+
+
+def test_parse_rejects_unknown_band():
+    raw = raw_config(str={"Body Armours": {"Astral Plate": {"band": "Z"}}})
     with pytest.raises(ValueError):
         armour.parse(raw)

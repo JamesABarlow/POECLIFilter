@@ -1,14 +1,10 @@
 from enum import StrEnum
-from importlib.resources import files
-from pprint import pprint
 
 import questionary
 
-import poeclifilter
-from poeclifilter import filter_operations, game, loader
+from poeclifilter import filter_operations
 from poeclifilter.blocks import build_blocks
 from poeclifilter.filters import FilterRef, GameVersion
-from poeclifilter.models.filter_data import display_variables
 from poeclifilter.renderer import render_filter
 from poeclifilter.resources import list_filter_names
 
