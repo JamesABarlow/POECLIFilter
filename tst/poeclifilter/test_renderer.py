@@ -1,5 +1,6 @@
 from dataclasses import replace
 
+import pytest
 from builders import make_block, make_range, make_rarity_condition, make_resolved_display
 
 from poeclifilter import renderer
@@ -96,15 +97,32 @@ def test_render_range_none_is_none():
 
 
 def test_render_range_with_only_min():
-    assert renderer.render_range(make_range(min=5)) == ">= 5"
+    assert renderer.render_range(make_range(min=5)) == [">= 5"]
 
 
 def test_render_range_with_only_max():
-    assert renderer.render_range(make_range(max=6)) == "<= 6"
+    assert renderer.render_range(make_range(max=6)) == ["<= 6"]
 
 
 def test_render_range_with_only_min_of_zero():
-    assert renderer.render_range(make_range(min=0)) == ">= 0"
+    assert renderer.render_range(make_range(min=0)) == [">= 0"]
+
+
+def test_render_range_with_min_and_max():
+    assert renderer.render_range(make_range(min=1, max=6)) == [">= 1", "<= 6"]
+
+
+def test_render_range_without_min_or_max_raises():
+    with pytest.raises(ValueError):
+        renderer.render_range(make_range())
+
+
+def test_render_block_emits_a_sockets_line_for_each_end_of_range():
+    block = make_block(sockets=make_range(min=1, max=6))
+
+    result = renderer.render_block(block)
+
+    assert result == "Show\n  Sockets >= 1\n  Sockets <= 6"
 
 
 def test_render_with_rarity_condition():

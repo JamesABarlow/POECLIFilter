@@ -26,7 +26,7 @@ def render_block(block: Block):
         base_types = " ".join(f'"{item}"' for item in sorted(block.base_types))
         lines.append(f"  BaseType == {base_types}")
     if block.sockets:
-        lines.append(f"  Sockets {render_range(block.sockets)}")
+        lines.extend(f"  Sockets {bound}" for bound in render_range(block.sockets))
     if block.rarity:
         lines.append(f"  Rarity {render_rarity(block.rarity)}")
     lines.extend(render_display(block.display))
@@ -66,11 +66,14 @@ def render_range(range: Range | None):
     if not range:
         return None
 
+    bounds = []
     if range.min is not None:
-        return f">= {str(range.min)}"
-    elif range.max is not None:
-        return f"<= {str(range.max)}"
-    raise ValueError(f"Invalid range {range}")
+        bounds.append(f">= {range.min}")
+    if range.max is not None:
+        bounds.append(f"<= {range.max}")
+    if not bounds:
+        raise ValueError(f"Invalid range {range}")
+    return bounds
 
 
 def render_rarity(rarity_cond: RarityCondition):
