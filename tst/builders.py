@@ -3,6 +3,7 @@
 
 from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import BandNames
+from poeclifilter.game import Operator, Rarity
 from poeclifilter.models.display import (
     Display,
     MinimapIcon,
@@ -26,7 +27,7 @@ from poeclifilter.models.item_data.banded import (
     BandedItemDataClass,
     ItemEntry,
 )
-from poeclifilter.models.rule import Range, Rule
+from poeclifilter.models.rule import Range, RarityCondition, Rule
 
 
 def make_play_effect(**overrides):
@@ -48,10 +49,11 @@ def make_resolved_display(**overrides):
 def make_block(
     comment="",
     hide=False,
-    item_classes=["Stackable Currency"],
+    item_classes=None,
     base_types=None,
     display=None,
     sockets=None,
+    rarity=None,
 ):
     return Block(
         comment=comment,
@@ -60,6 +62,7 @@ def make_block(
         base_types=[] if base_types is None else base_types,
         display=make_resolved_display() if display is None else display,
         sockets=sockets,
+        rarity=rarity,
     )
 
 
@@ -146,6 +149,10 @@ def make_armour_item_data(categories=None, schema=1, game_version="3.25"):
 
 def make_range(min=None, max=None):
     return Range(min=min, max=max)
+
+
+def make_rarity_condition(operator=Operator.EQUAL, rarity=Rarity.RARE):
+    return RarityCondition(operator=operator, rarity=rarity)
 
 
 def make_rule(

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from poeclifilter.filters import AttributeGroup, BandNames
-from poeclifilter.game import ArmourClass, Rarity
+from poeclifilter.game import ArmourClass, Operator, Rarity
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
 
@@ -13,6 +13,12 @@ class Range:
 
 
 @dataclass(frozen=True)
+class RarityCondition:
+    operator: Operator
+    rarity: Rarity
+
+
+@dataclass(frozen=True)
 class Rule:
     id: str
     comment: str
@@ -21,7 +27,7 @@ class Rule:
     bands: dict[AttributeGroup, list[BandNames]] | None = None
     base_types: list[str] | None = None
     armour_classes: list[ArmourClass] | None = None
-    rarity: Rarity | None = None
+    rarity: RarityCondition | None = None
     item_level: Range | None = None
     sockets: Range | None = None
     linked_sockets: Range | None = None
@@ -75,7 +81,9 @@ def parse_rarity(raw_rarity):
     if raw_rarity is None:
         return None
 
-    return Rarity(raw_rarity)
+    return RarityCondition(
+        operator=Operator(raw_rarity["operator"]), rarity=Rarity(raw_rarity["rarity"])
+    )
 
 
 def parse_range(raw_range):

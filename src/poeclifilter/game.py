@@ -45,6 +45,14 @@ class Rarity(StrEnum):
     UNIQUE = "Unique"
 
 
+class Operator(StrEnum):
+    LESS_THAN = "<"
+    LESS_EQUAL = "<="
+    EQUAL = "=="
+    GREATER_EQUAL = ">="
+    GREATER_THAN = ">"
+
+
 COLOR_CHANNEL = (0, 255)
 FONT_SIZE = (1, 45)
 ICON_SIZE = (0, 2)

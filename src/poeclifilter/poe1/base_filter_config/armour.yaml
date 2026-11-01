@@ -59,7 +59,7 @@ rules:
     comment: "Rares shown in endgame"
     hide: false
     bands: {str: ["C", "B", "A"]}
-    rarity: Rare
+    rarity: {operator: "==", rarity: Rare}
   - id: "six_socket_vendor"
     comment: "6 socket vendable items"
     hide: false

@@ -1,6 +1,6 @@
 from dataclasses import replace
 
-from builders import make_block, make_range, make_resolved_display
+from builders import make_block, make_range, make_rarity_condition, make_resolved_display
 
 from poeclifilter import renderer
 from poeclifilter.filters import FilterRef, GameVersion
@@ -27,7 +27,6 @@ def test_render_block_emits_every_display_line():
 
     assert result == (
         "Show\n"
-        '  Class == "Stackable Currency"\n'
         '  BaseType == "Mirror of Kalandra"\n'
         "  PlayEffect Purple\n"
         "  MinimapIcon 1 Purple Circle\n"
@@ -106,6 +105,11 @@ def test_render_range_with_only_max():
 
 def test_render_range_with_only_min_of_zero():
     assert renderer.render_range(make_range(min=0)) == ">= 0"
+
+
+def test_render_with_rarity_condition():
+    input_block = make_block(rarity=make_rarity_condition())
+    assert renderer.render_block(input_block) == "Show\n  Rarity == Rare"
 
 
 def test_write_to_filter_writes_under_filter_name(tmp_path, monkeypatch):

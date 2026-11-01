@@ -1,8 +1,8 @@
 import pytest
-from builders import make_range, make_rule
+from builders import make_range, make_rarity_condition, make_rule
 
 from poeclifilter.filters import AttributeGroup, BandNames
-from poeclifilter.game import ArmourClass, IconColor, Rarity
+from poeclifilter.game import ArmourClass, IconColor, Operator, Rarity
 from poeclifilter.models import rule
 from poeclifilter.models.display import Display, PlayEffect
 
@@ -79,15 +79,31 @@ def test_parse_rejects_unknown_armour_class():
         rule.parse(raw_rule(armour_classes=["Body Armour"]))
 
 
-def test_parse_converts_rarity_to_enum():
-    result = rule.parse(raw_rule(rarity="Rare"))
-    assert type(result.rarity) is Rarity
-    assert result.rarity == Rarity.RARE
+def test_parse_converts_rarity_condition_to_enums():
+    result = rule.parse(raw_rule(rarity={"operator": "<=", "rarity": "Rare"}))
+    assert result.rarity == make_rarity_condition(operator=Operator.LESS_EQUAL, rarity=Rarity.RARE)
+    assert type(result.rarity.operator) is Operator
+    assert type(result.rarity.rarity) is Rarity
 
 
 def test_parse_rejects_unknown_rarity():
     with pytest.raises(ValueError):
-        rule.parse(raw_rule(rarity="rare"))
+        rule.parse(raw_rule(rarity={"operator": "==", "rarity": "rare"}))
+
+
+def test_parse_rejects_unknown_rarity_operator():
+    with pytest.raises(ValueError):
+        rule.parse(raw_rule(rarity={"operator": "=<", "rarity": "Rare"}))
+
+
+def test_parse_rejects_rarity_without_operator():
+    with pytest.raises(KeyError):
+        rule.parse(raw_rule(rarity={"rarity": "Rare"}))
+
+
+def test_parse_rejects_bare_rarity_string():
+    with pytest.raises(TypeError):
+        rule.parse(raw_rule(rarity="Rare"))
 
 
 def test_parse_keeps_range_with_min_and_max():
@@ -150,7 +166,11 @@ def test_parse_parses_nested_child_rules():
 
 
 def test_parse_child_rule_values_are_not_inherited_at_parse():
-    raw = raw_rule(hide=True, rarity="Rare", rules=[{"id": "child", "comment": "Child"}])
+    raw = raw_rule(
+        hide=True,
+        rarity={"operator": "==", "rarity": "Rare"},
+        rules=[{"id": "child", "comment": "Child"}],
+    )
     result = rule.parse(raw)
     assert result.rules[0].hide is None
     assert result.rules[0].rarity is None

@@ -7,12 +7,15 @@ from builders import (
     make_minimap_icon,
     make_play_effect,
     make_range,
+    make_rarity_condition,
     make_rule,
 )
 
 from poeclifilter import blocks
 from poeclifilter.blocks import ResolvedDisplay
 from poeclifilter.filters import BandNames
+from poeclifilter.game import Operator, Rarity
+from poeclifilter.models.rule import RarityCondition
 
 
 # TODO: Add correct full testing
@@ -71,19 +74,27 @@ def test_basic_banded_blocks():
     ]
 
 
-def test_armour_rule_sockets_carried_to_block():
+def test_armour_rule_carried_to_block():
     armour_filter_data = make_armour_filter_data(
-        rules=[make_rule(hide=False, sockets=make_range(max=6))]
+        rules=[
+            make_rule(
+                hide=False,
+                sockets=make_range(max=6),
+                rarity=make_rarity_condition(Operator.EQUAL, Rarity.RARE),
+            )
+        ]
     )
 
     result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
 
     assert result[0].sockets == make_range(max=6)
+    assert result[0].rarity == RarityCondition(Operator.EQUAL, Rarity.RARE)
 
 
-def test_armour_rule_without_sockets_has_no_sockets():
+def test_armour_rule_without_optionals():
     armour_filter_data = make_armour_filter_data(rules=[make_rule(hide=False)])
 
     result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
 
     assert result[0].sockets is None
+    assert result[0].rarity is None

@@ -1,7 +1,7 @@
 from poeclifilter import resources
 from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.rule import Range
+from poeclifilter.models.rule import Range, RarityCondition
 
 
 def write_to_filter(filter_ref: FilterRef, text: str):
@@ -27,6 +27,8 @@ def render_block(block: Block):
         lines.append(f"  BaseType == {base_types}")
     if block.sockets:
         lines.append(f"  Sockets {render_range(block.sockets)}")
+    if block.rarity:
+        lines.append(f"  Rarity {render_rarity(block.rarity)}")
     lines.extend(render_display(block.display))
 
     return "\n".join(lines)
@@ -69,3 +71,10 @@ def render_range(range: Range | None):
     elif range.max is not None:
         return f"<= {str(range.max)}"
     raise ValueError(f"Invalid range {range}")
+
+
+def render_rarity(rarity_cond: RarityCondition):
+    if not rarity_cond:
+        return None
+
+    return f"{rarity_cond.operator} {rarity_cond.rarity}"
