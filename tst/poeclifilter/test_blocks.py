@@ -1,10 +1,13 @@
 from builders import (
+    make_armour_filter_data,
     make_band,
     make_banded_items,
     make_display,
     make_display_variables,
     make_minimap_icon,
     make_play_effect,
+    make_range,
+    make_rule,
 )
 
 from poeclifilter import blocks
@@ -66,3 +69,21 @@ def test_basic_banded_blocks():
             ),
         )
     ]
+
+
+def test_armour_rule_sockets_carried_to_block():
+    armour_filter_data = make_armour_filter_data(
+        rules=[make_rule(hide=False, sockets=make_range(max=6))]
+    )
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert result[0].sockets == make_range(max=6)
+
+
+def test_armour_rule_without_sockets_has_no_sockets():
+    armour_filter_data = make_armour_filter_data(rules=[make_rule(hide=False)])
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert result[0].sockets is None

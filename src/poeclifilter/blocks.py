@@ -17,6 +17,7 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
+from poeclifilter.models.rule import Range
 from poeclifilter.resources import filter_dir
 
 
@@ -39,6 +40,7 @@ class Block:
     item_classes: Sequence[str] | None
     base_types: list[str] | None
     display: ResolvedDisplay | None
+    sockets: Range | None = None
 
 
 def build_blocks(filter_ref: FilterRef):
@@ -127,6 +129,7 @@ def build_armour_blocks(
                 display=display,
                 base_types=base_types,
                 item_classes=rule.armour_classes,
+                sockets=rule.sockets,
             )
         )
     return blocks

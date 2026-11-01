@@ -60,9 +60,10 @@ rules:
     hide: false
     bands: {str: ["C", "B", "A"]}
     rarity: Rare
-  - id: "six_link_vendor"
-    comment: "6 link vendable items"
+  - id: "six_socket_vendor"
+    comment: "6 socket vendable items"
     hide: false
     display: {border_color: $white}
+    sockets: {min: 6}
 
 

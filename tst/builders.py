@@ -51,6 +51,7 @@ def make_block(
     item_classes=["Stackable Currency"],
     base_types=None,
     display=None,
+    sockets=None,
 ):
     return Block(
         comment=comment,
@@ -58,6 +59,7 @@ def make_block(
         item_classes=item_classes,
         base_types=[] if base_types is None else base_types,
         display=make_resolved_display() if display is None else display,
+        sockets=sockets,
     )
 
 
@@ -122,11 +124,11 @@ def make_armour_band(base_types=None):
     return ArmourBand(base_types=[] if base_types is None else base_types)
 
 
-def make_armour_filter_data(armour_categories=None, schema=1):
+def make_armour_filter_data(armour_categories=None, rules=None, schema=1):
     return ArmourFilterData(
         schema=schema,
         armour_categories=armour_categories if armour_categories is not None else {},
-        rules=[make_rule()],
+        rules=[make_rule()] if rules is None else rules,
     )
 
 
@@ -156,6 +158,7 @@ def make_rule(
     armour_classes=None,
     rarity=None,
     item_level=None,
+    sockets=None,
     linked_sockets=None,
     display=None,
     rules=None,
@@ -170,6 +173,7 @@ def make_rule(
         armour_classes=armour_classes,
         rarity=rarity,
         item_level=item_level,
+        sockets=sockets,
         linked_sockets=linked_sockets,
         display=display,
         rules=rules,

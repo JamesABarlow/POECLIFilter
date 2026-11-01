@@ -23,6 +23,7 @@ class Rule:
     armour_classes: list[ArmourClass] | None = None
     rarity: Rarity | None = None
     item_level: Range | None = None
+    sockets: Range | None = None
     linked_sockets: Range | None = None
     display: Display | str | None = None
     rules: list[Rule] | None = None
@@ -39,6 +40,7 @@ def parse(raw_rule):
         armour_classes=parse_armour_classes(raw_rule.get("armour_classes")),
         rarity=parse_rarity(raw_rule.get("rarity")),
         item_level=parse_range(raw_rule.get("item_level")),
+        sockets=parse_range(raw_rule.get("sockets")),
         linked_sockets=parse_range(raw_rule.get("linked_sockets")),
         display=parse_display(raw_rule.get("display")),
         rules=parse_rules(raw_rule.get("rules")),

@@ -105,6 +105,11 @@ def test_parse_keeps_range_min_of_zero():
     assert result.item_level == make_range(min=0)
 
 
+def test_parse_keeps_sockets_range():
+    result = rule.parse(raw_rule(sockets={"max": 6}))
+    assert result.sockets == make_range(max=6)
+
+
 def test_parse_keeps_display_reference():
     result = rule.parse(raw_rule(display="$good_rare"))
     assert result.display == "$good_rare"

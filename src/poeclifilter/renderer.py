@@ -1,6 +1,7 @@
 from poeclifilter import resources
 from poeclifilter.blocks import Block, ResolvedDisplay
 from poeclifilter.filters import FilterRef
+from poeclifilter.models.rule import Range
 
 
 def write_to_filter(filter_ref: FilterRef, text: str):
@@ -18,16 +19,15 @@ def render_filter(filter_ref: FilterRef, blocks: list[Block]):
 # TODO: Work out what actual options can exist here
 def render_block(block: Block):
     lines = ["Hide" if block.hide else "Show"]
+    if block.item_classes:
+        items_classes = " ".join(f'"{item_class}"' for item_class in sorted(block.item_classes))
+        lines.append(f"  Class == {items_classes}")
     if block.base_types:
-        if block.item_classes:
-            items_classes = " ".join(f'"{item_class}"' for item_class in sorted(block.item_classes))
-            lines.append(f"  Class == {items_classes}")
         base_types = " ".join(f'"{item}"' for item in sorted(block.base_types))
         lines.append(f"  BaseType == {base_types}")
-        lines.extend(render_display(block.display))
-    # Assume this is the catch all for now
-    else:
-        lines.extend(render_display(block.display))
+    if block.sockets:
+        lines.append(f"  Sockets {render_range(block.sockets)}")
+    lines.extend(render_display(block.display))
 
     return "\n".join(lines)
 
@@ -58,3 +58,14 @@ def render_display(display: ResolvedDisplay | None):
 def get_color(display_variables, str):
     # handle $purple to rgb here
     return str
+
+
+def render_range(range: Range | None):
+    if not range:
+        return None
+
+    if range.min is not None:
+        return f">= {str(range.min)}"
+    elif range.max is not None:
+        return f"<= {str(range.max)}"
+    raise ValueError(f"Invalid range {range}")
