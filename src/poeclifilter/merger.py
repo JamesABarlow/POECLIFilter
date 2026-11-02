@@ -65,13 +65,11 @@ def merge_armour(filter_data: GearFilterData, armour_item_data: ArmourItemData):
                 # check if exists
 
                 exists_in_filter = check_item_exists_in_bands(
-                    item_name, filter_data.armour_categories[armour_category_name]
+                    item_name, filter_data.bands[armour_category_name]
                 )
 
                 if not exists_in_filter:
-                    target_band = filter_data.armour_categories[armour_category_name].get(
-                        item_data.band
-                    )
+                    target_band = filter_data.bands[armour_category_name].get(item_data.band)
                     if not target_band:
                         raise ValueError(f"Band not found {item_data.band}")
                     else:
@@ -87,13 +85,11 @@ def merge_weapons(filter_data: GearFilterData, weapon_item_data: WeaponItemData)
         print(f"Merging weapons - {weapon_category_name}")
         for item_name, item_data in items.items():
             exists_in_filter = check_item_exists_in_bands(
-                item_name, filter_data.weapon_categories[weapon_category_name]
+                item_name, filter_data.bands[weapon_category_name]
             )
 
             if not exists_in_filter:
-                target_band = filter_data.weapon_categories[weapon_category_name].get(
-                    item_data.band
-                )
+                target_band = filter_data.bands[weapon_category_name].get(item_data.band)
                 if not target_band:
                     raise ValueError(f"Band not found {item_data.band}")
                 else:

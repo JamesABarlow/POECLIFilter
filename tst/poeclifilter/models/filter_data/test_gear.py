@@ -5,22 +5,19 @@ from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.models.filter_data import gear
 
 
-def raw_config(weapon_categories=None, **groups):
-    raw_groups = groups or {"str": {"A": {"base_types": ["Astral Plate"]}}}
-    raw_weapons = weapon_categories or {"bows": {"A": {"base_types": ["Thicket Bow"]}}}
-    rule = {"id": "test_id", "comment": "test_comment", "hide": False}
-    return {
-        "schema": 1,
-        "armour_categories": raw_groups,
-        "weapon_categories": raw_weapons,
-        "rules": [rule],
+def raw_config(**groups):
+    raw_groups = groups or {
+        "str": {"A": {"base_types": ["Astral Plate"]}},
+        "bows": {"A": {"base_types": ["Thicket Bow"]}},
     }
+    rule = {"id": "test_id", "comment": "test_comment", "hide": False}
+    return {"schema": 1, "bands": raw_groups, "rules": [rule]}
 
 
 def test_load_success():
     result = gear.get_filter_data(resources.base_config_dir(GameVersion.POE1))
     assert result.schema is not None
-    assert result.armour_categories is not None
+    assert result.bands is not None
 
 
 def test_parse_keeps_schema():
@@ -34,12 +31,12 @@ def test_parse_keeps_attribute_groups():
         str_int={"A": {"base_types": ["Sacred Chainmail"]}},
     )
     result = gear.parse(raw)
-    assert set(result.armour_categories) == {GearGroup.STR, GearGroup.STR_INT}
+    assert set(result.bands) == {GearGroup.STR, GearGroup.STR_INT}
 
 
 def test_parse_converts_group_to_enum():
     result = gear.parse(raw_config())
-    assert all(type(group) is GearGroup for group in result.armour_categories)
+    assert all(type(group) is GearGroup for group in result.bands)
 
 
 def test_parse_rejects_unknown_group():
@@ -51,14 +48,12 @@ def test_parse_rejects_unknown_group():
 def test_parse_keeps_bands():
     raw = raw_config(str={"S": {"base_types": []}, "A": {"base_types": ["Astral Plate"]}})
     result = gear.parse(raw)
-    assert set(result.armour_categories[GearGroup.STR]) == {BandNames.S, BandNames.A}
+    assert set(result.bands[GearGroup.STR]) == {BandNames.S, BandNames.A}
 
 
 def test_parse_converts_band_name_to_enum():
     result = gear.parse(raw_config())
-    assert all(
-        type(band_name) is BandNames for band_name in result.armour_categories[GearGroup.STR]
-    )
+    assert all(type(band_name) is BandNames for band_name in result.bands[GearGroup.STR])
 
 
 def test_parse_rejects_unknown_band_name():
@@ -70,7 +65,7 @@ def test_parse_rejects_unknown_band_name():
 def test_parse_keeps_band_base_types():
     raw = raw_config(str={"A": {"base_types": ["Astral Plate", "Glorious Plate"]}})
     result = gear.parse(raw)
-    assert result.armour_categories[GearGroup.STR][BandNames.A].base_types == [
+    assert result.bands[GearGroup.STR][BandNames.A].base_types == [
         "Astral Plate",
         "Glorious Plate",
     ]
@@ -79,28 +74,26 @@ def test_parse_keeps_band_base_types():
 def test_parse_band_without_base_types_is_empty():
     raw = raw_config(str={"A": {}})
     result = gear.parse(raw)
-    assert result.armour_categories[GearGroup.STR][BandNames.A].base_types == []
+    assert result.bands[GearGroup.STR][BandNames.A].base_types == []
 
 
 def test_parse_keeps_weapon_groups():
     raw = raw_config(
-        weapon_categories={
-            "bows": {"A": {"base_types": ["Thicket Bow"]}},
-            "wands": {"S": {"base_types": ["Imbued Wand"]}},
-        }
+        bows={"A": {"base_types": ["Thicket Bow"]}},
+        wands={"S": {"base_types": ["Imbued Wand"]}},
     )
     result = gear.parse(raw)
-    assert set(result.weapon_categories) == {GearGroup.BOWS, GearGroup.WANDS}
-    assert all(type(group) is GearGroup for group in result.weapon_categories)
+    assert set(result.bands) == {GearGroup.BOWS, GearGroup.WANDS}
+    assert all(type(group) is GearGroup for group in result.bands)
 
 
 def test_parse_keeps_weapon_band_base_types():
     result = gear.parse(raw_config())
-    assert result.weapon_categories[GearGroup.BOWS][BandNames.A].base_types == ["Thicket Bow"]
+    assert result.bands[GearGroup.BOWS][BandNames.A].base_types == ["Thicket Bow"]
 
 
 def test_parse_rejects_unknown_weapon_group():
-    raw = raw_config(weapon_categories={"bow": {"A": {"base_types": []}}})
+    raw = raw_config(bow={"A": {"base_types": []}})
     with pytest.raises(ValueError):
         gear.parse(raw)
 

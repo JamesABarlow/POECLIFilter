@@ -1,5 +1,5 @@
 schema: 1
-armour_categories:
+bands:
   int:
     S:
       base_types: []
@@ -54,7 +54,6 @@ armour_categories:
         base_types: []
       C:
         base_types: []
-weapon_categories:
   bows:
     S:
       base_types: []

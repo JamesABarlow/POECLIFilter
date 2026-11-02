@@ -128,11 +128,10 @@ def make_gear_band(base_types=None):
     return GearBand(base_types=[] if base_types is None else base_types)
 
 
-def make_gear_filter_data(armour_categories=None, weapon_categories=None, rules=None, schema=1):
+def make_gear_filter_data(bands=None, rules=None, schema=1):
     return GearFilterData(
         schema=schema,
-        armour_categories=armour_categories if armour_categories is not None else {},
-        weapon_categories=weapon_categories if weapon_categories is not None else {},
+        bands=bands if bands is not None else {},
         rules=[make_rule()] if rules is None else rules,
     )
 

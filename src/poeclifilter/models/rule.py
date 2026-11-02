@@ -19,12 +19,13 @@ class RarityCondition:
 
 
 @dataclass(frozen=True)
-class Rule:
+class Rule[BandsT]:
     id: str
     comment: str
     hide: bool | None
     include: bool = True
-    bands: dict[GearGroup, list[BandNames]] | None = None
+    # bands: dict[GearGroup, list[BandNames]] | None = None
+    bands: BandsT | None = None
     base_types: list[str] | None = None
     armour_classes: list[ArmourClass] | None = None
     rarity: RarityCondition | None = None

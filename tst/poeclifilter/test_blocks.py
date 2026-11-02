@@ -103,9 +103,7 @@ def test_gear_rule_without_optionals():
 
 def test_gear_rule_with_bands_uses_the_bands_base_types():
     gear_filter_data = make_gear_filter_data(
-        armour_categories={
-            GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])}
-        },
+        bands={GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])}},
         rules=[make_rule(hide=False, bands={GearGroup.STR: [BandNames.A]})],
     )
 
@@ -116,7 +114,7 @@ def test_gear_rule_with_bands_uses_the_bands_base_types():
 
 def test_gear_rule_with_only_empty_bands_produces_no_block():
     gear_filter_data = make_gear_filter_data(
-        armour_categories={
+        bands={
             GearGroup.STR: {
                 BandNames.A: make_gear_band(base_types=["Astral Plate"]),
                 BandNames.B: make_gear_band(),
@@ -152,11 +150,9 @@ def test_gear_rule_with_hide_true_is_hidden():
 
 def test_gear_rule_with_bands_uses_armour_and_weapon_base_types():
     gear_filter_data = make_gear_filter_data(
-        armour_categories={
-            GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])}
-        },
-        weapon_categories={
-            GearGroup.BOWS: {BandNames.A: make_gear_band(base_types=["Thicket Bow"])}
+        bands={
+            GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])},
+            GearGroup.BOWS: {BandNames.A: make_gear_band(base_types=["Thicket Bow"])},
         },
         rules=[
             make_rule(

@@ -17,9 +17,8 @@ class Band:
 @dataclass(frozen=True)
 class GearFilterData:
     schema: int
-    armour_categories: dict[GearGroup, dict[BandNames, Band]]
-    weapon_categories: dict[GearGroup, dict[BandNames, Band]]
-    rules: list[Rule]
+    bands: dict[GearGroup, dict[BandNames, Band]]
+    rules: list[Rule[dict[GearGroup, list[BandNames]]]]
 
 
 def get_filter_data(config_dir: Path):
@@ -30,21 +29,19 @@ def get_filter_data(config_dir: Path):
 
 def parse(raw):
     # TODO: finish parsing and validation
-    armour_categories = parse_categories(raw["armour_categories"])
-    weapon_categories = parse_categories(raw["weapon_categories"])
+    bands = parse_groups(raw["bands"])
 
     rules = [rule.parse(rule_data) for rule_data in raw["rules"]]
 
     return GearFilterData(
         schema=raw["schema"],
-        armour_categories=armour_categories,
-        weapon_categories=weapon_categories,
+        bands=bands,
         rules=rules,
     )
 
 
-def parse_categories(raw_categories):
-    return {GearGroup(name): parse_bands(bands) for name, bands in raw_categories.items()}
+def parse_groups(raw_groups):
+    return {GearGroup(name): parse_bands(bands) for name, bands in raw_groups.items()}
 
 
 def parse_bands(raw_bands):
