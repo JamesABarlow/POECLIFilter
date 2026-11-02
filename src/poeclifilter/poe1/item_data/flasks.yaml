@@ -1,6 +1,6 @@
 schema: 1
 game_version: '3.25'
-# Ordered by drop level, highest first. Categories match the game's flask classes.
+# Ordered by drop level, highest first. Categories match the game's flask classes, plus tinctures.
 categories:
   life:
     Eternal Life Flask: {band: C}
@@ -54,3 +54,14 @@ categories:
     Amethyst Flask: {band: B}
     Bismuth Flask: {band: B}
     Quicksilver Flask: {band: B}
+  tinctures:
+    Oakbranch Tincture: {band: B}
+    Sporebloom Tincture: {band: B}
+    Poisonberry Tincture: {band: B}
+    Blood Sap Tincture: {band: B}
+    Ashbark Tincture: {band: B}
+    Fulgurite Tincture: {band: B}
+    Borealwood Tincture: {band: B}
+    Ironwood Tincture: {band: B}
+    Rosethorn Tincture: {band: B}
+    Prismatic Tincture: {band: B}

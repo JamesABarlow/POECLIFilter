@@ -68,6 +68,10 @@ class FlaskClass(StrEnum):
     UTILITY_FLASKS = "Utility Flasks"
 
 
+class TinctureClass(StrEnum):
+    TINCTURES = "Tinctures"
+
+
 class JewelleryClass(StrEnum):
     RINGS = "Rings"
     AMULETS = "Amulets"  # Talismans are amulets to the game
@@ -96,6 +100,7 @@ type ItemClass = (
     | WeaponClass
     | CurrencyClass
     | FlaskClass
+    | TinctureClass
     | JewelleryClass
     | QuestItemClass
     | MapsClass
