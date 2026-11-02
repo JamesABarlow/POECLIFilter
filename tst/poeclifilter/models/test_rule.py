@@ -1,7 +1,7 @@
 import pytest
 from builders import make_range, make_rarity_condition, make_rule
 
-from poeclifilter.game import ArmourClass, IconColor, Operator, Rarity, WeaponClass
+from poeclifilter.game import ArmourClass, CurrencyClass, IconColor, Operator, Rarity, WeaponClass
 from poeclifilter.models import rule
 from poeclifilter.models.display import Display, PlayEffect
 
@@ -82,6 +82,13 @@ def test_parse_converts_weapon_classes_to_enum():
     assert result.item_classes == [WeaponClass.BOWS, WeaponClass.THRUSTING_ONE_HAND_SWORDS]
     assert result.item_classes is not None
     assert all(type(item_class) is WeaponClass for item_class in result.item_classes)
+
+
+def test_parse_converts_currency_class_to_enum():
+    result = parse_rule(raw_rule(item_classes=["Stackable Currency"]))
+    assert result.item_classes == [CurrencyClass.STACKABLE_CURRENCY]
+    assert result.item_classes is not None
+    assert type(result.item_classes[0]) is CurrencyClass
 
 
 def test_parse_keeps_armour_and_weapon_classes_in_one_rule():

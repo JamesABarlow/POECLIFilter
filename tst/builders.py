@@ -14,6 +14,8 @@ from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
     BandedItemsFilterData,
 )
+from poeclifilter.models.filter_data.currency import Band as CurrencyBand
+from poeclifilter.models.filter_data.currency import CurrencyFilterData
 from poeclifilter.models.filter_data.display_variables import (
     ColorMap,
     DisplayVariablesFilterData,
@@ -130,6 +132,18 @@ def make_gear_band(base_types=None):
 
 def make_gear_filter_data(bands=None, rules=None, schema=1):
     return GearFilterData(
+        schema=schema,
+        bands=bands if bands is not None else {},
+        rules=[make_rule()] if rules is None else rules,
+    )
+
+
+def make_currency_band(base_types=None):
+    return CurrencyBand(base_types=[] if base_types is None else base_types)
+
+
+def make_currency_filter_data(bands=None, rules=None, schema=1):
+    return CurrencyFilterData(
         schema=schema,
         bands=bands if bands is not None else {},
         rules=[make_rule()] if rules is None else rules,

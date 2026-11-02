@@ -57,8 +57,12 @@ class WeaponClass(StrEnum):
     WARSTAVES = "Warstaves"
 
 
+class CurrencyClass(StrEnum):
+    STACKABLE_CURRENCY = "Stackable Currency"
+
+
 # Every Class a rule can match. Add each new kind's enum here.
-type ItemClass = ArmourClass | WeaponClass
+type ItemClass = ArmourClass | WeaponClass | CurrencyClass
 
 
 class Rarity(StrEnum):

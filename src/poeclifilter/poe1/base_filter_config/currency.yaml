@@ -1,7 +1,25 @@
 schema: 1
 bands:
   S:
+    base_types: []
+  A:
+    base_types: []
+  B:
+    base_types: []
+  C:
+    base_types: []
+  D:
+    base_types: []
+  E:
+    base_types: []
+  F:
+    base_types: []
+rules:
+  - id: "currency_s"
+    comment: "Currency band S"
     hide: false
+    bands: ["S"]
+    item_classes: ["Stackable Currency"]
     display:
       play_effect: {color: Purple, temp: false}
       minimap_icon: {size: 1, color: Purple, shape: Circle}
@@ -10,22 +28,35 @@ bands:
       border_color: $purple
       font_size: $normal
       sound_alert: $major
-  A:
+  - id: "currency_a"
+    comment: "Currency band A"
     hide: false
+    bands: ["A"]
+    item_classes: ["Stackable Currency"]
     display:
       font_size: $normal
-  B:
+  - id: "currency_b"
+    comment: "Currency band B"
     hide: false
-    display: {}
-  C:
+    bands: ["B"]
+    item_classes: ["Stackable Currency"]
+  - id: "currency_c"
+    comment: "Currency band C"
     hide: false
-    display: {}
-  D:
+    bands: ["C"]
+    item_classes: ["Stackable Currency"]
+  - id: "currency_d"
+    comment: "Currency band D"
     hide: false
-    display: {}
-  E:
+    bands: ["D"]
+    item_classes: ["Stackable Currency"]
+  - id: "currency_e"
+    comment: "Currency band E"
     hide: true
-    display: {}
-  F:
+    bands: ["E"]
+    item_classes: ["Stackable Currency"]
+  - id: "currency_f"
+    comment: "Currency band F"
     hide: true
-    display: {}
+    bands: ["F"]
+    item_classes: ["Stackable Currency"]
