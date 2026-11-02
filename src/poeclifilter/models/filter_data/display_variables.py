@@ -50,6 +50,6 @@ def parse(raw):
 
 def parse_displays(raw_displays):
     return {
-        str(display_name): display.parse(raw_display)
+        display_name: display.parse(raw_display)
         for display_name, raw_display in raw_displays.items()
     }
