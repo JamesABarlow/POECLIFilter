@@ -1,19 +1,35 @@
 schema: 1
 game_version: '3.25'
 categories:
-  bows: {}
-  claws: {}
-  daggers: {}
-  one_hand_swords: {}
-  one_hand_axes: {}
-  one_hand_maces: {}
-  quivers: {}
-  rune_daggers: {}
-  sceptres: {}
-  staves: {}
-  thrusting_one_hand_swords: {}
-  two_hand_axes: {}
-  two_hand_maces: {}
-  two_hand_swords: {}
-  wands: {}
-  warstaves: {}
+  bows:
+    Thicket Bow: {band: A}
+  claws:
+    Imperial Claw: {band: A}
+  daggers:
+    Ambusher: {band: A}
+  one_hand_swords:
+    Eternal Sword: {band: A}
+  one_hand_axes:
+    Runic Hatchet: {band: A}
+  one_hand_maces:
+    Behemoth Mace: {band: A}
+  quivers:
+    Spike-Point Arrow Quiver: {band: A}
+  rune_daggers:
+    Platinum Kris: {band: A}
+  sceptres:
+    Void Sceptre: {band: A}
+  staves:
+    Eclipse Staff: {band: A}
+  thrusting_one_hand_swords:
+    Jewelled Foil: {band: A}
+  two_hand_axes:
+    Vaal Axe: {band: A}
+  two_hand_maces:
+    Coronal Maul: {band: A}
+  two_hand_swords:
+    Reaver Sword: {band: A}
+  wands:
+    Imbued Wand: {band: A}
+  warstaves:
+    Maelström Staff: {band: A}
