@@ -17,6 +17,7 @@ from poeclifilter.models.filter_data.display_variables import (
 )
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
+from poeclifilter.models.filter_data.no_bands import NoBandsFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.cards import CardEntry, CardItemData
 from poeclifilter.models.item_data.currency import CurrencyEntry, CurrencyItemData
@@ -113,6 +114,10 @@ def make_flat_bands_filter_data(bands=None, rules=None, schema=1):
         bands=bands if bands is not None else {},
         rules=[make_rule()] if rules is None else rules,
     )
+
+
+def make_no_bands_filter_data(rules=None, schema=1):
+    return NoBandsFilterData(schema=schema, rules=[make_rule()] if rules is None else rules)
 
 
 def make_armour_entry(band=BandNames.A):

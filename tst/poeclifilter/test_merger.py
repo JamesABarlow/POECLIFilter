@@ -1,3 +1,4 @@
+import copy
 from unittest.mock import Mock
 
 import pytest
@@ -13,6 +14,7 @@ from builders import (
     make_grouped_bands_filter_data,
     make_jewellery_entry,
     make_jewellery_item_data,
+    make_no_bands_filter_data,
     make_unique_entry,
     make_unique_item_data,
     make_weapon_entry,
@@ -517,3 +519,12 @@ def test_merge_jewellery_keeps_talismans_apart_from_amulets():
     assert filter_data.bands[JewelleryGroup.TALISMANS][BandNames.A].base_types == [
         "Black Maw Talisman"
     ]
+
+
+def test_merge_nothing_leaves_filter_data_unchanged():
+    filter_data = make_no_bands_filter_data()
+    before = copy.deepcopy(filter_data)
+
+    merger.merge_nothing(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    assert filter_data == before

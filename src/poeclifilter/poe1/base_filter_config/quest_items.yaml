@@ -1,0 +1,11 @@
+schema: 1
+# No bands: quest items are matched by Class alone
+rules:
+  - id: "quest_items"
+    comment: "Quest items"
+    hide: false
+    item_classes: ["Quest Items"]
+    display:
+      minimap_icon: {size: 1, color: Green, shape: Diamond}
+      border_color: $white
+      font_size: $normal

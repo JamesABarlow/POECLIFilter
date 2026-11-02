@@ -67,6 +67,10 @@ class JewelleryClass(StrEnum):
     BELTS = "Belts"
 
 
+class QuestItemClass(StrEnum):
+    QUEST_ITEMS = "Quest Items"
+
+
 class MapsClass(StrEnum):
     MAPS = "Maps"
 
@@ -77,7 +81,13 @@ class DivinationCardClass(StrEnum):
 
 # Every Class a rule can match. Add each new kind's enum here.
 type ItemClass = (
-    ArmourClass | WeaponClass | CurrencyClass | JewelleryClass | MapsClass | DivinationCardClass
+    ArmourClass
+    | WeaponClass
+    | CurrencyClass
+    | JewelleryClass
+    | QuestItemClass
+    | MapsClass
+    | DivinationCardClass
 )
 
 

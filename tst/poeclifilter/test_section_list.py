@@ -10,6 +10,7 @@ def test_sections_are_in_filter_order():
     # Section order is load-bearing (plan §7.1): the game uses the first block an item matches,
     # so uniques must come before gear or a unique armour or weapon gets gear's display
     assert [section.name for section in SECTIONS] == [
+        "quest_items",
         "currency",
         "uniques",
         "cards",
@@ -34,7 +35,6 @@ def test_section_base_config_parses(section):
         resources.base_config_dir(GameVersion.POE1), section.file_name, section.parse
     )
     assert section_filter_data.schema is not None
-    assert section_filter_data.bands is not None
     assert section_filter_data.rules
 
 

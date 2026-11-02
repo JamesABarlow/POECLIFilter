@@ -6,7 +6,7 @@ from typing import Any
 
 from poeclifilter import merger
 from poeclifilter.filters import GearGroup, JewelleryGroup
-from poeclifilter.models.filter_data import flat_bands, grouped_bands
+from poeclifilter.models.filter_data import flat_bands, grouped_bands, no_bands
 from poeclifilter.models.filter_data.sections import SectionFilterData
 
 
@@ -35,7 +35,8 @@ JEWELLERY = Section(
     merger.merge_jewellery_section,
 )
 UNIQUES = Section("uniques", "uniques.yaml", flat_bands.parse, merger.merge_unique_section)
+QUEST_ITEMS = Section("quest_items", "quest_items.yaml", no_bands.parse, merger.merge_nothing)
 CARDS = Section("cards", "cards.yaml", flat_bands.parse, merger.merge_cards_section)
 
 # Order has big importance here as it affects the order that the final filer is built.
-SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, CARDS, GEAR, JEWELLERY]
+SECTIONS: list[Section[Any]] = [QUEST_ITEMS, CURRENCY, UNIQUES, CARDS, GEAR, JEWELLERY]

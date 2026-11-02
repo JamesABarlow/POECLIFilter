@@ -1,10 +1,11 @@
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol
 
 from poeclifilter.filters import GearGroup, JewelleryGroup
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
+from poeclifilter.models.filter_data.sections import SectionFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import cards as cards_item_data_model
 from poeclifilter.models.item_data import currency as currency_item_data_model
@@ -163,6 +164,11 @@ def merge_currency(filter_items: FlatBandsFilterData, currency_items_data: Curre
             else:
                 # If not update this means item exists twice in item_data that should be fixed or read
                 print(f"{item_name} already exists in filter can't handle this yet")
+
+
+# For sections with no item data to merge: the base config passes into the filter unchanged
+def merge_nothing(filter_data: SectionFilterData[Any], item_data_dir: Path):
+    pass
 
 
 def check_item_exists_in_bands[K](item_name: str, bands: Mapping[K, HasBaseTypes]) -> bool:

@@ -19,7 +19,7 @@ from poeclifilter.filter_operations import bootstrap_new_filter
 from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
 from poeclifilter.game import CurrencyClass, Operator, Rarity
 from poeclifilter.models.rule import RarityCondition
-from poeclifilter.section_list import SECTIONS
+from poeclifilter.section_list import CURRENCY, GEAR
 
 
 def test_gear_rule_carried_to_block():
@@ -637,7 +637,11 @@ def build_test_filter_blocks():
     return blocks.build_blocks(filter_ref)
 
 
-def test_build_blocks_builds_sections_in_list_order(in_tmp_config_home):
+# These two use a list of just currency and gear, so every block is one or the other.
+# The real list's order is checked in test_section_list.py.
+def test_build_blocks_builds_sections_in_list_order(in_tmp_config_home, monkeypatch):
+    monkeypatch.setattr(blocks, "SECTIONS", [CURRENCY, GEAR])
+
     result = build_test_filter_blocks()[:-1]
 
     currency_indexes = [i for i, block in enumerate(result) if is_currency_block(block)]
@@ -648,7 +652,7 @@ def test_build_blocks_builds_sections_in_list_order(in_tmp_config_home):
 
 def test_build_blocks_follows_a_reordered_list(in_tmp_config_home, monkeypatch):
     # Proves the order comes from the list, not from anything hard coded in build_blocks
-    monkeypatch.setattr(blocks, "SECTIONS", list(reversed(SECTIONS)))
+    monkeypatch.setattr(blocks, "SECTIONS", [GEAR, CURRENCY])
 
     result = build_test_filter_blocks()[:-1]
 
