@@ -1,13 +1,14 @@
 from collections.abc import Mapping
+from functools import partial
 from typing import Protocol
 
 from poeclifilter import resources
-from poeclifilter.filters import FilterRef
+from poeclifilter.filters import FilterRef, GearGroup
 from poeclifilter.models.filter_data import files
 from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
-from poeclifilter.models.filter_data import gear as gear_filter_data_model
+from poeclifilter.models.filter_data import grouped_bands as grouped_bands_filter_data_model
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
-from poeclifilter.models.filter_data.gear import GearFilterData
+from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import currency as currency_item_data_model
 from poeclifilter.models.item_data import weapons as weapon_item_data_model
@@ -34,7 +35,9 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
         item_config_dir = resources.item_data_dir(filter_ref.game_version)
 
         gear_filter_data = files.read_filter_data(
-            base_config_dir, gear_filter_data_model.file_name, gear_filter_data_model.parse
+            base_config_dir,
+            grouped_bands_filter_data_model.file_name,
+            partial(grouped_bands_filter_data_model.parse, group_type=GearGroup),
         )
         currency_filter_data = files.read_filter_data(
             base_config_dir,
@@ -52,7 +55,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
     merge_currency(currency_filter_data, currency_item_data)
 
     filter_dir = resources.filter_dir(filter_ref)
-    files.write_filter_data(gear_filter_data, filter_dir, gear_filter_data_model.file_name)
+    files.write_filter_data(gear_filter_data, filter_dir, grouped_bands_filter_data_model.file_name)
     files.write_filter_data(
         currency_filter_data, filter_dir, flat_bands_filter_data_model.file_name
     )
@@ -61,7 +64,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
     return False
 
 
-def merge_armour(filter_data: GearFilterData, armour_item_data: ArmourItemData):
+def merge_armour(filter_data: GroupedBandsFilterData, armour_item_data: ArmourItemData):
     for armour_category_name, armour_classes in armour_item_data.categories.items():
         print(f"Merging armour - {armour_category_name}")
         # Filter data has no armour class level, so every class's bases merge into the group's bands
@@ -85,7 +88,7 @@ def merge_armour(filter_data: GearFilterData, armour_item_data: ArmourItemData):
     return False
 
 
-def merge_weapons(filter_data: GearFilterData, weapon_item_data: WeaponItemData):
+def merge_weapons(filter_data: GroupedBandsFilterData, weapon_item_data: WeaponItemData):
     for weapon_category_name, items in weapon_item_data.categories.items():
         print(f"Merging weapons - {weapon_category_name}")
         for item_name, item_data in items.items():

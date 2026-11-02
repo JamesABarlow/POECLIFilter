@@ -16,7 +16,7 @@ from poeclifilter.models.filter_data.display_variables import (
     SoundAlert,
 )
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
-from poeclifilter.models.filter_data.gear import GearFilterData
+from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.currency import CurrencyEntry, CurrencyItemData
 from poeclifilter.models.item_data.weapons import WeaponEntry, WeaponItemData
@@ -78,12 +78,8 @@ def make_display_variables(**overrides):
     return DisplayVariablesFilterData(**defaults | overrides)
 
 
-def make_gear_band(base_types=None):
-    return Band(base_types=[] if base_types is None else base_types)
-
-
-def make_gear_filter_data(bands=None, rules=None, schema=1):
-    return GearFilterData(
+def make_grouped_bands_filter_data(bands=None, rules=None, schema=1):
+    return GroupedBandsFilterData(
         schema=schema,
         bands=bands if bands is not None else {},
         rules=[make_rule()] if rules is None else rules,

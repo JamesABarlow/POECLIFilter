@@ -3,8 +3,7 @@ from builders import (
     make_display,
     make_display_variables,
     make_flat_bands_filter_data,
-    make_gear_band,
-    make_gear_filter_data,
+    make_grouped_bands_filter_data,
     make_minimap_icon,
     make_play_effect,
     make_range,
@@ -21,7 +20,7 @@ from poeclifilter.models.rule import RarityCondition
 
 
 def test_gear_rule_carried_to_block():
-    gear_filter_data = make_gear_filter_data(
+    gear_filter_data = make_grouped_bands_filter_data(
         rules=[
             make_rule(
                 hide=False,
@@ -38,7 +37,7 @@ def test_gear_rule_carried_to_block():
 
 
 def test_gear_rule_without_optionals():
-    gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=False)])
+    gear_filter_data = make_grouped_bands_filter_data(rules=[make_rule(hide=False)])
 
     result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
@@ -47,8 +46,8 @@ def test_gear_rule_without_optionals():
 
 
 def test_gear_rule_with_bands_uses_the_bands_base_types():
-    gear_filter_data = make_gear_filter_data(
-        bands={GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])}},
+    gear_filter_data = make_grouped_bands_filter_data(
+        bands={GearGroup.STR: {BandNames.A: make_band(base_types=["Astral Plate"])}},
         rules=[make_rule(hide=False, bands={GearGroup.STR: [BandNames.A]})],
     )
 
@@ -58,11 +57,11 @@ def test_gear_rule_with_bands_uses_the_bands_base_types():
 
 
 def test_gear_rule_with_only_empty_bands_produces_no_block():
-    gear_filter_data = make_gear_filter_data(
+    gear_filter_data = make_grouped_bands_filter_data(
         bands={
             GearGroup.STR: {
-                BandNames.A: make_gear_band(base_types=["Astral Plate"]),
-                BandNames.B: make_gear_band(),
+                BandNames.A: make_band(base_types=["Astral Plate"]),
+                BandNames.B: make_band(),
             }
         },
         rules=[
@@ -78,7 +77,7 @@ def test_gear_rule_with_only_empty_bands_produces_no_block():
 
 
 def test_gear_rule_with_unset_hide_is_shown():
-    gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=None)])
+    gear_filter_data = make_grouped_bands_filter_data(rules=[make_rule(hide=None)])
 
     result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
@@ -86,7 +85,7 @@ def test_gear_rule_with_unset_hide_is_shown():
 
 
 def test_gear_rule_with_hide_true_is_hidden():
-    gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=True)])
+    gear_filter_data = make_grouped_bands_filter_data(rules=[make_rule(hide=True)])
 
     result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
@@ -94,10 +93,10 @@ def test_gear_rule_with_hide_true_is_hidden():
 
 
 def test_gear_rule_with_bands_uses_armour_and_weapon_base_types():
-    gear_filter_data = make_gear_filter_data(
+    gear_filter_data = make_grouped_bands_filter_data(
         bands={
-            GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])},
-            GearGroup.BOWS: {BandNames.A: make_gear_band(base_types=["Thicket Bow"])},
+            GearGroup.STR: {BandNames.A: make_band(base_types=["Astral Plate"])},
+            GearGroup.BOWS: {BandNames.A: make_band(base_types=["Thicket Bow"])},
         },
         rules=[
             make_rule(

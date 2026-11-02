@@ -8,8 +8,7 @@ from builders import (
     make_currency_entry,
     make_currency_item_data,
     make_flat_bands_filter_data,
-    make_gear_band,
-    make_gear_filter_data,
+    make_grouped_bands_filter_data,
     make_weapon_entry,
     make_weapon_item_data,
 )
@@ -120,7 +119,7 @@ def test_merge_currency_keeps_first_band_for_item_in_two_categories():
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():
-    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_gear_band()}})
+    filter_data = make_grouped_bands_filter_data({GearGroup.STR: {BandNames.A: make_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -135,11 +134,11 @@ def test_merge_armour_adds_missing_item_to_its_default_band():
 
 
 def test_merge_armour_leaves_existing_item_alone():
-    filter_data = make_gear_filter_data(
+    filter_data = make_grouped_bands_filter_data(
         {
             GearGroup.STR: {
-                BandNames.A: make_gear_band(),
-                BandNames.B: make_gear_band(base_types=["Astral Plate"]),
+                BandNames.A: make_band(),
+                BandNames.B: make_band(base_types=["Astral Plate"]),
             }
         }
     )
@@ -158,7 +157,7 @@ def test_merge_armour_leaves_existing_item_alone():
 
 
 def test_merge_armour_raises_when_band_missing_from_filter():
-    filter_data = make_gear_filter_data({GearGroup.STR: {}})
+    filter_data = make_grouped_bands_filter_data({GearGroup.STR: {}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -172,10 +171,10 @@ def test_merge_armour_raises_when_band_missing_from_filter():
 
 
 def test_merge_armour_merges_across_multiple_groups():
-    filter_data = make_gear_filter_data(
+    filter_data = make_grouped_bands_filter_data(
         {
-            GearGroup.STR: {BandNames.A: make_gear_band()},
-            GearGroup.INT: {BandNames.S: make_gear_band()},
+            GearGroup.STR: {BandNames.A: make_band()},
+            GearGroup.INT: {BandNames.S: make_band()},
         }
     )
     item_data = make_armour_item_data(
@@ -196,7 +195,7 @@ def test_merge_armour_merges_across_multiple_groups():
 
 
 def test_merge_armour_merges_every_armour_class_into_the_group_bands():
-    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_gear_band()}})
+    filter_data = make_grouped_bands_filter_data({GearGroup.STR: {BandNames.A: make_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -215,7 +214,7 @@ def test_merge_armour_merges_every_armour_class_into_the_group_bands():
 
 
 def test_merge_weapons_adds_missing_item_to_its_default_band():
-    filter_data = make_gear_filter_data(bands={GearGroup.BOWS: {BandNames.A: make_gear_band()}})
+    filter_data = make_grouped_bands_filter_data(bands={GearGroup.BOWS: {BandNames.A: make_band()}})
     item_data = make_weapon_item_data(
         {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
     )
@@ -226,11 +225,11 @@ def test_merge_weapons_adds_missing_item_to_its_default_band():
 
 
 def test_merge_weapons_leaves_existing_item_alone():
-    filter_data = make_gear_filter_data(
+    filter_data = make_grouped_bands_filter_data(
         bands={
             GearGroup.BOWS: {
-                BandNames.A: make_gear_band(),
-                BandNames.B: make_gear_band(base_types=["Thicket Bow"]),
+                BandNames.A: make_band(),
+                BandNames.B: make_band(base_types=["Thicket Bow"]),
             }
         }
     )
@@ -245,7 +244,7 @@ def test_merge_weapons_leaves_existing_item_alone():
 
 
 def test_merge_weapons_raises_when_band_missing_from_filter():
-    filter_data = make_gear_filter_data(bands={GearGroup.BOWS: {}})
+    filter_data = make_grouped_bands_filter_data(bands={GearGroup.BOWS: {}})
     item_data = make_weapon_item_data(
         {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
     )
@@ -255,10 +254,10 @@ def test_merge_weapons_raises_when_band_missing_from_filter():
 
 
 def test_merge_weapons_leaves_armour_bands_alone():
-    filter_data = make_gear_filter_data(
+    filter_data = make_grouped_bands_filter_data(
         bands={
-            GearGroup.STR: {BandNames.A: make_gear_band()},
-            GearGroup.BOWS: {BandNames.A: make_gear_band()},
+            GearGroup.STR: {BandNames.A: make_band()},
+            GearGroup.BOWS: {BandNames.A: make_band()},
         },
     )
     item_data = make_weapon_item_data(

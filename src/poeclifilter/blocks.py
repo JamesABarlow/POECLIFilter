@@ -2,12 +2,13 @@
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from functools import partial
 
-from poeclifilter.filters import FilterRef
+from poeclifilter.filters import FilterRef, GearGroup
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import display_variables, files
 from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
-from poeclifilter.models.filter_data import gear as gear_filter_data_model
+from poeclifilter.models.filter_data import grouped_bands as grouped_bands_filter_data_model
 from poeclifilter.models.filter_data.display_variables import (
     Color,
     DisplayVariablesFilterData,
@@ -45,7 +46,9 @@ def build_blocks(filter_ref: FilterRef):
     # TODO: These should be input as args, simplifies the testing
     display_variables_filter_data = display_variables.get_filter_data(filter_dir(filter_ref))
     gear_filter_data = files.read_filter_data(
-        filter_dir(filter_ref), gear_filter_data_model.file_name, gear_filter_data_model.parse
+        filter_dir(filter_ref),
+        grouped_bands_filter_data_model.file_name,
+        partial(grouped_bands_filter_data_model.parse, group_type=GearGroup),
     )
     currency_filter_data = files.read_filter_data(
         filter_dir(filter_ref),
