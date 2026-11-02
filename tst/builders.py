@@ -18,6 +18,7 @@ from poeclifilter.models.filter_data.display_variables import (
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
+from poeclifilter.models.item_data.cards import CardEntry, CardItemData
 from poeclifilter.models.item_data.currency import CurrencyEntry, CurrencyItemData
 from poeclifilter.models.item_data.uniques import UniqueEntry, UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponEntry, WeaponItemData
@@ -119,6 +120,18 @@ def make_armour_entry(band=BandNames.A):
 
 def make_armour_item_data(categories=None, schema=1, game_version="3.25"):
     return ArmourItemData(
+        schema=schema,
+        game_version=game_version,
+        categories=categories if categories is not None else {},
+    )
+
+
+def make_card_entry(band=BandNames.A):
+    return CardEntry(band=band)
+
+
+def make_card_item_data(categories=None, schema=1, game_version="3.25"):
+    return CardItemData(
         schema=schema,
         game_version=game_version,
         categories=categories if categories is not None else {},

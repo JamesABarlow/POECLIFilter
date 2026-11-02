@@ -1,0 +1,52 @@
+schema: 1
+bands:
+  S:
+    base_types: []
+  A:
+    base_types: []
+  B:
+    base_types: []
+  C:
+    base_types: []
+  D:
+    base_types: []
+  E:
+    base_types: []
+  F:
+    base_types: []
+rules:
+  - id: "cards_s"
+    comment: "Cards band S"
+    hide: false
+    bands: ["S"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_a"
+    comment: "Cards band A"
+    hide: false
+    bands: ["A"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_b"
+    comment: "Cards band B"
+    hide: false
+    bands: ["B"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_c"
+    comment: "Cards band C"
+    hide: false
+    bands: ["C"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_d"
+    comment: "Cards band D"
+    hide: false
+    bands: ["D"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_e"
+    comment: "Cards band E"
+    hide: true
+    bands: ["E"]
+    item_classes: ["Divination Cards"]
+  - id: "cards_f"
+    comment: "Cards band F"
+    hide: true
+    bands: ["F"]
+    item_classes: ["Divination Cards"]

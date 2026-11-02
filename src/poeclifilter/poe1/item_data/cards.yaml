@@ -1,0 +1,15 @@
+schema: 1
+game_version: '3.25'
+# Categories group cards by what they turn into; they only organise the data for editing.
+categories:
+  currency:
+    House of Mirrors: {band: S}
+    The Apothecary: {band: S}
+    Abandoned Wealth: {band: A}
+    Emperor's Luck: {band: E}
+    Rain of Chaos: {band: F}
+  uniques:
+    The Doctor: {band: S}
+    The Nurse: {band: A}
+  gear:
+    The Lover: {band: F}

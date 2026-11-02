@@ -29,6 +29,7 @@ GEAR = Section(
     merger.merge_gear_section,
 )
 UNIQUES = Section("uniques", "uniques.yaml", flat_bands.parse, merger.merge_unique_section)
+CARDS = Section("cards", "cards.yaml", flat_bands.parse, merger.merge_cards_section)
 
 # Order has big importance here as it affects the order that the final filer is built.
-SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, GEAR]
+SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, CARDS, GEAR]

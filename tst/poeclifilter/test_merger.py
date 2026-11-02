@@ -5,6 +5,8 @@ from builders import (
     make_armour_entry,
     make_armour_item_data,
     make_band,
+    make_card_entry,
+    make_card_item_data,
     make_currency_entry,
     make_currency_item_data,
     make_flat_bands_filter_data,
@@ -18,8 +20,15 @@ from builders import (
 from poeclifilter import merger, resources
 from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
-from poeclifilter.merger import merge_armour, merge_currency, merge_uniques, merge_weapons
+from poeclifilter.merger import (
+    merge_armour,
+    merge_cards,
+    merge_currency,
+    merge_uniques,
+    merge_weapons,
+)
 from poeclifilter.models.item_data.armour import ArmourItemData
+from poeclifilter.models.item_data.cards import CardItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
 from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
@@ -211,6 +220,68 @@ def test_merge_uniques_merges_base_only_never_unique_names():
     merge_uniques(filter_data, item_data)
 
     assert filter_data.bands[BandNames.S].base_types == ["Leather Belt"]
+
+
+def test_merge_cards_section_merges_card_item_data(monkeypatch):
+    mock_merge_cards = Mock()
+    monkeypatch.setattr(merger, "merge_cards", mock_merge_cards)
+    filter_data = make_flat_bands_filter_data()
+
+    merger.merge_cards_section(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    mock_merge_cards.assert_called_once()
+    called_filter_data, called_item_data = mock_merge_cards.call_args.args
+    assert called_filter_data is filter_data
+    assert isinstance(called_item_data, CardItemData)
+
+
+def test_merge_cards_adds_missing_item_to_its_default_band():
+    filter_data = make_flat_bands_filter_data(bands={BandNames.S: make_band()})
+    item_data = make_card_item_data({"uniques": {"The Doctor": make_card_entry(band=BandNames.S)}})
+
+    merge_cards(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["The Doctor"]
+
+
+def test_merge_cards_leaves_existing_item_alone():
+    filter_data = make_flat_bands_filter_data(
+        bands={
+            BandNames.S: make_band(),
+            BandNames.B: make_band(base_types=["The Doctor"]),
+        }
+    )
+    item_data = make_card_item_data({"uniques": {"The Doctor": make_card_entry(band=BandNames.S)}})
+
+    merge_cards(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.B].base_types == ["The Doctor"]
+    assert filter_data.bands[BandNames.S].base_types == []
+
+
+def test_merge_cards_raises_when_band_missing_from_filter():
+    filter_data = make_flat_bands_filter_data(bands={})
+    item_data = make_card_item_data({"uniques": {"The Doctor": make_card_entry(band=BandNames.S)}})
+
+    with pytest.raises(ValueError, match="Band not found"):
+        merge_cards(filter_data, item_data)
+
+
+def test_merge_cards_merges_every_category_into_the_flat_bands():
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(), BandNames.A: make_band()}
+    )
+    item_data = make_card_item_data(
+        {
+            "currency": {"House of Mirrors": make_card_entry(band=BandNames.S)},
+            "uniques": {"The Doctor": make_card_entry(band=BandNames.S)},
+        }
+    )
+
+    merge_cards(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["House of Mirrors", "The Doctor"]
+    assert filter_data.bands[BandNames.A].base_types == []
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():

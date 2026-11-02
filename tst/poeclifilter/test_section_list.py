@@ -9,7 +9,7 @@ from poeclifilter.section_list import SECTIONS
 def test_sections_are_in_filter_order():
     # Section order is load-bearing (plan §7.1): the game uses the first block an item matches,
     # so uniques must come before gear or a unique armour or weapon gets gear's display
-    assert [section.name for section in SECTIONS] == ["currency", "uniques", "gear"]
+    assert [section.name for section in SECTIONS] == ["currency", "uniques", "cards", "gear"]
 
 
 def test_section_names_are_unique():

@@ -65,8 +65,12 @@ class MapsClass(StrEnum):
     MAPS = "Maps"
 
 
+class DivinationCardClass(StrEnum):
+    DIVINATION_CARDS = "Divination Cards"
+
+
 # Every Class a rule can match. Add each new kind's enum here.
-type ItemClass = ArmourClass | WeaponClass | CurrencyClass | MapsClass
+type ItemClass = ArmourClass | WeaponClass | CurrencyClass | MapsClass | DivinationCardClass
 
 
 class Rarity(StrEnum):
