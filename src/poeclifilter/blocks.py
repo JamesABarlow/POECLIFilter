@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from poeclifilter.filters import BandNames, FilterRef, GearGroup
+from poeclifilter.filters import BandNames, FilterRef
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import banded_items, display_variables
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
@@ -16,7 +16,6 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
-from poeclifilter.models.filter_data.gear import Band
 from poeclifilter.models.filter_data.sections import SectionFilterData
 from poeclifilter.models.rule import Range, RarityCondition
 from poeclifilter.resources import filter_dir
@@ -139,19 +138,6 @@ def build_rule_blocks[BandsT](
             )
         )
     return blocks
-
-
-def get_bands(
-    band: dict[GearGroup, list[BandNames]],
-    gear_bands: dict[GearGroup, dict[BandNames, Band]],
-):
-    base_types = []
-    for gear_group, band_names in band.items():
-        for band_name in band_names:
-            target_band = gear_bands[gear_group][band_name]
-            base_types.extend(target_band.base_types)
-
-    return base_types
 
 
 # Handle color substitions

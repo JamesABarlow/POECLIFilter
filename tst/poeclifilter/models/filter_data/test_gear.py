@@ -161,3 +161,32 @@ def test_resolve_bands_joins_bands_across_groups_and_band_names():
 def test_resolve_bands_of_empty_band_is_empty():
     gear_filter_data = make_gear_filter_data(bands={GearGroup.STR: {BandNames.B: make_gear_band()}})
     assert gear_filter_data.resolve_bands({GearGroup.STR: [BandNames.B]}) == []
+
+
+def test_parse_rule_bands_converts_to_enums():
+    result = gear.parse_rule_bands({"str": ["A"], "str_int": ["B"]})
+    assert result == {GearGroup.STR: [BandNames.A], GearGroup.STR_INT: [BandNames.B]}
+    assert all(type(group) is GearGroup for group in result)
+    assert all(type(band) is BandNames for bands in result.values() for band in bands)
+
+
+def test_parse_rule_bands_accepts_weapon_and_armour_groups_together():
+    result = gear.parse_rule_bands({"str": ["A"], "bows": ["S"]})
+    assert result == {GearGroup.STR: [BandNames.A], GearGroup.BOWS: [BandNames.S]}
+
+
+def test_parse_rule_bands_rejects_unknown_gear_group():
+    with pytest.raises(ValueError):
+        gear.parse_rule_bands({"str_itn": ["A"]})
+
+
+def test_parse_rule_bands_rejects_unknown_band():
+    with pytest.raises(ValueError):
+        gear.parse_rule_bands({"str": ["Z"]})
+
+
+def test_parse_uses_gear_bands_for_rules():
+    raw = raw_config()
+    raw["rules"] = [{"id": "r", "comment": "c", "hide": False, "bands": {"bows": ["A"]}}]
+    result = gear.parse(raw)
+    assert result.rules[0].bands == {GearGroup.BOWS: [BandNames.A]}

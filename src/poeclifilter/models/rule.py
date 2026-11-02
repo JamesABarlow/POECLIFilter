@@ -1,7 +1,7 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import get_args
+from typing import Any, get_args
 
-from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.game import ItemClass, Operator, Rarity
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
@@ -33,16 +33,17 @@ class Rule[BandsT]:
     sockets: Range | None = None
     linked_sockets: Range | None = None
     display: Display | str | None = None
-    rules: list[Rule] | None = None
+    rules: list[Rule[BandsT]] | None = None
 
 
-def parse(raw_rule):
+def parse[BandsT](raw_rule, parse_bands: Callable[[Any], BandsT]) -> Rule[BandsT]:
+    raw_bands = raw_rule.get("bands")
     return Rule(
         id=raw_rule["id"],
         comment=raw_rule["comment"],
         include=raw_rule.get("include", True),
         hide=raw_rule.get("hide"),
-        bands=parse_bands(raw_rule.get("bands")),
+        bands=None if raw_bands is None else parse_bands(raw_bands),
         base_types=raw_rule.get("base_types"),
         item_classes=parse_item_classes(raw_rule.get("item_classes")),
         rarity=parse_rarity(raw_rule.get("rarity")),
@@ -50,25 +51,17 @@ def parse(raw_rule):
         sockets=parse_range(raw_rule.get("sockets")),
         linked_sockets=parse_range(raw_rule.get("linked_sockets")),
         display=parse_display(raw_rule.get("display")),
-        rules=parse_rules(raw_rule.get("rules")),
+        rules=parse_rules(raw_rule.get("rules"), parse_bands),
     )
 
 
-def parse_rules(raw_rules):
+def parse_rules[BandsT](
+    raw_rules, parse_bands: Callable[[Any], BandsT]
+) -> list[Rule[BandsT]] | None:
     if raw_rules is None:
         return None
 
-    return [parse(raw_rule) for raw_rule in raw_rules]
-
-
-def parse_bands(raw_bands):
-    if raw_bands is None:
-        return None
-
-    return {
-        GearGroup(group): [BandNames(band_name) for band_name in band]
-        for group, band in raw_bands.items()
-    }
+    return [parse(raw_rule, parse_bands) for raw_rule in raw_rules]
 
 
 def parse_item_classes(raw_item_classes):

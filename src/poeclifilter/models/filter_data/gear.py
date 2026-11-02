@@ -43,13 +43,20 @@ def parse(raw):
     # TODO: finish parsing and validation
     bands = parse_groups(raw["bands"])
 
-    rules = [rule.parse(rule_data) for rule_data in raw["rules"]]
+    rules = [rule.parse(rule_data, parse_rule_bands) for rule_data in raw["rules"]]
 
     return GearFilterData(
         schema=raw["schema"],
         bands=bands,
         rules=rules,
     )
+
+
+def parse_rule_bands(raw_rule_bands) -> GearBands:
+    return {
+        GearGroup(group): [BandNames(band_name) for band_name in band_names]
+        for group, band_names in raw_rule_bands.items()
+    }
 
 
 def parse_groups(raw_groups):
