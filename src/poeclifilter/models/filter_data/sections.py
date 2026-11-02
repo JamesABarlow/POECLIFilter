@@ -1,12 +1,6 @@
-from dataclasses import dataclass
 from typing import Protocol
 
 from poeclifilter.models.rule import Rule
-
-
-@dataclass(frozen=True)
-class Section:
-    name: str
 
 
 class SectionFilterData[BandsT](Protocol):

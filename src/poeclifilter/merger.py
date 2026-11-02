@@ -1,12 +1,7 @@
 from collections.abc import Mapping
-from functools import partial
+from pathlib import Path
 from typing import Protocol
 
-from poeclifilter import resources
-from poeclifilter.filters import FilterRef, GearGroup
-from poeclifilter.models.filter_data import files
-from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
-from poeclifilter.models.filter_data import grouped_bands as grouped_bands_filter_data_model
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
@@ -22,46 +17,9 @@ class HasBaseTypes(Protocol):
     def base_types(self) -> list[str]: ...
 
 
-def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
-
-    # two similar operations here.
-    # Copy all for new filter / reset to default - needs to load data from base
-    # Checking if new items have been added since last update, pushing this back for now - needs to load data from filter
-    #
-
-    if not is_filter_update:
-        # load files
-        base_config_dir = resources.base_config_dir(filter_ref.game_version)
-        item_config_dir = resources.item_data_dir(filter_ref.game_version)
-
-        gear_filter_data = files.read_filter_data(
-            base_config_dir,
-            grouped_bands_filter_data_model.file_name,
-            partial(grouped_bands_filter_data_model.parse, group_type=GearGroup),
-        )
-        currency_filter_data = files.read_filter_data(
-            base_config_dir,
-            flat_bands_filter_data_model.file_name,
-            flat_bands_filter_data_model.parse,
-        )
-        armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
-        weapon_item_data = weapon_item_data_model.get_item_data(item_config_dir)
-        currency_item_data = currency_item_data_model.get_item_data(item_config_dir)
-    else:
-        raise NotImplementedError
-
-    merge_armour(gear_filter_data, armour_item_data)
-    merge_weapons(gear_filter_data, weapon_item_data)
-    merge_currency(currency_filter_data, currency_item_data)
-
-    filter_dir = resources.filter_dir(filter_ref)
-    files.write_filter_data(gear_filter_data, filter_dir, grouped_bands_filter_data_model.file_name)
-    files.write_filter_data(
-        currency_filter_data, filter_dir, flat_bands_filter_data_model.file_name
-    )
-
-    # Should also eventually be able to show what's changed in the filter over the default as a report
-    return False
+def merge_gear_section(filter_data: GroupedBandsFilterData, item_data_dir: Path):
+    merge_armour(filter_data, armour_item_data_model.get_item_data(item_data_dir))
+    merge_weapons(filter_data, weapon_item_data_model.get_item_data(item_data_dir))
 
 
 def merge_armour(filter_data: GroupedBandsFilterData, armour_item_data: ArmourItemData):
@@ -106,6 +64,10 @@ def merge_weapons(filter_data: GroupedBandsFilterData, weapon_item_data: WeaponI
                 print(f"{item_name} already exists in filter can't handle this yet")
 
     return False
+
+
+def merge_currency_section(filter_data: FlatBandsFilterData, item_data_dir: Path):
+    merge_currency(filter_data, currency_item_data_model.get_item_data(item_data_dir))
 
 
 def merge_currency(filter_items: FlatBandsFilterData, currency_items_data: CurrencyItemData):

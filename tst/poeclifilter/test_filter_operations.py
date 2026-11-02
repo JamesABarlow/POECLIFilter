@@ -2,8 +2,11 @@ from unittest.mock import Mock
 
 import pytest
 
-from poeclifilter import filter_operations
+from poeclifilter import filter_operations, resources
 from poeclifilter.filters import FilterRef, GameVersion
+from poeclifilter.models.filter_data import flat_bands
+from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
+from poeclifilter.section_list import SECTIONS, Section
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 
@@ -94,3 +97,47 @@ def test_delete_filter_when_never_built(in_tmp_config_home, tmp_path, monkeypatc
     filter_operations.delete_filter(filter_ref)
 
     assert not config_path.exists()
+
+
+def test_merge_filter_writes_a_file_for_every_section(in_tmp_config_home):
+    resources.filter_dir(filter_ref).mkdir(parents=True)
+
+    filter_operations.merge_filter(filter_ref, False)
+
+    for section in SECTIONS:
+        assert (resources.filter_dir(filter_ref) / section.file_name).is_file()
+
+
+def test_merge_filter_merges_each_section_with_its_parsed_data(in_tmp_config_home, monkeypatch):
+    mock_merge = Mock()
+    test_sections = [Section("currency", "currency.yaml", flat_bands.parse, mock_merge)]
+    monkeypatch.setattr(filter_operations, "SECTIONS", test_sections)
+    resources.filter_dir(filter_ref).mkdir(parents=True)
+
+    filter_operations.merge_filter(filter_ref, False)
+
+    mock_merge.assert_called_once()
+    section_filter_data, item_data_dir = mock_merge.call_args.args
+    assert isinstance(section_filter_data, FlatBandsFilterData)
+    assert item_data_dir == resources.item_data_dir(filter_ref.game_version)
+
+
+def test_merge_filter_writes_the_merged_data(in_tmp_config_home, monkeypatch):
+    def add_merged_orb(section_filter_data, item_data_dir):
+        section_filter_data.bands[next(iter(section_filter_data.bands))].base_types.append(
+            "Merged Orb"
+        )
+
+    test_sections = [Section("currency", "currency.yaml", flat_bands.parse, add_merged_orb)]
+    monkeypatch.setattr(filter_operations, "SECTIONS", test_sections)
+    resources.filter_dir(filter_ref).mkdir(parents=True)
+
+    filter_operations.merge_filter(filter_ref, False)
+
+    written = (resources.filter_dir(filter_ref) / "currency.yaml").read_text()
+    assert "Merged Orb" in written
+
+
+def test_merge_filter_update_not_implemented():
+    with pytest.raises(NotImplementedError):
+        filter_operations.merge_filter(filter_ref, True)

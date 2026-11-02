@@ -3,8 +3,7 @@ from enum import StrEnum
 import pytest
 from builders import make_band, make_grouped_bands_filter_data
 
-from poeclifilter import resources
-from poeclifilter.filters import BandNames, GameVersion, GearGroup
+from poeclifilter.filters import BandNames
 from poeclifilter.models.filter_data import files, grouped_bands
 
 
@@ -26,17 +25,6 @@ def raw_config(**groups):
     }
     rule = {"id": "test_id", "comment": "test_comment", "hide": False}
     return {"schema": 1, "bands": raw_groups, "rules": [rule]}
-
-
-# Checks gear's real file, so it belongs with the section list's tests once that exists
-def test_load_gear_success():
-    result = files.read_filter_data(
-        resources.base_config_dir(GameVersion.POE1),
-        grouped_bands.file_name,
-        lambda raw: grouped_bands.parse(raw, GearGroup),
-    )
-    assert result.schema is not None
-    assert result.bands is not None
 
 
 def test_parse_keeps_schema():

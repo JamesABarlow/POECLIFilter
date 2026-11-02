@@ -14,36 +14,42 @@ from builders import (
 )
 
 from poeclifilter import merger, resources
-from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
+from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
 from poeclifilter.merger import merge_armour, merge_currency, merge_weapons
+from poeclifilter.models.item_data.armour import ArmourItemData
+from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.weapons import WeaponItemData
 
-filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 
-
-def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
+def test_merge_currency_section_merges_currency_item_data(monkeypatch):
     mock_merge_currency = Mock()
-    mock_merge_armour = Mock()
-    mock_merge_weapons = Mock()
     monkeypatch.setattr(merger, "merge_currency", mock_merge_currency)
-    monkeypatch.setattr(merger, "merge_armour", mock_merge_armour)
-    monkeypatch.setattr(merger, "merge_weapons", mock_merge_weapons)
-    resources.filter_dir(filter_ref).mkdir(parents=True)
-    assert not (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
-    assert not (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
+    filter_data = make_flat_bands_filter_data()
 
-    merger.merge_filter(filter_ref, False)
+    merger.merge_currency_section(filter_data, resources.item_data_dir(GameVersion.POE1))
 
     mock_merge_currency.assert_called_once()
-    mock_merge_armour.assert_called_once()
-    mock_merge_weapons.assert_called_once()
-    assert (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
-    assert (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
+    called_filter_data, called_item_data = mock_merge_currency.call_args.args
+    assert called_filter_data is filter_data
+    assert isinstance(called_item_data, CurrencyItemData)
 
 
-def test_merge_filter_update_not_implemented():
-    with pytest.raises(NotImplementedError):
-        merger.merge_filter(filter_ref, True)
+def test_merge_gear_section_merges_armour_and_weapon_item_data(monkeypatch):
+    mock_merge_armour = Mock()
+    mock_merge_weapons = Mock()
+    monkeypatch.setattr(merger, "merge_armour", mock_merge_armour)
+    monkeypatch.setattr(merger, "merge_weapons", mock_merge_weapons)
+    filter_data = make_grouped_bands_filter_data()
+
+    merger.merge_gear_section(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    armour_filter_data, armour_item_data = mock_merge_armour.call_args.args
+    weapons_filter_data, weapon_item_data = mock_merge_weapons.call_args.args
+    assert armour_filter_data is filter_data
+    assert weapons_filter_data is filter_data
+    assert isinstance(armour_item_data, ArmourItemData)
+    assert isinstance(weapon_item_data, WeaponItemData)
 
 
 def test_merge_currency_adds_missing_item_to_its_default_band():

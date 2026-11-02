@@ -5,9 +5,6 @@ from poeclifilter.filters import Band, BandNames
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
-file_name = "gear.yaml"
-
-
 type GroupedBands[GroupT] = dict[GroupT, list[BandNames]]
 
 

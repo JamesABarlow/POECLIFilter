@@ -1,8 +1,7 @@
 import pytest
 from builders import make_band, make_flat_bands_filter_data
 
-from poeclifilter import resources
-from poeclifilter.filters import BandNames, GameVersion
+from poeclifilter.filters import BandNames
 from poeclifilter.models.filter_data import files, flat_bands
 
 
@@ -10,15 +9,6 @@ def raw_config(**bands):
     raw_bands = bands or {"S": {"base_types": ["Divine Orb"]}, "A": {"base_types": ["Chaos Orb"]}}
     rule = {"id": "test_id", "comment": "test_comment", "hide": False}
     return {"schema": 1, "bands": raw_bands, "rules": [rule]}
-
-
-def test_load_success():
-    result = files.read_filter_data(
-        resources.base_config_dir(GameVersion.POE1), flat_bands.file_name, flat_bands.parse
-    )
-    assert result.schema is not None
-    assert result.bands is not None
-    assert result.rules
 
 
 def test_parse_keeps_schema():
@@ -101,7 +91,7 @@ def test_write_round_trips_rule_bands(tmp_path):
         }
     ]
     original = flat_bands.parse(raw)
-    files.write_filter_data(original, tmp_path, flat_bands.file_name)
-    reread = files.read_filter_data(tmp_path, flat_bands.file_name, flat_bands.parse)
+    files.write_filter_data(original, tmp_path, "flat.yaml")
+    reread = files.read_filter_data(tmp_path, "flat.yaml", flat_bands.parse)
     assert reread == original
     assert reread.rules[0].bands == [BandNames.S]

@@ -2,13 +2,10 @@
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from functools import partial
 
-from poeclifilter.filters import FilterRef, GearGroup
+from poeclifilter.filters import FilterRef
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import display_variables, files
-from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
-from poeclifilter.models.filter_data import grouped_bands as grouped_bands_filter_data_model
 from poeclifilter.models.filter_data.display_variables import (
     Color,
     DisplayVariablesFilterData,
@@ -17,6 +14,7 @@ from poeclifilter.models.filter_data.display_variables import (
 from poeclifilter.models.filter_data.sections import SectionFilterData
 from poeclifilter.models.rule import Range, RarityCondition
 from poeclifilter.resources import filter_dir
+from poeclifilter.section_list import SECTIONS
 
 
 # TODO: Not sure if I like this design, can I get something better here
@@ -43,24 +41,13 @@ class Block:
 
 
 def build_blocks(filter_ref: FilterRef):
-    # TODO: These should be input as args, simplifies the testing
     display_variables_filter_data = display_variables.get_filter_data(filter_dir(filter_ref))
-    gear_filter_data = files.read_filter_data(
-        filter_dir(filter_ref),
-        grouped_bands_filter_data_model.file_name,
-        partial(grouped_bands_filter_data_model.parse, group_type=GearGroup),
-    )
-    currency_filter_data = files.read_filter_data(
-        filter_dir(filter_ref),
-        flat_bands_filter_data_model.file_name,
-        flat_bands_filter_data_model.parse,
-    )
-
     blocks = []
-
-    # Ordering matters here, will be the same ordering in the final model.
-    blocks.extend(build_rule_blocks(currency_filter_data, display_variables_filter_data))
-    blocks.extend(build_rule_blocks(gear_filter_data, display_variables_filter_data))
+    for section in SECTIONS:
+        section_filter_data = files.read_filter_data(
+            filter_dir(filter_ref), section.file_name, section.parse
+        )
+        blocks.extend(build_rule_blocks(section_filter_data, display_variables_filter_data))
 
     # Add misc filter blocks including the final catch all here
     # TODO: This needs to be built better but here for now

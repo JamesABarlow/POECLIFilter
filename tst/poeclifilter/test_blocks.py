@@ -17,6 +17,7 @@ from poeclifilter.filter_operations import bootstrap_new_filter
 from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
 from poeclifilter.game import CurrencyClass, Operator, Rarity
 from poeclifilter.models.rule import RarityCondition
+from poeclifilter.section_list import SECTIONS
 
 
 def test_gear_rule_carried_to_block():
@@ -175,27 +176,41 @@ def test_currency_rule_with_empty_band_produces_no_block():
     assert result == []
 
 
-def test_build_blocks_puts_currency_before_gear_and_the_catch_all_last(in_tmp_config_home):
-    # Section order is load-bearing (plan §7.1): the game uses the first block an item matches
+def is_currency_block(block):
+    return bool(block.item_classes) and all(
+        isinstance(item_class, CurrencyClass) for item_class in block.item_classes
+    )
+
+
+def build_test_filter_blocks():
     filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
     bootstrap_new_filter(filter_ref)
+    return blocks.build_blocks(filter_ref)
 
-    result = blocks.build_blocks(filter_ref)
 
-    def is_currency(block):
-        return bool(block.item_classes) and all(
-            isinstance(item_class, CurrencyClass) for item_class in block.item_classes
-        )
+def test_build_blocks_builds_sections_in_list_order(in_tmp_config_home):
+    result = build_test_filter_blocks()[:-1]
 
-    def is_gear(block):
-        return not is_currency(block) and block is not result[-1]
-
-    currency_indexes = [i for i, block in enumerate(result) if is_currency(block)]
-    gear_indexes = [i for i, block in enumerate(result) if is_gear(block)]
+    currency_indexes = [i for i, block in enumerate(result) if is_currency_block(block)]
+    gear_indexes = [i for i, block in enumerate(result) if not is_currency_block(block)]
     assert currency_indexes and gear_indexes
     assert max(currency_indexes) < min(gear_indexes)
 
-    catch_all = result[-1]
+
+def test_build_blocks_follows_a_reordered_list(in_tmp_config_home, monkeypatch):
+    # Proves the order comes from the list, not from anything hard coded in build_blocks
+    monkeypatch.setattr(blocks, "SECTIONS", list(reversed(SECTIONS)))
+
+    result = build_test_filter_blocks()[:-1]
+
+    currency_indexes = [i for i, block in enumerate(result) if is_currency_block(block)]
+    gear_indexes = [i for i, block in enumerate(result) if not is_currency_block(block)]
+    assert max(gear_indexes) < min(currency_indexes)
+
+
+def test_build_blocks_ends_with_the_catch_all(in_tmp_config_home):
+    catch_all = build_test_filter_blocks()[-1]
+
     assert catch_all.hide is False
     assert not catch_all.item_classes
     assert not catch_all.base_types

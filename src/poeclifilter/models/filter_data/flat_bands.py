@@ -4,10 +4,6 @@ from poeclifilter.filters import Band, BandNames
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
-# TODO: Move out to make this fully generic
-file_name = "currency.yaml"
-
-
 type FlatBands = list[BandNames]
 
 
