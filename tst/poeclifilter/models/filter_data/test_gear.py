@@ -1,4 +1,5 @@
 import pytest
+from builders import make_gear_band, make_gear_filter_data
 
 from poeclifilter import resources
 from poeclifilter.filters import BandNames, GameVersion, GearGroup
@@ -112,3 +113,51 @@ def test_write_round_trips(tmp_path):
     )
     gear.write_filter_data(original, tmp_path)
     assert gear.get_filter_data(tmp_path) == original
+
+
+def test_write_round_trips_rule_bands(tmp_path):
+    # Field names are the written YAML keys, so a rule field renamed away from the key the
+    # parser reads would lose every rule's bands on write
+    raw = raw_config()
+    raw["rules"] = [
+        {
+            "id": "endgame_rares",
+            "comment": "Rares shown in endgame",
+            "hide": False,
+            "bands": {"str": ["A"], "bows": ["A"]},
+            "rarity": {"operator": "==", "rarity": "Rare"},
+        }
+    ]
+    original = gear.parse(raw)
+    gear.write_filter_data(original, tmp_path)
+    reread = gear.get_filter_data(tmp_path)
+    assert reread == original
+    assert reread.rules[0].bands == {GearGroup.STR: [BandNames.A], GearGroup.BOWS: [BandNames.A]}
+
+
+def test_resolve_bands_returns_the_bands_base_types():
+    gear_filter_data = make_gear_filter_data(
+        bands={GearGroup.STR: {BandNames.A: make_gear_band(base_types=["Astral Plate"])}}
+    )
+    assert gear_filter_data.resolve_bands({GearGroup.STR: [BandNames.A]}) == ["Astral Plate"]
+
+
+def test_resolve_bands_joins_bands_across_groups_and_band_names():
+    gear_filter_data = make_gear_filter_data(
+        bands={
+            GearGroup.STR: {
+                BandNames.S: make_gear_band(base_types=["Glorious Plate"]),
+                BandNames.A: make_gear_band(base_types=["Astral Plate"]),
+            },
+            GearGroup.BOWS: {BandNames.A: make_gear_band(base_types=["Thicket Bow"])},
+        }
+    )
+    result = gear_filter_data.resolve_bands(
+        {GearGroup.STR: [BandNames.A, BandNames.S], GearGroup.BOWS: [BandNames.A]}
+    )
+    assert result == ["Astral Plate", "Glorious Plate", "Thicket Bow"]
+
+
+def test_resolve_bands_of_empty_band_is_empty():
+    gear_filter_data = make_gear_filter_data(bands={GearGroup.STR: {BandNames.B: make_gear_band()}})
+    assert gear_filter_data.resolve_bands({GearGroup.STR: [BandNames.B]}) == []

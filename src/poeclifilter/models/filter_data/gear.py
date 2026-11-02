@@ -14,11 +14,23 @@ class Band:
     base_types: list[str]
 
 
+type GearBands = dict[GearGroup, list[BandNames]]
+
+
 @dataclass(frozen=True)
 class GearFilterData:
     schema: int
     bands: dict[GearGroup, dict[BandNames, Band]]
-    rules: list[Rule[dict[GearGroup, list[BandNames]]]]
+    rules: list[Rule[GearBands]]
+
+    def resolve_bands(self, target_bands: GearBands) -> list[str]:
+        base_types = []
+        for gear_group, target_band_names in target_bands.items():
+            for target_band_name in target_band_names:
+                target_band = self.bands[gear_group][target_band_name]
+                base_types.extend(target_band.base_types)
+
+        return base_types
 
 
 def get_filter_data(config_dir: Path):

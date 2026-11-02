@@ -86,7 +86,7 @@ def test_gear_rule_carried_to_block():
         ]
     )
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].sockets == make_range(max=6)
     assert result[0].rarity == RarityCondition(Operator.EQUAL, Rarity.RARE)
@@ -95,7 +95,7 @@ def test_gear_rule_carried_to_block():
 def test_gear_rule_without_optionals():
     gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=False)])
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].sockets is None
     assert result[0].rarity is None
@@ -107,7 +107,7 @@ def test_gear_rule_with_bands_uses_the_bands_base_types():
         rules=[make_rule(hide=False, bands={GearGroup.STR: [BandNames.A]})],
     )
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].base_types == ["Astral Plate"]
 
@@ -126,7 +126,7 @@ def test_gear_rule_with_only_empty_bands_produces_no_block():
         ],
     )
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert len(result) == 1
     assert result[0].base_types == ["Astral Plate"]
@@ -135,7 +135,7 @@ def test_gear_rule_with_only_empty_bands_produces_no_block():
 def test_gear_rule_with_unset_hide_is_shown():
     gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=None)])
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].hide is False
 
@@ -143,7 +143,7 @@ def test_gear_rule_with_unset_hide_is_shown():
 def test_gear_rule_with_hide_true_is_hidden():
     gear_filter_data = make_gear_filter_data(rules=[make_rule(hide=True)])
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].hide is True
 
@@ -161,6 +161,6 @@ def test_gear_rule_with_bands_uses_armour_and_weapon_base_types():
         ],
     )
 
-    result = blocks.build_gear_blocks(gear_filter_data, make_display_variables())
+    result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].base_types == ["Astral Plate", "Thicket Bow"]

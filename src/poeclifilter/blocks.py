@@ -16,7 +16,8 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
-from poeclifilter.models.filter_data.gear import Band, GearFilterData
+from poeclifilter.models.filter_data.gear import Band
+from poeclifilter.models.filter_data.sections import SectionFilterData
 from poeclifilter.models.rule import Range, RarityCondition
 from poeclifilter.resources import filter_dir
 
@@ -56,7 +57,7 @@ def build_blocks(filter_ref: FilterRef):
     blocks.extend(
         build_banded_items_blocks(banded_items_filter_data, display_variables_filter_data)
     )
-    blocks.extend(build_gear_blocks(gear_filter_data, display_variables_filter_data))
+    blocks.extend(build_rule_blocks(gear_filter_data, display_variables_filter_data))
 
     # Add misc filter blocks including the final catch all here
     # TODO: This needs to be built better but here for now
@@ -106,11 +107,11 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
     return blocks
 
 
-def build_gear_blocks(
-    gear_filter_data: GearFilterData, display_variables: DisplayVariablesFilterData
+def build_rule_blocks[BandsT](
+    section_filter_data: SectionFilterData[BandsT], display_variables: DisplayVariablesFilterData
 ):
     blocks = []
-    for rule in gear_filter_data.rules:
+    for rule in section_filter_data.rules:
         if isinstance(rule.display, str):
             display = None
         else:
@@ -119,7 +120,7 @@ def build_gear_blocks(
         if rule.base_types:
             base_types = rule.base_types
         elif rule.bands:
-            base_types = get_bands(rule.bands, gear_filter_data.bands)
+            base_types = section_filter_data.resolve_bands(rule.bands)
             # Empty bands would render with no BaseType and match every item (plan §5.1)
             if not base_types:
                 continue
