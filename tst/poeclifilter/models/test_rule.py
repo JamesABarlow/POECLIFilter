@@ -71,6 +71,7 @@ def test_parse_keeps_base_types():
 def test_parse_converts_armour_classes_to_enum():
     result = rule.parse(raw_rule(armour_classes=["Helmets", "Body Armours"]))
     assert result.armour_classes == [ArmourClass.HELMETS, ArmourClass.BODY_ARMOURS]
+    assert result.armour_classes is not None
     assert all(type(armour_class) is ArmourClass for armour_class in result.armour_classes)
 
 
@@ -82,6 +83,7 @@ def test_parse_rejects_unknown_armour_class():
 def test_parse_converts_rarity_condition_to_enums():
     result = rule.parse(raw_rule(rarity={"operator": "<=", "rarity": "Rare"}))
     assert result.rarity == make_rarity_condition(operator=Operator.LESS_EQUAL, rarity=Rarity.RARE)
+    assert result.rarity is not None
     assert type(result.rarity.operator) is Operator
     assert type(result.rarity.rarity) is Rarity
 
@@ -162,6 +164,7 @@ def test_parse_parses_nested_child_rules():
         ]
     )
     result = rule.parse(raw)
+    assert result.rules is not None
     assert result.rules[0].rules == [make_rule(id="grandchild", comment="Grandchild")]
 
 
@@ -172,5 +175,6 @@ def test_parse_child_rule_values_are_not_inherited_at_parse():
         rules=[{"id": "child", "comment": "Child"}],
     )
     result = rule.parse(raw)
+    assert result.rules is not None
     assert result.rules[0].hide is None
     assert result.rules[0].rarity is None

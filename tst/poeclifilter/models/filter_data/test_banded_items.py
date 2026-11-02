@@ -72,6 +72,7 @@ def test_parse_keeps_hide():
 def test_parse_display_keeps_variable_references_unresolved():
     raw = raw_config(S={"hide": False, "display": FULL_DISPLAY})
     display = banded_items.parse(raw).bands[BandNames.S].display
+    assert display is not None
     assert display.text_color == "$purple"
     assert display.background_color == "$white"
     assert display.border_color == "$purple"
@@ -82,6 +83,7 @@ def test_parse_display_keeps_variable_references_unresolved():
 def test_parse_display_builds_nested_records():
     raw = raw_config(S={"hide": False, "display": FULL_DISPLAY})
     display = banded_items.parse(raw).bands[BandNames.S].display
+    assert display is not None
     assert display.play_effect == PlayEffect(color=IconColor.PURPLE, temp=False)
     assert display.minimap_icon == MinimapIcon(
         size=1, color=IconColor.PURPLE, shape=IconShape.CIRCLE
@@ -91,12 +93,14 @@ def test_parse_display_builds_nested_records():
 def test_parse_display_play_effect_without_temp_is_none():
     raw = raw_config(S={"hide": False, "display": {"play_effect": {"color": "Purple"}}})
     display = banded_items.parse(raw).bands[BandNames.S].display
+    assert display is not None
     assert display.play_effect == PlayEffect(color=IconColor.PURPLE, temp=None)
 
 
 def test_parse_display_converts_game_values_to_enum_members():
     raw = raw_config(S={"hide": False, "display": FULL_DISPLAY})
     display = banded_items.parse(raw).bands[BandNames.S].display
+    assert display is not None
     # Equality alone cannot prove this: StrEnum members compare equal to their
     # values, so the assertions above pass on plain strings too.
     assert display.play_effect and isinstance(display.play_effect.color, IconColor)
@@ -148,6 +152,7 @@ def test_parse_display_rejects_unknown_nested_field():
 
 def test_parse_display_omitted_fields_are_none():
     display = banded_items.parse(raw_config()).bands[BandNames.A].display
+    assert display is not None
     assert display.play_effect is None
     assert display.minimap_icon is None
     assert display.text_color is None

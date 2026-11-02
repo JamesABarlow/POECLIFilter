@@ -29,6 +29,7 @@ line-length = 100
 venvPath = "."
 venv = ".venv"
 extraPaths = ["src"]
+pythonVersion = "3.14"
 
 [tool.pytest.ini_options]
 testpaths = ["tst"]

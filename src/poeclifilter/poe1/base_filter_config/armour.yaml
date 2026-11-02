@@ -58,12 +58,50 @@ rules:
   - id: "endgame_rares"
     comment: "Rares shown in endgame"
     hide: false
-    bands: {str: ["C", "B", "A"]}
+    bands:
+      int: ["A", "S"]
+      dex: ["A", "S"]
+      str: ["A", "S"]
+      int_dex: ["A", "S"]
+      dex_str: ["A", "S"]
+      str_int: ["A", "S"]
     rarity: {operator: "==", rarity: Rare}
   - id: "six_socket_vendor"
     comment: "6 socket vendable items"
     hide: false
     display: {border_color: $white}
     sockets: {min: 6}
-
-
+    # This rule is needed to avoid the main catch all rule for bases that have been chossen not to be shown
+  - id: "hidden_rares"
+    comment: "Hide other rares"
+    hide: true
+    bands:
+      int: ["B", "C"]
+      dex: ["B", "C"]
+      str: ["B", "C"]
+      int_dex: ["B", "C"]
+      dex_str: ["B", "C"]
+      str_int: ["B", "C"]
+    rarity: {operator: "==", rarity: Rare}
+  - id: "hidden_magic"
+    comment: "Hide magic armour"
+    hide: true
+    bands:
+      int: ["S", "A", "B", "C"]
+      dex: ["S", "A", "B", "C"]
+      str: ["S", "A", "B", "C"]
+      int_dex: ["S", "A", "B", "C"]
+      dex_str: ["S", "A", "B", "C"]
+      str_int: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Magic}
+  - id: "hidden_normal"
+    comment: "Hide normal armour"
+    hide: true
+    bands:
+      int: ["S", "A", "B", "C"]
+      dex: ["S", "A", "B", "C"]
+      str: ["S", "A", "B", "C"]
+      int_dex: ["S", "A", "B", "C"]
+      dex_str: ["S", "A", "B", "C"]
+      str_int: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Normal}

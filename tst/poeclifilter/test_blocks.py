@@ -1,4 +1,5 @@
 from builders import (
+    make_armour_band,
     make_armour_filter_data,
     make_band,
     make_banded_items,
@@ -13,7 +14,7 @@ from builders import (
 
 from poeclifilter import blocks
 from poeclifilter.blocks import ResolvedDisplay
-from poeclifilter.filters import BandNames
+from poeclifilter.filters import AttributeGroup, BandNames
 from poeclifilter.game import Operator, Rarity
 from poeclifilter.models.rule import RarityCondition
 
@@ -98,3 +99,36 @@ def test_armour_rule_without_optionals():
 
     assert result[0].sockets is None
     assert result[0].rarity is None
+
+
+def test_armour_rule_with_bands_uses_the_bands_base_types():
+    armour_filter_data = make_armour_filter_data(
+        armour_categories={
+            AttributeGroup.STR: {BandNames.A: make_armour_band(base_types=["Astral Plate"])}
+        },
+        rules=[make_rule(hide=False, bands={AttributeGroup.STR: [BandNames.A]})],
+    )
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert result[0].base_types == ["Astral Plate"]
+
+
+def test_armour_rule_with_only_empty_bands_produces_no_block():
+    armour_filter_data = make_armour_filter_data(
+        armour_categories={
+            AttributeGroup.STR: {
+                BandNames.A: make_armour_band(base_types=["Astral Plate"]),
+                BandNames.B: make_armour_band(),
+            }
+        },
+        rules=[
+            make_rule(id="empty", hide=True, bands={AttributeGroup.STR: [BandNames.B]}),
+            make_rule(id="filled", hide=False, bands={AttributeGroup.STR: [BandNames.A]}),
+        ],
+    )
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert len(result) == 1
+    assert result[0].base_types == ["Astral Plate"]

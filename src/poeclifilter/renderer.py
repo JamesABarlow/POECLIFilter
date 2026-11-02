@@ -18,7 +18,8 @@ def render_filter(filter_ref: FilterRef, blocks: list[Block]):
 
 # TODO: Work out what actual options can exist here
 def render_block(block: Block):
-    lines = ["Hide" if block.hide else "Show"]
+    action = "Hide" if block.hide else "Show"
+    lines = [f"{action} # {block.comment}" if block.comment else action]
     if block.item_classes:
         items_classes = " ".join(f'"{item_class}"' for item_class in sorted(block.item_classes))
         lines.append(f"  Class == {items_classes}")
@@ -62,10 +63,7 @@ def get_color(display_variables, str):
     return str
 
 
-def render_range(range: Range | None):
-    if not range:
-        return None
-
+def render_range(range: Range):
     bounds = []
     if range.min is not None:
         bounds.append(f">= {range.min}")

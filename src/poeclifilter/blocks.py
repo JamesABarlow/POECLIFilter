@@ -120,6 +120,9 @@ def build_armour_blocks(
             base_types = rule.base_types
         elif rule.bands:
             base_types = get_bands(rule.bands, armour_filter_data.armour_categories)
+            # Empty bands would render with no BaseType and match every item (plan §5.1)
+            if not base_types:
+                continue
         else:
             base_types = None
 

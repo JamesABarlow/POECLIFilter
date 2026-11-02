@@ -92,10 +92,6 @@ def test_render_block_without_sockets_emits_no_sockets_line():
     assert "Sockets" not in result
 
 
-def test_render_range_none_is_none():
-    assert renderer.render_range(None) is None
-
-
 def test_render_range_with_only_min():
     assert renderer.render_range(make_range(min=5)) == [">= 5"]
 
@@ -123,6 +119,22 @@ def test_render_block_emits_a_sockets_line_for_each_end_of_range():
     result = renderer.render_block(block)
 
     assert result == "Show\n  Sockets >= 1\n  Sockets <= 6"
+
+
+def test_render_block_emits_comment_after_show():
+    block = make_block(comment="Rares shown in endgame")
+
+    result = renderer.render_block(block)
+
+    assert result == "Show # Rares shown in endgame"
+
+
+def test_render_block_emits_comment_after_hide():
+    block = make_block(hide=True, comment="Hide other rares")
+
+    result = renderer.render_block(block)
+
+    assert result == "Hide # Hide other rares"
 
 
 def test_render_with_rarity_condition():
