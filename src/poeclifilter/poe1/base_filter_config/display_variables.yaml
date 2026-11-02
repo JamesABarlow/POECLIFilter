@@ -6,8 +6,10 @@ colors:
   border:
     purple: [79, 0, 122, 255]
     white: [237, 233, 222, 255]
+    brown: [175, 96, 37, 255]
   text:
     purple: [79, 0, 122, 255]
+    brown: [175, 96, 37, 255]
 font_size:
   normal: 36
 sound_alert:

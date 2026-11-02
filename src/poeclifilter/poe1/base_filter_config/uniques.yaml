@@ -1,0 +1,57 @@
+schema: 1
+bands:
+  S:
+    base_types: []
+  A:
+    base_types: []
+  B:
+    base_types: []
+  C:
+    base_types: []
+  D:
+    base_types: []
+  E:
+    base_types: []
+  F:
+    base_types: []
+rules:
+  - id: "unique_maps"
+    comment: "unique maps"
+    hide: false
+    item_classes: ["Maps"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_s"
+    comment: "Uniques band S"
+    hide: false
+    bands: ["S"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_a"
+    comment: "Uniques band A"
+    hide: false
+    bands: ["A"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_b"
+    comment: "Uniques band B"
+    hide: false
+    bands: ["B"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_c"
+    comment: "Uniques band C"
+    hide: false
+    bands: ["C"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_d"
+    comment: "Uniques band D"
+    hide: false
+    bands: ["D"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_e"
+    comment: "Uniques band E"
+    hide: true
+    bands: ["E"]
+    rarity: {operator: "==", rarity: Unique}
+  - id: "uniques_f"
+    comment: "Uniques band F"
+    hide: true
+    bands: ["F"]
+    rarity: {operator: "==", rarity: Unique}

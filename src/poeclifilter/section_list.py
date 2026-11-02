@@ -28,6 +28,7 @@ GEAR = Section(
     partial(grouped_bands.parse, group_type=GearGroup),
     merger.merge_gear_section,
 )
+UNIQUES = Section("uniques", "uniques.yaml", flat_bands.parse, merger.merge_unique_section)
 
 # Order has big importance here as it affects the order that the final filer is built.
-SECTIONS: list[Section[Any]] = [CURRENCY, GEAR]
+SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, GEAR]

@@ -9,6 +9,8 @@ from builders import (
     make_currency_item_data,
     make_flat_bands_filter_data,
     make_grouped_bands_filter_data,
+    make_unique_entry,
+    make_unique_item_data,
     make_weapon_entry,
     make_weapon_item_data,
 )
@@ -16,9 +18,10 @@ from builders import (
 from poeclifilter import merger, resources
 from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
-from poeclifilter.merger import merge_armour, merge_currency, merge_weapons
+from poeclifilter.merger import merge_armour, merge_currency, merge_uniques, merge_weapons
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
 
 
@@ -122,6 +125,92 @@ def test_merge_currency_keeps_first_band_for_item_in_two_categories():
 
     assert filter_data.bands[BandNames.S].base_types == ["Divine Orb"]
     assert filter_data.bands[BandNames.B].base_types == []
+
+
+def test_merge_unique_section_merges_unique_item_data(monkeypatch):
+    mock_merge_uniques = Mock()
+    monkeypatch.setattr(merger, "merge_uniques", mock_merge_uniques)
+    filter_data = make_flat_bands_filter_data()
+
+    merger.merge_unique_section(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    mock_merge_uniques.assert_called_once()
+    called_filter_data, called_item_data = mock_merge_uniques.call_args.args
+    assert called_filter_data is filter_data
+    assert isinstance(called_item_data, UniqueItemData)
+
+
+def test_merge_uniques_adds_missing_item_to_its_default_band():
+    filter_data = make_flat_bands_filter_data(bands={BandNames.S: make_band()})
+    item_data = make_unique_item_data(
+        {"belts": {"Leather Belt": make_unique_entry(band=BandNames.S)}}
+    )
+
+    merge_uniques(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["Leather Belt"]
+
+
+def test_merge_uniques_leaves_existing_item_alone():
+    filter_data = make_flat_bands_filter_data(
+        bands={
+            BandNames.S: make_band(),
+            BandNames.B: make_band(base_types=["Leather Belt"]),
+        }
+    )
+    item_data = make_unique_item_data(
+        {"belts": {"Leather Belt": make_unique_entry(band=BandNames.S)}}
+    )
+
+    merge_uniques(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.B].base_types == ["Leather Belt"]
+    assert filter_data.bands[BandNames.S].base_types == []
+
+
+def test_merge_uniques_raises_when_band_missing_from_filter():
+    filter_data = make_flat_bands_filter_data(bands={})
+    item_data = make_unique_item_data(
+        {"belts": {"Leather Belt": make_unique_entry(band=BandNames.S)}}
+    )
+
+    with pytest.raises(ValueError, match="Band not found"):
+        merge_uniques(filter_data, item_data)
+
+
+def test_merge_uniques_merges_every_category_into_the_flat_bands():
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(), BandNames.A: make_band()}
+    )
+    item_data = make_unique_item_data(
+        {
+            "belts": {"Leather Belt": make_unique_entry(band=BandNames.S)},
+            "body_armours": {"Glorious Plate": make_unique_entry(band=BandNames.S)},
+        }
+    )
+
+    merge_uniques(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["Leather Belt", "Glorious Plate"]
+    assert filter_data.bands[BandNames.A].base_types == []
+
+
+def test_merge_uniques_merges_base_only_never_unique_names():
+    # A filter can only match the base (plan §5.5), so unique names must not reach the bands
+    filter_data = make_flat_bands_filter_data(bands={BandNames.S: make_band()})
+    item_data = make_unique_item_data(
+        {
+            "belts": {
+                "Leather Belt": make_unique_entry(
+                    band=BandNames.S, uniques=["Headhunter", "Wurm's Molt"]
+                )
+            }
+        }
+    )
+
+    merge_uniques(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["Leather Belt"]
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():

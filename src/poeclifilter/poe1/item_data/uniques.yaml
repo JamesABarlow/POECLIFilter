@@ -1,0 +1,14 @@
+schema: 1
+game_version: '3.25'
+# Keyed by base type, not unique name: a filter can only match the base (§5.5).
+# `uniques` lists the uniques that drop on the base. The filter never uses it; it is there
+# so a band can be judged against the whole base, usually its best unique.
+categories:
+  belts:
+    Leather Belt: {band: S, uniques: [Headhunter, Wurm's Molt]}
+    Heavy Belt: {band: S, uniques: [Mageblood, Dyadian Dawn]}
+  body_armours:
+    Glorious Plate: {band: A, uniques: [Kaom's Heart]}
+    Simple Robe: {band: C, uniques: [Tabula Rasa, Skin of the Loyal]}
+  rings:
+    Iron Ring: {band: F, uniques: [Le Heup of All]}

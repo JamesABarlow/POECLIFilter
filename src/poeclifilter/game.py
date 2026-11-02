@@ -61,8 +61,12 @@ class CurrencyClass(StrEnum):
     STACKABLE_CURRENCY = "Stackable Currency"
 
 
+class MapsClass(StrEnum):
+    MAPS = "Maps"
+
+
 # Every Class a rule can match. Add each new kind's enum here.
-type ItemClass = ArmourClass | WeaponClass | CurrencyClass
+type ItemClass = ArmourClass | WeaponClass | CurrencyClass | MapsClass
 
 
 class Rarity(StrEnum):

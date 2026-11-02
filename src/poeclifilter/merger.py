@@ -7,9 +7,11 @@ from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import currency as currency_item_data_model
+from poeclifilter.models.item_data import uniques as uniques_item_data_model
 from poeclifilter.models.item_data import weapons as weapon_item_data_model
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
 
 
@@ -65,6 +67,28 @@ def merge_weapons(filter_data: GroupedBandsFilterData[GearGroup], weapon_item_da
                 print(f"{item_name} already exists in filter can't handle this yet")
 
     return False
+
+
+def merge_unique_section(filter_data: FlatBandsFilterData, item_data_dir: Path):
+    merge_uniques(filter_data, uniques_item_data_model.get_item_data(item_data_dir))
+
+
+def merge_uniques(filter_items: FlatBandsFilterData, unique_items_data: UniqueItemData):
+    for category_key, items in unique_items_data.categories.items():
+        print(f"Merging uniques - {category_key}")
+        for item_name, item_data in items.items():
+            print(f"Item name: {item_name} - {item_data}")
+            exists_in_filter = check_item_exists_in_bands(item_name, filter_items.bands)
+
+            if not exists_in_filter:
+                band = filter_items.bands.get(item_data.band)
+                if not band:
+                    raise ValueError(f"Band not found {item_data.band}")
+                else:
+                    band.base_types.append(item_name)
+            else:
+                # If not update this means item exists twice in item_data that should be fixed or read
+                print(f"{item_name} already exists in filter can't handle this yet")
 
 
 def merge_currency_section(filter_data: FlatBandsFilterData, item_data_dir: Path):
