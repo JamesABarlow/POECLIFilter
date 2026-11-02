@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Protocol
 
+from poeclifilter.filters import GearGroup
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
@@ -17,12 +18,12 @@ class HasBaseTypes(Protocol):
     def base_types(self) -> list[str]: ...
 
 
-def merge_gear_section(filter_data: GroupedBandsFilterData, item_data_dir: Path):
+def merge_gear_section(filter_data: GroupedBandsFilterData[GearGroup], item_data_dir: Path):
     merge_armour(filter_data, armour_item_data_model.get_item_data(item_data_dir))
     merge_weapons(filter_data, weapon_item_data_model.get_item_data(item_data_dir))
 
 
-def merge_armour(filter_data: GroupedBandsFilterData, armour_item_data: ArmourItemData):
+def merge_armour(filter_data: GroupedBandsFilterData[GearGroup], armour_item_data: ArmourItemData):
     for armour_category_name, armour_classes in armour_item_data.categories.items():
         print(f"Merging armour - {armour_category_name}")
         # Filter data has no armour class level, so every class's bases merge into the group's bands
@@ -46,7 +47,7 @@ def merge_armour(filter_data: GroupedBandsFilterData, armour_item_data: ArmourIt
     return False
 
 
-def merge_weapons(filter_data: GroupedBandsFilterData, weapon_item_data: WeaponItemData):
+def merge_weapons(filter_data: GroupedBandsFilterData[GearGroup], weapon_item_data: WeaponItemData):
     for weapon_category_name, items in weapon_item_data.categories.items():
         print(f"Merging weapons - {weapon_category_name}")
         for item_name, item_data in items.items():
