@@ -3,10 +3,10 @@ from typing import Protocol
 
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.filter_data import currency as currency_filter_data_model
 from poeclifilter.models.filter_data import files
+from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
-from poeclifilter.models.filter_data.currency import CurrencyFilterData
+from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import currency as currency_item_data_model
@@ -37,7 +37,9 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
             base_config_dir, gear_filter_data_model.file_name, gear_filter_data_model.parse
         )
         currency_filter_data = files.read_filter_data(
-            base_config_dir, currency_filter_data_model.file_name, currency_filter_data_model.parse
+            base_config_dir,
+            flat_bands_filter_data_model.file_name,
+            flat_bands_filter_data_model.parse,
         )
         armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
         weapon_item_data = weapon_item_data_model.get_item_data(item_config_dir)
@@ -51,7 +53,9 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
     filter_dir = resources.filter_dir(filter_ref)
     files.write_filter_data(gear_filter_data, filter_dir, gear_filter_data_model.file_name)
-    files.write_filter_data(currency_filter_data, filter_dir, currency_filter_data_model.file_name)
+    files.write_filter_data(
+        currency_filter_data, filter_dir, flat_bands_filter_data_model.file_name
+    )
 
     # Should also eventually be able to show what's changed in the filter over the default as a report
     return False
@@ -101,7 +105,7 @@ def merge_weapons(filter_data: GearFilterData, weapon_item_data: WeaponItemData)
     return False
 
 
-def merge_currency(filter_items: CurrencyFilterData, currency_items_data: CurrencyItemData):
+def merge_currency(filter_items: FlatBandsFilterData, currency_items_data: CurrencyItemData):
     for category_key, items in currency_items_data.categories.items():
         print(f"Merging currency - {category_key}")
         for item_name, item_data in items.items():

@@ -1,22 +1,21 @@
 # Builders for test objects. Each call returns a fresh object, so tests can
 # mutate what they get without affecting each other.
 
+
 from poeclifilter.blocks import Block, ResolvedDisplay
-from poeclifilter.filters import BandNames
+from poeclifilter.filters import Band, BandNames
 from poeclifilter.game import Operator, Rarity
 from poeclifilter.models.display import (
     Display,
     MinimapIcon,
     PlayEffect,
 )
-from poeclifilter.models.filter_data.currency import Band as CurrencyBand
-from poeclifilter.models.filter_data.currency import CurrencyFilterData
 from poeclifilter.models.filter_data.display_variables import (
     ColorMap,
     DisplayVariablesFilterData,
     SoundAlert,
 )
-from poeclifilter.models.filter_data.gear import Band as GearBand
+from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.currency import CurrencyEntry, CurrencyItemData
@@ -80,7 +79,7 @@ def make_display_variables(**overrides):
 
 
 def make_gear_band(base_types=None):
-    return GearBand(base_types=[] if base_types is None else base_types)
+    return Band(base_types=[] if base_types is None else base_types)
 
 
 def make_gear_filter_data(bands=None, rules=None, schema=1):
@@ -91,12 +90,12 @@ def make_gear_filter_data(bands=None, rules=None, schema=1):
     )
 
 
-def make_currency_band(base_types=None):
-    return CurrencyBand(base_types=[] if base_types is None else base_types)
+def make_band(base_types=None):
+    return Band(base_types=[] if base_types is None else base_types)
 
 
-def make_currency_filter_data(bands=None, rules=None, schema=1):
-    return CurrencyFilterData(
+def make_flat_bands_filter_data(bands=None, rules=None, schema=1):
+    return FlatBandsFilterData(
         schema=schema,
         bands=bands if bands is not None else {},
         rules=[make_rule()] if rules is None else rules,

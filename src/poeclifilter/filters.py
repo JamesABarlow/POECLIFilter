@@ -20,6 +20,12 @@ class BandNames(StrEnum):
     F = "F"
 
 
+# The base types in one band of a section's band data
+@dataclass(frozen=True)
+class Band:
+    base_types: list[str]
+
+
 class GearGroup(StrEnum):
     STR = "str"
     DEX = "dex"

@@ -5,8 +5,8 @@ from dataclasses import dataclass
 
 from poeclifilter.filters import FilterRef
 from poeclifilter.models.display import Display
-from poeclifilter.models.filter_data import currency as currency_filter_data_model
 from poeclifilter.models.filter_data import display_variables, files
+from poeclifilter.models.filter_data import flat_bands as flat_bands_filter_data_model
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
 from poeclifilter.models.filter_data.display_variables import (
     Color,
@@ -49,8 +49,8 @@ def build_blocks(filter_ref: FilterRef):
     )
     currency_filter_data = files.read_filter_data(
         filter_dir(filter_ref),
-        currency_filter_data_model.file_name,
-        currency_filter_data_model.parse,
+        flat_bands_filter_data_model.file_name,
+        flat_bands_filter_data_model.parse,
     )
 
     blocks = []

@@ -1,15 +1,10 @@
 from dataclasses import dataclass
 
-from poeclifilter.filters import BandNames, GearGroup
+from poeclifilter.filters import Band, BandNames, GearGroup
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
 file_name = "gear.yaml"
-
-
-@dataclass(frozen=True)
-class Band:
-    base_types: list[str]
 
 
 type GearBands = dict[GearGroup, list[BandNames]]

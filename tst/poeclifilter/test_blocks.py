@@ -1,8 +1,8 @@
 from builders import (
-    make_currency_band,
-    make_currency_filter_data,
+    make_band,
     make_display,
     make_display_variables,
+    make_flat_bands_filter_data,
     make_gear_band,
     make_gear_filter_data,
     make_minimap_icon,
@@ -112,8 +112,8 @@ def test_gear_rule_with_bands_uses_armour_and_weapon_base_types():
 
 
 def test_currency_rule_builds_block_with_resolved_display():
-    currency_filter_data = make_currency_filter_data(
-        bands={BandNames.S: make_currency_band(base_types=["Mirror of Kalandra"])},
+    currency_filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(base_types=["Mirror of Kalandra"])},
         rules=[
             make_rule(
                 comment="Currency band S",
@@ -155,8 +155,8 @@ def test_currency_rule_builds_block_with_resolved_display():
 
 
 def test_currency_rule_without_display_has_no_display():
-    currency_filter_data = make_currency_filter_data(
-        bands={BandNames.B: make_currency_band(base_types=["Orb of Alteration"])},
+    currency_filter_data = make_flat_bands_filter_data(
+        bands={BandNames.B: make_band(base_types=["Orb of Alteration"])},
         rules=[make_rule(hide=False, bands=[BandNames.B])],
     )
 
@@ -166,8 +166,8 @@ def test_currency_rule_without_display_has_no_display():
 
 
 def test_currency_rule_with_empty_band_produces_no_block():
-    currency_filter_data = make_currency_filter_data(
-        bands={BandNames.C: make_currency_band()},
+    currency_filter_data = make_flat_bands_filter_data(
+        bands={BandNames.C: make_band()},
         rules=[make_rule(hide=False, bands=[BandNames.C])],
     )
 

@@ -1,27 +1,23 @@
 from dataclasses import dataclass
 
-from poeclifilter.filters import BandNames
+from poeclifilter.filters import Band, BandNames
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
+# TODO: Move out to make this fully generic
 file_name = "currency.yaml"
 
 
-@dataclass(frozen=True)
-class Band:
-    base_types: list[str]
-
-
-type CurrencyBands = list[BandNames]
+type FlatBands = list[BandNames]
 
 
 @dataclass(frozen=True)
-class CurrencyFilterData:
+class FlatBandsFilterData:
     schema: int
     bands: dict[BandNames, Band]
-    rules: list[Rule[CurrencyBands]]
+    rules: list[Rule[FlatBands]]
 
-    def resolve_bands(self, target_bands: CurrencyBands) -> list[str]:
+    def resolve_bands(self, target_bands: FlatBands) -> list[str]:
         base_types = []
         for target_band_name in target_bands:
             base_types.extend(self.bands[target_band_name].base_types)
@@ -35,14 +31,14 @@ def parse(raw):
 
     rules = [rule.parse(rule_data, parse_rule_bands) for rule_data in raw["rules"]]
 
-    return CurrencyFilterData(
+    return FlatBandsFilterData(
         schema=raw["schema"],
         bands=bands,
         rules=rules,
     )
 
 
-def parse_rule_bands(raw_rule_bands) -> CurrencyBands:
+def parse_rule_bands(raw_rule_bands) -> FlatBands:
     return [BandNames(band_name) for band_name in raw_rule_bands]
 
 

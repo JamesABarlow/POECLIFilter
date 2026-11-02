@@ -4,10 +4,10 @@ import pytest
 from builders import (
     make_armour_entry,
     make_armour_item_data,
-    make_currency_band,
+    make_band,
     make_currency_entry,
-    make_currency_filter_data,
     make_currency_item_data,
+    make_flat_bands_filter_data,
     make_gear_band,
     make_gear_filter_data,
     make_weapon_entry,
@@ -48,7 +48,7 @@ def test_merge_filter_update_not_implemented():
 
 
 def test_merge_currency_adds_missing_item_to_its_default_band():
-    filter_data = make_currency_filter_data(bands={BandNames.A: make_currency_band()})
+    filter_data = make_flat_bands_filter_data(bands={BandNames.A: make_band()})
     item_data = make_currency_item_data(
         {"base": {"Divine Orb": make_currency_entry(band=BandNames.A)}}
     )
@@ -59,10 +59,10 @@ def test_merge_currency_adds_missing_item_to_its_default_band():
 
 
 def test_merge_currency_leaves_existing_item_alone():
-    filter_data = make_currency_filter_data(
+    filter_data = make_flat_bands_filter_data(
         bands={
-            BandNames.A: make_currency_band(),
-            BandNames.B: make_currency_band(base_types=["Divine Orb"]),
+            BandNames.A: make_band(),
+            BandNames.B: make_band(base_types=["Divine Orb"]),
         }
     )
     item_data = make_currency_item_data(
@@ -76,7 +76,7 @@ def test_merge_currency_leaves_existing_item_alone():
 
 
 def test_merge_currency_raises_when_band_missing_from_filter():
-    filter_data = make_currency_filter_data(bands={})
+    filter_data = make_flat_bands_filter_data(bands={})
     item_data = make_currency_item_data(
         {"base": {"Divine Orb": make_currency_entry(band=BandNames.A)}}
     )
@@ -86,8 +86,8 @@ def test_merge_currency_raises_when_band_missing_from_filter():
 
 
 def test_merge_currency_merges_every_category_into_the_flat_bands():
-    filter_data = make_currency_filter_data(
-        bands={BandNames.A: make_currency_band(), BandNames.S: make_currency_band()}
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.A: make_band(), BandNames.S: make_band()}
     )
     item_data = make_currency_item_data(
         {
@@ -103,8 +103,8 @@ def test_merge_currency_merges_every_category_into_the_flat_bands():
 
 
 def test_merge_currency_keeps_first_band_for_item_in_two_categories():
-    filter_data = make_currency_filter_data(
-        bands={BandNames.S: make_currency_band(), BandNames.B: make_currency_band()}
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(), BandNames.B: make_band()}
     )
     item_data = make_currency_item_data(
         {
