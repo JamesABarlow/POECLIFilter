@@ -10,6 +10,8 @@ from builders import (
     make_card_item_data,
     make_currency_entry,
     make_currency_item_data,
+    make_flask_entry,
+    make_flask_item_data,
     make_flat_bands_filter_data,
     make_grouped_bands_filter_data,
     make_jewellery_entry,
@@ -28,6 +30,7 @@ from poeclifilter.merger import (
     merge_armour,
     merge_cards,
     merge_currency,
+    merge_flasks,
     merge_jewellery,
     merge_uniques,
     merge_weapons,
@@ -35,6 +38,7 @@ from poeclifilter.merger import (
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.cards import CardItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.flasks import FlaskItemData
 from poeclifilter.models.item_data.jewellery import JewelleryItemData
 from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
@@ -528,3 +532,71 @@ def test_merge_nothing_leaves_filter_data_unchanged():
     merger.merge_nothing(filter_data, resources.item_data_dir(GameVersion.POE1))
 
     assert filter_data == before
+
+
+def test_merge_flasks_section_merges_flask_item_data(monkeypatch):
+    mock_merge_flasks = Mock()
+    monkeypatch.setattr(merger, "merge_flasks", mock_merge_flasks)
+    filter_data = make_flat_bands_filter_data()
+
+    merger.merge_flasks_section(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    mock_merge_flasks.assert_called_once()
+    called_filter_data, called_item_data = mock_merge_flasks.call_args.args
+    assert called_filter_data is filter_data
+    assert isinstance(called_item_data, FlaskItemData)
+
+
+def test_merge_flasks_adds_missing_item_to_its_default_band():
+    filter_data = make_flat_bands_filter_data(bands={BandNames.B: make_band()})
+    item_data = make_flask_item_data(
+        {"utility": {"Quicksilver Flask": make_flask_entry(band=BandNames.B)}}
+    )
+
+    merge_flasks(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.B].base_types == ["Quicksilver Flask"]
+
+
+def test_merge_flasks_leaves_existing_item_alone():
+    filter_data = make_flat_bands_filter_data(
+        bands={
+            BandNames.B: make_band(),
+            BandNames.C: make_band(base_types=["Quicksilver Flask"]),
+        }
+    )
+    item_data = make_flask_item_data(
+        {"utility": {"Quicksilver Flask": make_flask_entry(band=BandNames.B)}}
+    )
+
+    merge_flasks(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.C].base_types == ["Quicksilver Flask"]
+    assert filter_data.bands[BandNames.B].base_types == []
+
+
+def test_merge_flasks_raises_when_band_missing_from_filter():
+    filter_data = make_flat_bands_filter_data(bands={})
+    item_data = make_flask_item_data(
+        {"utility": {"Quicksilver Flask": make_flask_entry(band=BandNames.B)}}
+    )
+
+    with pytest.raises(ValueError, match="Band not found"):
+        merge_flasks(filter_data, item_data)
+
+
+def test_merge_flasks_merges_every_category_into_the_flat_bands():
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.C: make_band(), BandNames.B: make_band()}
+    )
+    item_data = make_flask_item_data(
+        {
+            "life": {"Divine Life Flask": make_flask_entry(band=BandNames.C)},
+            "mana": {"Divine Mana Flask": make_flask_entry(band=BandNames.C)},
+        }
+    )
+
+    merge_flasks(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.C].base_types == ["Divine Life Flask", "Divine Mana Flask"]
+    assert filter_data.bands[BandNames.B].base_types == []

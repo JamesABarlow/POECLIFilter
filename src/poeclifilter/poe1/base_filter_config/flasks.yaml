@@ -1,0 +1,52 @@
+schema: 1
+bands:
+  S:
+    base_types: []
+  A:
+    base_types: []
+  B:
+    base_types: []
+  C:
+    base_types: []
+  D:
+    base_types: []
+  E:
+    base_types: []
+  F:
+    base_types: []
+rules:
+  - id: "flasks_s"
+    comment: "Flasks band S"
+    hide: false
+    bands: ["S"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_a"
+    comment: "Flasks band A"
+    hide: false
+    bands: ["A"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_b"
+    comment: "Flasks band B"
+    hide: false
+    bands: ["B"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_c"
+    comment: "Flasks band C"
+    hide: false
+    bands: ["C"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_d"
+    comment: "Flasks band D"
+    hide: false
+    bands: ["D"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_e"
+    comment: "Flasks band E"
+    hide: true
+    bands: ["E"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]
+  - id: "flasks_f"
+    comment: "Flasks band F"
+    hide: true
+    bands: ["F"]
+    item_classes: ["Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks"]

@@ -1,0 +1,56 @@
+schema: 1
+game_version: '3.25'
+# Ordered by drop level, highest first. Categories match the game's flask classes.
+categories:
+  life:
+    Eternal Life Flask: {band: C}
+    Divine Life Flask: {band: C}
+    Sanctified Life Flask: {band: F}
+    Hallowed Life Flask: {band: F}
+    Sacred Life Flask: {band: F}
+    Colossal Life Flask: {band: F}
+    Giant Life Flask: {band: F}
+    Grand Life Flask: {band: F}
+    Greater Life Flask: {band: F}
+    Large Life Flask: {band: F}
+    Medium Life Flask: {band: F}
+    Small Life Flask: {band: F}
+  mana:
+    Eternal Mana Flask: {band: C}
+    Divine Mana Flask: {band: C}
+    Sanctified Mana Flask: {band: F}
+    Hallowed Mana Flask: {band: F}
+    Sacred Mana Flask: {band: F}
+    Colossal Mana Flask: {band: F}
+    Giant Mana Flask: {band: F}
+    Grand Mana Flask: {band: F}
+    Greater Mana Flask: {band: F}
+    Large Mana Flask: {band: F}
+    Medium Mana Flask: {band: F}
+    Small Mana Flask: {band: F}
+  hybrid:
+    Hallowed Hybrid Flask: {band: F}
+    Sacred Hybrid Flask: {band: F}
+    Colossal Hybrid Flask: {band: F}
+    Large Hybrid Flask: {band: F}
+    Medium Hybrid Flask: {band: F}
+    Small Hybrid Flask: {band: F}
+  utility:
+    Diamond Flask: {band: B}
+    Granite Flask: {band: B}
+    Quartz Flask: {band: B}
+    Jade Flask: {band: B}
+    Basalt Flask: {band: B}
+    Aquamarine Flask: {band: B}
+    Stibnite Flask: {band: B}
+    Sulphur Flask: {band: B}
+    Silver Flask: {band: B}
+    Gold Flask: {band: B}
+    Corundum Flask: {band: B}
+    Iron Flask: {band: B}
+    Ruby Flask: {band: B}
+    Sapphire Flask: {band: B}
+    Topaz Flask: {band: B}
+    Amethyst Flask: {band: B}
+    Bismuth Flask: {band: B}
+    Quicksilver Flask: {band: B}

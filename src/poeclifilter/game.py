@@ -61,6 +61,13 @@ class CurrencyClass(StrEnum):
     STACKABLE_CURRENCY = "Stackable Currency"
 
 
+class FlaskClass(StrEnum):
+    LIFE_FLASKS = "Life Flasks"
+    MANA_FLASKS = "Mana Flasks"
+    HYBRID_FLASKS = "Hybrid Flasks"
+    UTILITY_FLASKS = "Utility Flasks"
+
+
 class JewelleryClass(StrEnum):
     RINGS = "Rings"
     AMULETS = "Amulets"  # Talismans are amulets to the game
@@ -84,6 +91,7 @@ type ItemClass = (
     ArmourClass
     | WeaponClass
     | CurrencyClass
+    | FlaskClass
     | JewelleryClass
     | QuestItemClass
     | MapsClass

@@ -21,6 +21,7 @@ from poeclifilter.models.filter_data.no_bands import NoBandsFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.cards import CardEntry, CardItemData
 from poeclifilter.models.item_data.currency import CurrencyEntry, CurrencyItemData
+from poeclifilter.models.item_data.flasks import FlaskEntry, FlaskItemData
 from poeclifilter.models.item_data.jewellery import JewelleryEntry, JewelleryItemData
 from poeclifilter.models.item_data.uniques import UniqueEntry, UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponEntry, WeaponItemData
@@ -150,6 +151,18 @@ def make_currency_entry(band=BandNames.A, stacks=None):
 
 def make_currency_item_data(categories=None, schema=1, game_version="3.25"):
     return CurrencyItemData(
+        schema=schema,
+        game_version=game_version,
+        categories=categories if categories is not None else {},
+    )
+
+
+def make_flask_entry(band=BandNames.A):
+    return FlaskEntry(band=band)
+
+
+def make_flask_item_data(categories=None, schema=1, game_version="3.25"):
+    return FlaskItemData(
         schema=schema,
         game_version=game_version,
         categories=categories if categories is not None else {},

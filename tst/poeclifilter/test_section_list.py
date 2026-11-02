@@ -14,6 +14,7 @@ def test_sections_are_in_filter_order():
         "currency",
         "uniques",
         "cards",
+        "flasks",
         "gear",
         "jewellery",
     ]
