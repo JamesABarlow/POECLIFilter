@@ -2,17 +2,19 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Protocol
 
-from poeclifilter.filters import GearGroup
+from poeclifilter.filters import GearGroup, JewelleryGroup
 from poeclifilter.models.filter_data.flat_bands import FlatBandsFilterData
 from poeclifilter.models.filter_data.grouped_bands import GroupedBandsFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import cards as cards_item_data_model
 from poeclifilter.models.item_data import currency as currency_item_data_model
+from poeclifilter.models.item_data import jewellery as jewellery_item_data_model
 from poeclifilter.models.item_data import uniques as uniques_item_data_model
 from poeclifilter.models.item_data import weapons as weapon_item_data_model
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.cards import CardItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.jewellery import JewelleryItemData
 from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
 
@@ -69,6 +71,32 @@ def merge_weapons(filter_data: GroupedBandsFilterData[GearGroup], weapon_item_da
                 print(f"{item_name} already exists in filter can't handle this yet")
 
     return False
+
+
+def merge_jewellery_section(
+    filter_data: GroupedBandsFilterData[JewelleryGroup], item_data_dir: Path
+):
+    merge_jewellery(filter_data, jewellery_item_data_model.get_item_data(item_data_dir))
+
+
+def merge_jewellery(
+    filter_data: GroupedBandsFilterData[JewelleryGroup], jewellery_item_data: JewelleryItemData
+):
+    for jewellery_group_name, items in jewellery_item_data.categories.items():
+        print(f"Merging jewellery - {jewellery_group_name}")
+        for item_name, item_data in items.items():
+            exists_in_filter = check_item_exists_in_bands(
+                item_name, filter_data.bands[jewellery_group_name]
+            )
+
+            if not exists_in_filter:
+                target_band = filter_data.bands[jewellery_group_name].get(item_data.band)
+                if not target_band:
+                    raise ValueError(f"Band not found {item_data.band}")
+                else:
+                    target_band.base_types.append(item_name)
+            else:
+                print(f"{item_name} already exists in filter can't handle this yet")
 
 
 def merge_unique_section(filter_data: FlatBandsFilterData, item_data_dir: Path):

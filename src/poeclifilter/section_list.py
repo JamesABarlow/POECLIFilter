@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from poeclifilter import merger
-from poeclifilter.filters import GearGroup
+from poeclifilter.filters import GearGroup, JewelleryGroup
 from poeclifilter.models.filter_data import flat_bands, grouped_bands
 from poeclifilter.models.filter_data.sections import SectionFilterData
 
@@ -28,8 +28,14 @@ GEAR = Section(
     partial(grouped_bands.parse, group_type=GearGroup),
     merger.merge_gear_section,
 )
+JEWELLERY = Section(
+    "jewellery",
+    "jewellery.yaml",
+    partial(grouped_bands.parse, group_type=JewelleryGroup),
+    merger.merge_jewellery_section,
+)
 UNIQUES = Section("uniques", "uniques.yaml", flat_bands.parse, merger.merge_unique_section)
 CARDS = Section("cards", "cards.yaml", flat_bands.parse, merger.merge_cards_section)
 
 # Order has big importance here as it affects the order that the final filer is built.
-SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, CARDS, GEAR]
+SECTIONS: list[Section[Any]] = [CURRENCY, UNIQUES, CARDS, GEAR, JEWELLERY]

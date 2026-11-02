@@ -1,0 +1,24 @@
+schema: 1
+game_version: '3.25'
+categories:
+  rings:
+    Vermillion Ring: {band: S}
+    Two-Stone Ring: {band: A}
+    Steel Ring: {band: A}
+    Opal Ring: {band: A}
+    Amethyst Ring: {band: B}
+    Iron Ring: {band: C}
+  amulets:
+    Onyx Amulet: {band: A}
+    Marble Amulet: {band: A}
+    Turquoise Amulet: {band: B}
+    Coral Amulet: {band: C}
+  talismans:
+    Black Maw Talisman: {band: B}
+    Avian Twins Talisman: {band: B}
+    Clutching Talisman: {band: C}
+  belts:
+    Stygian Vise: {band: S}
+    Heavy Belt: {band: A}
+    Leather Belt: {band: A}
+    Rustic Sash: {band: C}

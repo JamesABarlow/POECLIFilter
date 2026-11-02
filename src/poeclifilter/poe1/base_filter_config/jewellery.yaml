@@ -1,0 +1,80 @@
+schema: 1
+bands:
+  rings:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  amulets:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  talismans:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  belts:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+rules:
+  - id: "endgame_rare_jewellery"
+    comment: "Rare jewellery shown in endgame"
+    hide: false
+    bands:
+      rings: ["A", "S"]
+      amulets: ["A", "S"]
+      talismans: ["A", "S"]
+      belts: ["A", "S"]
+    rarity: {operator: "==", rarity: Rare}
+    rules:
+      - id: "endgame_rare_jewellery_high_ilvl"
+        comment: "high ilvl endgame rare jewellery"
+        hide: false
+        item_level: {min: 86}
+  - id: "hidden_rare_jewellery"
+    comment: "Hide other rare jewellery"
+    hide: true
+    bands:
+      rings: ["B", "C"]
+      amulets: ["B", "C"]
+      talismans: ["B", "C"]
+      belts: ["B", "C"]
+    rarity: {operator: "==", rarity: Rare}
+  - id: "hidden_magic_jewellery"
+    comment: "Hide magic jewellery"
+    hide: true
+    bands:
+      rings: ["S", "A", "B", "C"]
+      amulets: ["S", "A", "B", "C"]
+      talismans: ["S", "A", "B", "C"]
+      belts: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Magic}
+  - id: "hidden_normal_jewellery"
+    comment: "Hide normal jewellery"
+    hide: true
+    bands:
+      rings: ["S", "A", "B", "C"]
+      amulets: ["S", "A", "B", "C"]
+      talismans: ["S", "A", "B", "C"]
+      belts: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Normal}

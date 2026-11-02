@@ -61,6 +61,12 @@ class CurrencyClass(StrEnum):
     STACKABLE_CURRENCY = "Stackable Currency"
 
 
+class JewelleryClass(StrEnum):
+    RINGS = "Rings"
+    AMULETS = "Amulets"  # Talismans are amulets to the game
+    BELTS = "Belts"
+
+
 class MapsClass(StrEnum):
     MAPS = "Maps"
 
@@ -70,7 +76,9 @@ class DivinationCardClass(StrEnum):
 
 
 # Every Class a rule can match. Add each new kind's enum here.
-type ItemClass = ArmourClass | WeaponClass | CurrencyClass | MapsClass | DivinationCardClass
+type ItemClass = (
+    ArmourClass | WeaponClass | CurrencyClass | JewelleryClass | MapsClass | DivinationCardClass
+)
 
 
 class Rarity(StrEnum):

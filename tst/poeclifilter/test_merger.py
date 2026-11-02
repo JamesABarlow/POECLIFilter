@@ -11,6 +11,8 @@ from builders import (
     make_currency_item_data,
     make_flat_bands_filter_data,
     make_grouped_bands_filter_data,
+    make_jewellery_entry,
+    make_jewellery_item_data,
     make_unique_entry,
     make_unique_item_data,
     make_weapon_entry,
@@ -18,18 +20,20 @@ from builders import (
 )
 
 from poeclifilter import merger, resources
-from poeclifilter.filters import BandNames, GameVersion, GearGroup
+from poeclifilter.filters import BandNames, GameVersion, GearGroup, JewelleryGroup
 from poeclifilter.game import ArmourClass
 from poeclifilter.merger import (
     merge_armour,
     merge_cards,
     merge_currency,
+    merge_jewellery,
     merge_uniques,
     merge_weapons,
 )
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.cards import CardItemData
 from poeclifilter.models.item_data.currency import CurrencyItemData
+from poeclifilter.models.item_data.jewellery import JewelleryItemData
 from poeclifilter.models.item_data.uniques import UniqueItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
 
@@ -433,3 +437,83 @@ def test_merge_weapons_leaves_armour_bands_alone():
     merge_weapons(filter_data, item_data)
 
     assert filter_data.bands[GearGroup.STR][BandNames.A].base_types == []
+
+
+def test_merge_jewellery_section_merges_jewellery_item_data(monkeypatch):
+    mock_merge_jewellery = Mock()
+    monkeypatch.setattr(merger, "merge_jewellery", mock_merge_jewellery)
+    filter_data = make_grouped_bands_filter_data()
+
+    merger.merge_jewellery_section(filter_data, resources.item_data_dir(GameVersion.POE1))
+
+    mock_merge_jewellery.assert_called_once()
+    called_filter_data, called_item_data = mock_merge_jewellery.call_args.args
+    assert called_filter_data is filter_data
+    assert isinstance(called_item_data, JewelleryItemData)
+
+
+def test_merge_jewellery_adds_missing_item_to_its_default_band():
+    filter_data = make_grouped_bands_filter_data(
+        bands={JewelleryGroup.RINGS: {BandNames.A: make_band()}}
+    )
+    item_data = make_jewellery_item_data(
+        {JewelleryGroup.RINGS: {"Steel Ring": make_jewellery_entry(band=BandNames.A)}}
+    )
+
+    merge_jewellery(filter_data, item_data)
+
+    assert filter_data.bands[JewelleryGroup.RINGS][BandNames.A].base_types == ["Steel Ring"]
+
+
+def test_merge_jewellery_leaves_existing_item_alone():
+    filter_data = make_grouped_bands_filter_data(
+        bands={
+            JewelleryGroup.RINGS: {
+                BandNames.A: make_band(),
+                BandNames.B: make_band(base_types=["Steel Ring"]),
+            }
+        }
+    )
+    item_data = make_jewellery_item_data(
+        {JewelleryGroup.RINGS: {"Steel Ring": make_jewellery_entry(band=BandNames.A)}}
+    )
+
+    merge_jewellery(filter_data, item_data)
+
+    assert filter_data.bands[JewelleryGroup.RINGS][BandNames.B].base_types == ["Steel Ring"]
+    assert filter_data.bands[JewelleryGroup.RINGS][BandNames.A].base_types == []
+
+
+def test_merge_jewellery_raises_when_band_missing_from_filter():
+    filter_data = make_grouped_bands_filter_data(bands={JewelleryGroup.RINGS: {}})
+    item_data = make_jewellery_item_data(
+        {JewelleryGroup.RINGS: {"Steel Ring": make_jewellery_entry(band=BandNames.A)}}
+    )
+
+    with pytest.raises(ValueError, match="Band not found"):
+        merge_jewellery(filter_data, item_data)
+
+
+def test_merge_jewellery_keeps_talismans_apart_from_amulets():
+    # Both are the game's Amulets class, so only the group keeps their bands separate
+    filter_data = make_grouped_bands_filter_data(
+        bands={
+            JewelleryGroup.AMULETS: {BandNames.A: make_band()},
+            JewelleryGroup.TALISMANS: {BandNames.A: make_band()},
+        }
+    )
+    item_data = make_jewellery_item_data(
+        {
+            JewelleryGroup.AMULETS: {"Onyx Amulet": make_jewellery_entry(band=BandNames.A)},
+            JewelleryGroup.TALISMANS: {
+                "Black Maw Talisman": make_jewellery_entry(band=BandNames.A)
+            },
+        }
+    )
+
+    merge_jewellery(filter_data, item_data)
+
+    assert filter_data.bands[JewelleryGroup.AMULETS][BandNames.A].base_types == ["Onyx Amulet"]
+    assert filter_data.bands[JewelleryGroup.TALISMANS][BandNames.A].base_types == [
+        "Black Maw Talisman"
+    ]

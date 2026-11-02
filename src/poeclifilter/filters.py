@@ -51,6 +51,14 @@ class GearGroup(StrEnum):
     WARSTAVES = "warstaves"
 
 
+# Talismans share the game's Amulets class but are banded separately
+class JewelleryGroup(StrEnum):
+    RINGS = "rings"
+    AMULETS = "amulets"
+    TALISMANS = "talismans"
+    BELTS = "belts"
+
+
 @dataclass
 class FilterRef:
     game_version: GameVersion
