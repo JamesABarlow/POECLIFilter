@@ -397,6 +397,144 @@ def test_children_of_a_rule_with_empty_bands_produce_no_blocks():
     assert result == []
 
 
+def make_two_band_filter_data(rules):
+    return make_flat_bands_filter_data(
+        bands={
+            BandNames.S: make_band(base_types=["Mirror of Kalandra"]),
+            BandNames.A: make_band(base_types=["Divine Orb", "Exalted Orb"]),
+        },
+        rules=rules,
+    )
+
+
+def test_child_rule_base_types_narrow_its_parents_bands():
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S, BandNames.A],
+                rules=[make_rule(base_types=["Divine Orb"])],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].base_types == ["Divine Orb"]
+    assert sorted(result[1].base_types or []) == [
+        "Divine Orb",
+        "Exalted Orb",
+        "Mirror of Kalandra",
+    ]
+
+
+def test_child_rule_bands_narrow_its_parents_bands():
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S, BandNames.A],
+                rules=[make_rule(bands=[BandNames.S])],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].base_types == ["Mirror of Kalandra"]
+
+
+def test_child_rule_cannot_select_bases_outside_its_parents():
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                rules=[make_rule(base_types=["Mirror of Kalandra", "Divine Orb"])],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].base_types == ["Mirror of Kalandra"]
+
+
+def test_child_rule_with_no_overlap_with_its_parent_produces_no_block():
+    # Would otherwise render with no BaseType and match every item (plan §5.1)
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                comment="parent",
+                bands=[BandNames.S],
+                rules=[make_rule(comment="child", base_types=["Divine Orb"])],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert [block.comment for block in result] == ["parent"]
+
+
+def test_children_of_a_child_with_no_overlap_produce_no_blocks():
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                comment="parent",
+                bands=[BandNames.S],
+                rules=[
+                    make_rule(
+                        base_types=["Divine Orb"],
+                        rules=[make_rule(comment="grandchild")],
+                    )
+                ],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert [block.comment for block in result] == ["parent"]
+
+
+def test_child_rule_selection_applies_under_a_parent_without_one():
+    filter_data = make_two_band_filter_data(
+        [
+            make_rule(
+                sockets=make_range(min=6),
+                rules=[make_rule(base_types=["Divine Orb"])],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].base_types == ["Divine Orb"]
+    assert result[1].base_types is None
+
+
+def test_intersect_base_types_keeps_only_the_overlap():
+    result = blocks.intersect_base_types(
+        ["Divine Orb", "Exalted Orb"], ["Exalted Orb", "Chaos Orb"]
+    )
+
+    assert result == ["Exalted Orb"]
+
+
+def test_intersect_base_types_without_overlap_is_empty():
+    assert blocks.intersect_base_types(["Divine Orb"], ["Chaos Orb"]) == []
+
+
+def test_intersect_base_types_without_child_selection_keeps_parents():
+    assert blocks.intersect_base_types(["Divine Orb"], None) == ["Divine Orb"]
+
+
+def test_intersect_base_types_without_parent_selection_uses_childs():
+    assert blocks.intersect_base_types(None, ["Divine Orb"]) == ["Divine Orb"]
+
+
+def test_intersect_base_types_without_either_selection_is_none():
+    assert blocks.intersect_base_types(None, None) is None
+
+
 def test_set_fields_keeps_set_fields_including_false_and_zero():
     block = blocks.Block(comment="", hide=False, sockets=make_range(min=0))
 

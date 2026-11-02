@@ -1,10 +1,9 @@
 # Convert the filter settings to ordered block list that can be used to write the filter
 
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass, fields, replace
 
 from poeclifilter.filters import FilterRef
-from poeclifilter.models import display
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import display_variables, files
 from poeclifilter.models.filter_data.display_variables import (
@@ -128,14 +127,30 @@ def build_rule_block[BandsT](
 
 
 def merge_block(child_block: Block, parent_block: Block):
+    base_types = intersect_base_types(parent_block.base_types, child_block.base_types)
+    # No overlap would render with no BaseType and match every item (plan §5.1)
+    if base_types == []:
+        return None
+
     return replace(
         parent_block,
-        **set_fields(child_block, skip={"display"}),
+        **set_fields(child_block, skip={"display", "base_types"}),
+        base_types=base_types,
         display=merge_display(parent_block.display, child_block.display),
     )
 
 
-def set_fields(record, skip: set[str] = set()):
+# A child only narrows (Appendix D), so its selection is the overlap with its parent's.
+# None means no selection, which is inherited, unlike an empty list
+def intersect_base_types(parent: list[str] | None, child: list[str] | None):
+    if parent is None:
+        return child
+    if child is None:
+        return parent
+    return [base_type for base_type in child if base_type in parent]
+
+
+def set_fields(record, skip: Collection[str] = frozenset()):
     return {
         field.name: getattr(record, field.name)
         for field in fields(record)
