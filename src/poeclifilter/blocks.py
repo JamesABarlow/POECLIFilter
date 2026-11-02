@@ -110,6 +110,7 @@ def build_gear_blocks(
     gear_filter_data: GearFilterData, display_variables: DisplayVariablesFilterData
 ):
     blocks = []
+    gear_bands = gear_filter_data.armour_categories | gear_filter_data.weapon_categories
     for rule in gear_filter_data.rules:
         if isinstance(rule.display, str):
             display = None
@@ -119,9 +120,7 @@ def build_gear_blocks(
         if rule.base_types:
             base_types = rule.base_types
         elif rule.bands:
-            base_types = get_bands(
-                rule.bands, gear_filter_data.armour_categories | gear_filter_data.weapon_categories
-            )
+            base_types = get_bands(rule.bands, gear_bands)
             # Empty bands would render with no BaseType and match every item (plan §5.1)
             if not base_types:
                 continue
