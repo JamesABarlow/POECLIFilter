@@ -35,8 +35,8 @@ JEWELLERY = Section(
     merger.merge_jewellery_section,
 )
 UNIQUES = Section("uniques", "uniques.yaml", flat_bands.parse, merger.merge_unique_section)
-QUEST_ITEMS = Section("quest_items", "quest_items.yaml", no_bands.parse, merger.merge_nothing)
+MISCELLANEOUS = Section("miscellaneous", "miscellaneous.yaml", no_bands.parse, merger.merge_nothing)
 CARDS = Section("cards", "cards.yaml", flat_bands.parse, merger.merge_cards_section)
 
 # Order has big importance here as it affects the order that the final filer is built.
-SECTIONS: list[Section[Any]] = [QUEST_ITEMS, CURRENCY, UNIQUES, CARDS, GEAR, JEWELLERY]
+SECTIONS: list[Section[Any]] = [MISCELLANEOUS, CURRENCY, UNIQUES, CARDS, GEAR, JEWELLERY]

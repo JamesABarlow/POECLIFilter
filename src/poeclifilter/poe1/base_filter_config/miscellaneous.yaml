@@ -1,5 +1,5 @@
 schema: 1
-# No bands: quest items are matched by Class alone
+# No bands: everything here is matched by game conditions alone, such as Class
 rules:
   - id: "quest_items"
     comment: "Quest items"
