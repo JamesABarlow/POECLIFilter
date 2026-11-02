@@ -4,12 +4,12 @@ import pytest
 from builders import (
     make_armour_entry,
     make_armour_item_data,
-    make_band,
-    make_banded_item_class,
-    make_banded_item_data_class,
+    make_currency_band,
+    make_currency_entry,
+    make_currency_filter_data,
+    make_currency_item_data,
     make_gear_band,
     make_gear_filter_data,
-    make_item_entry,
     make_weapon_entry,
     make_weapon_item_data,
 )
@@ -17,16 +17,16 @@ from builders import (
 from poeclifilter import merger, resources
 from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
-from poeclifilter.merger import merge_armour, merge_banded_item_category, merge_weapons
+from poeclifilter.merger import merge_armour, merge_currency, merge_weapons
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 
 
 def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
-    mock_merge_banded_item_category = Mock()
+    mock_merge_currency = Mock()
     mock_merge_armour = Mock()
     mock_merge_weapons = Mock()
-    monkeypatch.setattr(merger, "merge_banded_item_category", mock_merge_banded_item_category)
+    monkeypatch.setattr(merger, "merge_currency", mock_merge_currency)
     monkeypatch.setattr(merger, "merge_armour", mock_merge_armour)
     monkeypatch.setattr(merger, "merge_weapons", mock_merge_weapons)
     resources.filter_dir(filter_ref).mkdir(parents=True)
@@ -35,7 +35,7 @@ def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
 
     merger.merge_filter(filter_ref, False)
 
-    mock_merge_banded_item_category.assert_called_once()
+    mock_merge_currency.assert_called_once()
     mock_merge_armour.assert_called_once()
     mock_merge_weapons.assert_called_once()
     assert (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
@@ -47,57 +47,76 @@ def test_merge_filter_update_not_implemented():
         merger.merge_filter(filter_ref, True)
 
 
-def test_merge_banded_item_category_adds_missing_item_to_its_default_band():
-    filter_items = make_banded_item_class({BandNames.A: make_band()})
-    items_data = make_banded_item_data_class(
-        categories={"base": {"Divine Orb": make_item_entry(band=BandNames.A)}}
+def test_merge_currency_adds_missing_item_to_its_default_band():
+    filter_data = make_currency_filter_data(bands={BandNames.A: make_currency_band()})
+    item_data = make_currency_item_data(
+        {"base": {"Divine Orb": make_currency_entry(band=BandNames.A)}}
     )
 
-    merge_banded_item_category("currency", filter_items, items_data)
+    merge_currency(filter_data, item_data)
 
-    assert filter_items.bands[BandNames.A].base_types == ["Divine Orb"]
+    assert filter_data.bands[BandNames.A].base_types == ["Divine Orb"]
 
 
-def test_merge_banded_item_category_leaves_existing_item_alone():
-    filter_items = make_banded_item_class(
-        {
-            BandNames.A: make_band(),
-            BandNames.B: make_band(base_types=["Divine Orb"]),
+def test_merge_currency_leaves_existing_item_alone():
+    filter_data = make_currency_filter_data(
+        bands={
+            BandNames.A: make_currency_band(),
+            BandNames.B: make_currency_band(base_types=["Divine Orb"]),
         }
     )
-    items_data = make_banded_item_data_class(
-        categories={"base": {"Divine Orb": make_item_entry(band=BandNames.A)}}
+    item_data = make_currency_item_data(
+        {"base": {"Divine Orb": make_currency_entry(band=BandNames.A)}}
     )
 
-    merge_banded_item_category("currency", filter_items, items_data)
+    merge_currency(filter_data, item_data)
 
-    assert filter_items.bands[BandNames.B].base_types == ["Divine Orb"]
-    assert filter_items.bands[BandNames.A].base_types == []
+    assert filter_data.bands[BandNames.B].base_types == ["Divine Orb"]
+    assert filter_data.bands[BandNames.A].base_types == []
 
 
-def test_merge_banded_item_category_raises_when_band_missing_from_filter():
-    filter_items = make_banded_item_class({})
-    items_data = make_banded_item_data_class(
-        categories={"base": {"Divine Orb": make_item_entry(band=BandNames.A)}}
+def test_merge_currency_raises_when_band_missing_from_filter():
+    filter_data = make_currency_filter_data(bands={})
+    item_data = make_currency_item_data(
+        {"base": {"Divine Orb": make_currency_entry(band=BandNames.A)}}
     )
 
     with pytest.raises(ValueError, match="Band not found"):
-        merge_banded_item_category("currency", filter_items, items_data)
+        merge_currency(filter_data, item_data)
 
 
-def test_merge_banded_item_category_merges_across_multiple_categories():
-    filter_items = make_banded_item_class({BandNames.A: make_band(), BandNames.S: make_band()})
-    items_data = make_banded_item_data_class(
-        categories={
-            "base": {"Divine Orb": make_item_entry(band=BandNames.A)},
-            "fossils": {"Hollow Fossil": make_item_entry(band=BandNames.S)},
+def test_merge_currency_merges_every_category_into_the_flat_bands():
+    filter_data = make_currency_filter_data(
+        bands={BandNames.A: make_currency_band(), BandNames.S: make_currency_band()}
+    )
+    item_data = make_currency_item_data(
+        {
+            "base": {"Divine Orb": make_currency_entry(band=BandNames.S)},
+            "fossils": {"Hollow Fossil": make_currency_entry(band=BandNames.S)},
         }
     )
 
-    merge_banded_item_category("currency", filter_items, items_data)
+    merge_currency(filter_data, item_data)
 
-    assert filter_items.bands[BandNames.A].base_types == ["Divine Orb"]
-    assert filter_items.bands[BandNames.S].base_types == ["Hollow Fossil"]
+    assert filter_data.bands[BandNames.S].base_types == ["Divine Orb", "Hollow Fossil"]
+    assert filter_data.bands[BandNames.A].base_types == []
+
+
+def test_merge_currency_keeps_first_band_for_item_in_two_categories():
+    filter_data = make_currency_filter_data(
+        bands={BandNames.S: make_currency_band(), BandNames.B: make_currency_band()}
+    )
+    item_data = make_currency_item_data(
+        {
+            "base": {"Divine Orb": make_currency_entry(band=BandNames.S)},
+            "fossils": {"Divine Orb": make_currency_entry(band=BandNames.B)},
+        }
+    )
+
+    merge_currency(filter_data, item_data)
+
+    assert filter_data.bands[BandNames.S].base_types == ["Divine Orb"]
+    assert filter_data.bands[BandNames.B].base_types == []
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():

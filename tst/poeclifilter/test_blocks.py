@@ -1,6 +1,6 @@
 from builders import (
-    make_band,
-    make_banded_items,
+    make_currency_band,
+    make_currency_filter_data,
     make_display,
     make_display_variables,
     make_gear_band,
@@ -14,65 +14,10 @@ from builders import (
 
 from poeclifilter import blocks
 from poeclifilter.blocks import ResolvedDisplay
-from poeclifilter.filters import BandNames, GearGroup
-from poeclifilter.game import Operator, Rarity
+from poeclifilter.filter_operations import bootstrap_new_filter
+from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
+from poeclifilter.game import CurrencyClass, Operator, Rarity
 from poeclifilter.models.rule import RarityCondition
-
-
-# TODO: Add correct full testing
-def test_no_bands_produces_no_blocks():
-    result = blocks.build_banded_items_blocks(make_banded_items(), make_display_variables())
-
-    assert result == []
-
-
-def test_band_without_display_has_no_display():
-    banded_items = make_banded_items(
-        {BandNames.S: make_band(base_types=["Mirror of Kalandra"], display=None)}
-    )
-
-    result = blocks.build_banded_items_blocks(banded_items, make_display_variables())
-
-    assert result[0].display is None
-
-
-def test_basic_banded_blocks():
-    banded_items = make_banded_items(
-        {
-            BandNames.S: make_band(
-                base_types=["Mirror of Kalandra"],
-                display=make_display(
-                    play_effect=make_play_effect(),
-                    minimap_icon=make_minimap_icon(),
-                    text_color="$purple",
-                    background_color="$white",
-                    border_color="$purple",
-                    font_size="$normal",
-                    sound_alert="$major",
-                ),
-            )
-        }
-    )
-
-    result = blocks.build_banded_items_blocks(banded_items, make_display_variables())
-
-    assert result == [
-        blocks.Block(
-            comment="",
-            hide=False,
-            item_classes=["Stackable Currency"],
-            base_types=["Mirror of Kalandra"],
-            display=ResolvedDisplay(
-                play_effect="Purple",
-                minimap_icon="1 Purple Circle",
-                text_color="79 0 122 255",
-                background_color="237 233 222 230",
-                border_color="79 0 122 255",
-                font_size="36",
-                sound_alert="6 300",
-            ),
-        )
-    ]
 
 
 def test_gear_rule_carried_to_block():
@@ -164,3 +109,94 @@ def test_gear_rule_with_bands_uses_armour_and_weapon_base_types():
     result = blocks.build_rule_blocks(gear_filter_data, make_display_variables())
 
     assert result[0].base_types == ["Astral Plate", "Thicket Bow"]
+
+
+def test_currency_rule_builds_block_with_resolved_display():
+    currency_filter_data = make_currency_filter_data(
+        bands={BandNames.S: make_currency_band(base_types=["Mirror of Kalandra"])},
+        rules=[
+            make_rule(
+                comment="Currency band S",
+                hide=False,
+                bands=[BandNames.S],
+                item_classes=[CurrencyClass.STACKABLE_CURRENCY],
+                display=make_display(
+                    play_effect=make_play_effect(),
+                    minimap_icon=make_minimap_icon(),
+                    text_color="$purple",
+                    background_color="$white",
+                    border_color="$purple",
+                    font_size="$normal",
+                    sound_alert="$major",
+                ),
+            )
+        ],
+    )
+
+    result = blocks.build_rule_blocks(currency_filter_data, make_display_variables())
+
+    assert result == [
+        blocks.Block(
+            comment="Currency band S",
+            hide=False,
+            item_classes=[CurrencyClass.STACKABLE_CURRENCY],
+            base_types=["Mirror of Kalandra"],
+            display=ResolvedDisplay(
+                play_effect="Purple",
+                minimap_icon="1 Purple Circle",
+                text_color="79 0 122 255",
+                background_color="237 233 222 230",
+                border_color="79 0 122 255",
+                font_size="36",
+                sound_alert="6 300",
+            ),
+        )
+    ]
+
+
+def test_currency_rule_without_display_has_no_display():
+    currency_filter_data = make_currency_filter_data(
+        bands={BandNames.B: make_currency_band(base_types=["Orb of Alteration"])},
+        rules=[make_rule(hide=False, bands=[BandNames.B])],
+    )
+
+    result = blocks.build_rule_blocks(currency_filter_data, make_display_variables())
+
+    assert result[0].display is None
+
+
+def test_currency_rule_with_empty_band_produces_no_block():
+    currency_filter_data = make_currency_filter_data(
+        bands={BandNames.C: make_currency_band()},
+        rules=[make_rule(hide=False, bands=[BandNames.C])],
+    )
+
+    result = blocks.build_rule_blocks(currency_filter_data, make_display_variables())
+
+    assert result == []
+
+
+def test_build_blocks_puts_currency_before_gear_and_the_catch_all_last(in_tmp_config_home):
+    # Section order is load-bearing (plan §7.1): the game uses the first block an item matches
+    filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
+    bootstrap_new_filter(filter_ref)
+
+    result = blocks.build_blocks(filter_ref)
+
+    def is_currency(block):
+        return bool(block.item_classes) and all(
+            isinstance(item_class, CurrencyClass) for item_class in block.item_classes
+        )
+
+    def is_gear(block):
+        return not is_currency(block) and block is not result[-1]
+
+    currency_indexes = [i for i, block in enumerate(result) if is_currency(block)]
+    gear_indexes = [i for i, block in enumerate(result) if is_gear(block)]
+    assert currency_indexes and gear_indexes
+    assert max(currency_indexes) < min(gear_indexes)
+
+    catch_all = result[-1]
+    assert catch_all.hide is False
+    assert not catch_all.item_classes
+    assert not catch_all.base_types

@@ -3,15 +3,16 @@ from typing import Protocol
 
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.filter_data import banded_items, files
+from poeclifilter.models.filter_data import currency as currency_filter_data_model
+from poeclifilter.models.filter_data import files
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
-from poeclifilter.models.filter_data.banded_items import BandedItemClass
+from poeclifilter.models.filter_data.currency import CurrencyFilterData
 from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
-from poeclifilter.models.item_data import banded
+from poeclifilter.models.item_data import currency as currency_item_data_model
 from poeclifilter.models.item_data import weapons as weapon_item_data_model
 from poeclifilter.models.item_data.armour import ArmourItemData
-from poeclifilter.models.item_data.banded import BandedItemDataClass
+from poeclifilter.models.item_data.currency import CurrencyItemData
 from poeclifilter.models.item_data.weapons import WeaponItemData
 
 
@@ -32,27 +33,25 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
         base_config_dir = resources.base_config_dir(filter_ref.game_version)
         item_config_dir = resources.item_data_dir(filter_ref.game_version)
 
-        banded_items_filter_data = banded_items.get_filter_data(base_config_dir)
-        banded_item_data = banded.get_item_data(item_config_dir)
-
         gear_filter_data = files.read_filter_data(
             base_config_dir, gear_filter_data_model.file_name, gear_filter_data_model.parse
         )
+        currency_filter_data = files.read_filter_data(
+            base_config_dir, currency_filter_data_model.file_name, currency_filter_data_model.parse
+        )
         armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
         weapon_item_data = weapon_item_data_model.get_item_data(item_config_dir)
+        currency_item_data = currency_item_data_model.get_item_data(item_config_dir)
     else:
         raise NotImplementedError
 
-    merge_banded_item_category(
-        "currency", banded_items_filter_data.currency, banded_item_data.currency
-    )
-
     merge_armour(gear_filter_data, armour_item_data)
     merge_weapons(gear_filter_data, weapon_item_data)
+    merge_currency(currency_filter_data, currency_item_data)
 
     filter_dir = resources.filter_dir(filter_ref)
-    banded_items.write_filter_data(banded_items_filter_data, filter_dir)
     files.write_filter_data(gear_filter_data, filter_dir, gear_filter_data_model.file_name)
+    files.write_filter_data(currency_filter_data, filter_dir, currency_filter_data_model.file_name)
 
     # Should also eventually be able to show what's changed in the filter over the default as a report
     return False
@@ -102,11 +101,9 @@ def merge_weapons(filter_data: GearFilterData, weapon_item_data: WeaponItemData)
     return False
 
 
-def merge_banded_item_category(
-    category: str, filter_items: BandedItemClass, items_data: BandedItemDataClass
-):
-    for category_key, items in items_data.categories.items():
-        print(f"Merging {category} - {category_key}")
+def merge_currency(filter_items: CurrencyFilterData, currency_items_data: CurrencyItemData):
+    for category_key, items in currency_items_data.categories.items():
+        print(f"Merging currency - {category_key}")
         for item_name, item_data in items.items():
             print(f"Item name: {item_name} - {item_data}")
             exists_in_filter = check_item_exists_in_bands(item_name, filter_items.bands)
