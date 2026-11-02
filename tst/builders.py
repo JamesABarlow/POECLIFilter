@@ -68,14 +68,26 @@ def make_color_map(**overrides):
     return ColorMap(**defaults | overrides)
 
 
-def make_display_variables(**overrides):
-    defaults = {
-        "schema": 1,
-        "colors": make_color_map(),
-        "font_size": {"normal": 36},
-        "sound_alert": {"major": SoundAlert(id=6, volume=300)},
-    }
-    return DisplayVariablesFilterData(**defaults | overrides)
+def make_display_variables(
+    schema=1,
+    colors=None,
+    font_size=None,
+    sound_alert=None,
+    displays=None,
+):
+    return DisplayVariablesFilterData(
+        schema=schema,
+        colors=make_color_map() if colors is None else colors,
+        font_size={"normal": 36} if font_size is None else font_size,
+        sound_alert=(
+            {"major": SoundAlert(id=6, volume=300)} if sound_alert is None else sound_alert
+        ),
+        displays=(
+            {"loud": make_display(border_color="$purple", font_size="$normal")}
+            if displays is None
+            else displays
+        ),
+    )
 
 
 def make_grouped_bands_filter_data(bands=None, rules=None, schema=1):

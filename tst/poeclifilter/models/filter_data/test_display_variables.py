@@ -8,6 +8,7 @@ def test_load_success():
     assert result.colors != None
     assert result.font_size != None
     assert result.sound_alert != None
+    assert result.displays != None
     assert result.schema != None
 
 

@@ -214,7 +214,7 @@ rules:
   - id: "six_socket_vendor"
     comment: "6 socket vendable items"
     hide: false
-    display: {border_color: $white}
+    display: "$vendor_gear"
     sockets: {min: 6}
     # This rule is needed to avoid the main catch all rule for bases that have been chossen not to be shown
   - id: "hidden_rares"

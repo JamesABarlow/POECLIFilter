@@ -71,10 +71,7 @@ def build_rule_blocks[BandsT](
 ):
     blocks = []
     for rule in section_filter_data.rules:
-        if isinstance(rule.display, str):
-            display = None
-        else:
-            display = build_display(rule.display, display_variables)
+        display = build_display(rule.display, display_variables)
 
         if rule.base_types:
             base_types = rule.base_types
@@ -101,9 +98,21 @@ def build_rule_blocks[BandsT](
 
 
 # Handle color substitions
-def build_display(display: Display | None, display_variables: DisplayVariablesFilterData):
-    if display is None:
+def build_display(
+    unresolved_display: Display | str | None, display_variables: DisplayVariablesFilterData
+):
+    if unresolved_display is None:
         return None
+
+    if isinstance(unresolved_display, str):
+        display_name = unresolved_display.removeprefix("$")
+        if display_name not in display_variables.displays:
+            raise ValueError(f"Unknown display {unresolved_display!r}")
+        display = display_variables.displays[display_name]
+        if not display:
+            return None
+    else:
+        display = unresolved_display
 
     resolved_text_color = resolve_color(display.text_color, display_variables.colors.text)
     resolved_border_color = resolve_color(display.border_color, display_variables.colors.border)

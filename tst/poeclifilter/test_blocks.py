@@ -1,3 +1,4 @@
+import pytest
 from builders import (
     make_band,
     make_display,
@@ -152,6 +153,30 @@ def test_currency_rule_builds_block_with_resolved_display():
             ),
         )
     ]
+
+
+def test_rule_with_named_display_resolves_it():
+    currency_filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(base_types=["Mirror of Kalandra"])},
+        rules=[make_rule(hide=False, bands=[BandNames.S], display="$loud")],
+    )
+    display_variables = make_display_variables(
+        displays={"loud": make_display(border_color="$purple", font_size="$normal")}
+    )
+
+    result = blocks.build_rule_blocks(currency_filter_data, display_variables)
+
+    assert result[0].display == ResolvedDisplay(border_color="79 0 122 255", font_size="36")
+
+
+def test_rule_with_unknown_named_display_raises():
+    currency_filter_data = make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(base_types=["Mirror of Kalandra"])},
+        rules=[make_rule(hide=False, bands=[BandNames.S], display="$lowd")],
+    )
+
+    with pytest.raises(ValueError, match="Unknown display '\\$lowd'"):
+        blocks.build_rule_blocks(currency_filter_data, make_display_variables(displays={}))
 
 
 def test_currency_rule_without_display_has_no_display():
