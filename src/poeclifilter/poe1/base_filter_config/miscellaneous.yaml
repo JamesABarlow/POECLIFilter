@@ -9,3 +9,12 @@ rules:
       minimap_icon: {size: 1, color: Green, shape: Diamond}
       border_color: $white
       font_size: $normal
+  - id: "small_stack_gold"
+    comment: "Small Gold Stack"
+    hide: false
+    item_classes: ["Gold"]
+  - id: "large_stack_gold"
+    comment: "Large Gold Stack"
+    hide: false
+    item_classes: ["Gold"]
+    stack_size: {min: 500}

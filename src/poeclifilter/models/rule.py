@@ -32,6 +32,7 @@ class Rule[BandsT]:
     item_level: Range | None = None
     sockets: Range | None = None
     linked_sockets: Range | None = None
+    stack_size: Range | None = None
     display: Display | str | None = None
     rules: list[Rule[BandsT]] | None = None
 
@@ -50,6 +51,7 @@ def parse[BandsT](raw_rule, parse_bands: Callable[[Any], BandsT]) -> Rule[BandsT
         item_level=parse_range(raw_rule.get("item_level")),
         sockets=parse_range(raw_rule.get("sockets")),
         linked_sockets=parse_range(raw_rule.get("linked_sockets")),
+        stack_size=parse_range(raw_rule.get("stack_size")),
         display=parse_display(raw_rule.get("display")),
         rules=parse_rules(raw_rule.get("rules"), parse_bands),
     )

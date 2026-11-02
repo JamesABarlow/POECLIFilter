@@ -86,6 +86,10 @@ class DivinationCardClass(StrEnum):
     DIVINATION_CARDS = "Divination Cards"
 
 
+class GoldClass(StrEnum):
+    GOLD = "Gold"
+
+
 # Every Class a rule can match. Add each new kind's enum here.
 type ItemClass = (
     ArmourClass
@@ -96,6 +100,7 @@ type ItemClass = (
     | QuestItemClass
     | MapsClass
     | DivinationCardClass
+    | GoldClass
 )
 
 

@@ -30,6 +30,8 @@ def render_block(block: Block):
         lines.append(f"  BaseType == {base_types}")
     if block.sockets:
         lines.extend(f"  Sockets {bound}" for bound in render_range(block.sockets))
+    if block.stack_size:
+        lines.extend(f"  StackSize {bound}" for bound in render_range(block.stack_size))
     if block.rarity:
         lines.append(f"  Rarity {render_rarity(block.rarity)}")
     lines.extend(render_display(block.display))

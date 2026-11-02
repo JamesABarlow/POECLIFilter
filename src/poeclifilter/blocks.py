@@ -38,6 +38,7 @@ class Block:
     base_types: list[str] | None = None
     display: ResolvedDisplay | None = None
     sockets: Range | None = None
+    stack_size: Range | None = None
     rarity: RarityCondition | None = None
 
 
@@ -121,6 +122,7 @@ def build_rule_block[BandsT](
         base_types=base_types,
         item_classes=rule.item_classes,
         sockets=rule.sockets,
+        stack_size=rule.stack_size,
         rarity=rule.rarity,
         item_level=rule.item_level,
     )
