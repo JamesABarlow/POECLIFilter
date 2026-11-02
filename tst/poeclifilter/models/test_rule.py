@@ -2,7 +2,7 @@ import pytest
 from builders import make_range, make_rarity_condition, make_rule
 
 from poeclifilter.filters import BandNames, GearGroup
-from poeclifilter.game import ArmourClass, IconColor, Operator, Rarity
+from poeclifilter.game import ArmourClass, IconColor, Operator, Rarity, WeaponClass
 from poeclifilter.models import rule
 from poeclifilter.models.display import Display, PlayEffect
 
@@ -77,15 +77,27 @@ def test_parse_keeps_base_types():
 
 
 def test_parse_converts_armour_classes_to_enum():
-    result = rule.parse(raw_rule(armour_classes=["Helmets", "Body Armours"]))
-    assert result.armour_classes == [ArmourClass.HELMETS, ArmourClass.BODY_ARMOURS]
-    assert result.armour_classes is not None
-    assert all(type(armour_class) is ArmourClass for armour_class in result.armour_classes)
+    result = rule.parse(raw_rule(item_classes=["Helmets", "Body Armours"]))
+    assert result.item_classes == [ArmourClass.HELMETS, ArmourClass.BODY_ARMOURS]
+    assert result.item_classes is not None
+    assert all(type(item_class) is ArmourClass for item_class in result.item_classes)
 
 
-def test_parse_rejects_unknown_armour_class():
-    with pytest.raises(ValueError):
-        rule.parse(raw_rule(armour_classes=["Body Armour"]))
+def test_parse_converts_weapon_classes_to_enum():
+    result = rule.parse(raw_rule(item_classes=["Bows", "Thrusting One Hand Swords"]))
+    assert result.item_classes == [WeaponClass.BOWS, WeaponClass.THRUSTING_ONE_HAND_SWORDS]
+    assert result.item_classes is not None
+    assert all(type(item_class) is WeaponClass for item_class in result.item_classes)
+
+
+def test_parse_keeps_armour_and_weapon_classes_in_one_rule():
+    result = rule.parse(raw_rule(item_classes=["Shields", "Wands"]))
+    assert result.item_classes == [ArmourClass.SHIELDS, WeaponClass.WANDS]
+
+
+def test_parse_rejects_unknown_item_class():
+    with pytest.raises(ValueError, match="Unknown item class 'Body Armour'"):
+        rule.parse(raw_rule(item_classes=["Body Armour"]))
 
 
 def test_parse_converts_rarity_condition_to_enums():
@@ -151,13 +163,13 @@ def test_parse_parses_child_rules():
     raw = raw_rule(
         rules=[
             {"id": "high_ilvl", "comment": "Endgame", "item_level": {"min": 86}},
-            {"id": "helmets", "comment": "Helmets", "armour_classes": ["Helmets"]},
+            {"id": "helmets", "comment": "Helmets", "item_classes": ["Helmets"]},
         ]
     )
     result = rule.parse(raw)
     assert result.rules == [
         make_rule(id="high_ilvl", comment="Endgame", item_level=make_range(min=86)),
-        make_rule(id="helmets", comment="Helmets", armour_classes=[ArmourClass.HELMETS]),
+        make_rule(id="helmets", comment="Helmets", item_classes=[ArmourClass.HELMETS]),
     ]
 
 

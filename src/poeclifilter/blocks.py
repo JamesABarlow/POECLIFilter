@@ -132,7 +132,7 @@ def build_gear_blocks(
                 hide=rule.hide is True,
                 display=display,
                 base_types=base_types,
-                item_classes=rule.armour_classes,
+                item_classes=rule.item_classes,
                 sockets=rule.sockets,
                 rarity=rule.rarity,
             )

@@ -57,6 +57,10 @@ class WeaponClass(StrEnum):
     WARSTAVES = "Warstaves"
 
 
+# Every Class a rule can match. Add each new kind's enum here.
+type ItemClass = ArmourClass | WeaponClass
+
+
 class Rarity(StrEnum):
     NORMAL = "Normal"
     MAGIC = "Magic"

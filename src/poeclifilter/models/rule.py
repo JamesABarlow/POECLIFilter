@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+from typing import get_args
 
 from poeclifilter.filters import BandNames, GearGroup
-from poeclifilter.game import ArmourClass, Operator, Rarity
+from poeclifilter.game import ItemClass, Operator, Rarity
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
 
@@ -24,10 +25,9 @@ class Rule[BandsT]:
     comment: str
     hide: bool | None
     include: bool = True
-    # bands: dict[GearGroup, list[BandNames]] | None = None
     bands: BandsT | None = None
     base_types: list[str] | None = None
-    armour_classes: list[ArmourClass] | None = None
+    item_classes: list[ItemClass] | None = None
     rarity: RarityCondition | None = None
     item_level: Range | None = None
     sockets: Range | None = None
@@ -44,7 +44,7 @@ def parse(raw_rule):
         hide=raw_rule.get("hide"),
         bands=parse_bands(raw_rule.get("bands")),
         base_types=raw_rule.get("base_types"),
-        armour_classes=parse_armour_classes(raw_rule.get("armour_classes")),
+        item_classes=parse_item_classes(raw_rule.get("item_classes")),
         rarity=parse_rarity(raw_rule.get("rarity")),
         item_level=parse_range(raw_rule.get("item_level")),
         sockets=parse_range(raw_rule.get("sockets")),
@@ -71,11 +71,21 @@ def parse_bands(raw_bands):
     }
 
 
-def parse_armour_classes(raw_armour_classes):
-    if raw_armour_classes is None:
+def parse_item_classes(raw_item_classes):
+    if raw_item_classes is None:
         return None
 
-    return [ArmourClass(armour_class) for armour_class in raw_armour_classes]
+    return [parse_item_class(raw_item_class) for raw_item_class in raw_item_classes]
+
+
+def parse_item_class(raw_item_class) -> ItemClass:
+    # Read the enums from the ItemClass union itself, so there is no second list to keep in step
+    for item_class_enum in get_args(ItemClass.__value__):
+        try:
+            return item_class_enum(raw_item_class)
+        except ValueError:
+            pass
+    raise ValueError(f"Unknown item class {raw_item_class!r}")
 
 
 def parse_rarity(raw_rarity):
