@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from poeclifilter.filters import BandNames, FilterRef
 from poeclifilter.models.display import Display
-from poeclifilter.models.filter_data import banded_items, display_variables
+from poeclifilter.models.filter_data import banded_items, display_variables, files
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
 from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
@@ -48,7 +48,9 @@ def build_blocks(filter_ref: FilterRef):
     # TODO: These should be input as args, simplifies the testing
     display_variables_filter_data = display_variables.get_filter_data(filter_dir(filter_ref))
     banded_items_filter_data = banded_items.get_filter_data(filter_dir(filter_ref))
-    gear_filter_data = gear_filter_data_model.get_filter_data(filter_dir(filter_ref))
+    gear_filter_data = files.read_filter_data(
+        filter_dir(filter_ref), gear_filter_data_model.file_name, gear_filter_data_model.parse
+    )
 
     blocks = []
 

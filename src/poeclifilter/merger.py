@@ -3,7 +3,7 @@ from typing import Protocol
 
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.filter_data import banded_items
+from poeclifilter.models.filter_data import banded_items, files
 from poeclifilter.models.filter_data import gear as gear_filter_data_model
 from poeclifilter.models.filter_data.banded_items import BandedItemClass
 from poeclifilter.models.filter_data.gear import GearFilterData
@@ -35,7 +35,9 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
         banded_items_filter_data = banded_items.get_filter_data(base_config_dir)
         banded_item_data = banded.get_item_data(item_config_dir)
 
-        gear_filter_data = gear_filter_data_model.get_filter_data(base_config_dir)
+        gear_filter_data = files.read_filter_data(
+            base_config_dir, gear_filter_data_model.file_name, gear_filter_data_model.parse
+        )
         armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
         weapon_item_data = weapon_item_data_model.get_item_data(item_config_dir)
     else:
@@ -50,7 +52,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
     filter_dir = resources.filter_dir(filter_ref)
     banded_items.write_filter_data(banded_items_filter_data, filter_dir)
-    gear_filter_data_model.write_filter_data(gear_filter_data, filter_dir)
+    files.write_filter_data(gear_filter_data, filter_dir, gear_filter_data_model.file_name)
 
     # Should also eventually be able to show what's changed in the filter over the default as a report
     return False

@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-from pathlib import Path
 
-from poeclifilter import loader, writer
 from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
@@ -31,12 +29,6 @@ class GearFilterData:
                 base_types.extend(target_band.base_types)
 
         return base_types
-
-
-def get_filter_data(config_dir: Path):
-    raw = loader.load(Path(f"{config_dir}/{file_name}").read_text())
-
-    return parse(raw)
 
 
 def parse(raw):
@@ -71,7 +63,3 @@ def parse_bands(raw_bands):
 def parse_band(raw_band):
     base_types = raw_band.get("base_types", [])
     return Band(base_types=base_types)
-
-
-def write_filter_data(gear: GearFilterData, filter_dir: Path):
-    Path(f"{filter_dir}/{file_name}").write_text(writer.dump(gear))

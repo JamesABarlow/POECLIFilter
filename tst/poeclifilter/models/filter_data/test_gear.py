@@ -3,7 +3,7 @@ from builders import make_gear_band, make_gear_filter_data
 
 from poeclifilter import resources
 from poeclifilter.filters import BandNames, GameVersion, GearGroup
-from poeclifilter.models.filter_data import gear
+from poeclifilter.models.filter_data import files, gear
 
 
 def raw_config(**groups):
@@ -16,7 +16,9 @@ def raw_config(**groups):
 
 
 def test_load_success():
-    result = gear.get_filter_data(resources.base_config_dir(GameVersion.POE1))
+    result = files.read_filter_data(
+        resources.base_config_dir(GameVersion.POE1), gear.file_name, gear.parse
+    )
     assert result.schema is not None
     assert result.bands is not None
 
@@ -100,7 +102,7 @@ def test_parse_rejects_unknown_weapon_group():
 
 
 def test_write_creates_file(tmp_path):
-    gear.write_filter_data(gear.parse(raw_config()), tmp_path)
+    files.write_filter_data(gear.parse(raw_config()), tmp_path, gear.file_name)
     assert (tmp_path / "gear.yaml").exists()
 
 
@@ -111,8 +113,8 @@ def test_write_round_trips(tmp_path):
             dex={"A": {"base_types": ["Syndicate's Garb"]}},
         )
     )
-    gear.write_filter_data(original, tmp_path)
-    assert gear.get_filter_data(tmp_path) == original
+    files.write_filter_data(original, tmp_path, gear.file_name)
+    assert files.read_filter_data(tmp_path, gear.file_name, gear.parse) == original
 
 
 def test_write_round_trips_rule_bands(tmp_path):
@@ -129,8 +131,8 @@ def test_write_round_trips_rule_bands(tmp_path):
         }
     ]
     original = gear.parse(raw)
-    gear.write_filter_data(original, tmp_path)
-    reread = gear.get_filter_data(tmp_path)
+    files.write_filter_data(original, tmp_path, gear.file_name)
+    reread = files.read_filter_data(tmp_path, gear.file_name, gear.parse)
     assert reread == original
     assert reread.rules[0].bands == {GearGroup.STR: [BandNames.A], GearGroup.BOWS: [BandNames.A]}
 
