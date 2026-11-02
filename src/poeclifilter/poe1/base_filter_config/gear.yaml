@@ -211,6 +211,11 @@ rules:
       str_int: ["A", "S"]
       bows: ["A", "S"]
     rarity: {operator: "==", rarity: Rare}
+    rules:
+      - id: "endgame_rares_high_ilvl"
+        comment: "high ilvl endgame rares"
+        hide: false
+        item_level: {min: 86}
   - id: "six_socket_vendor"
     comment: "6 socket vendable items"
     hide: false

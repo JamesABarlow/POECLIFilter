@@ -1,9 +1,10 @@
 # Convert the filter settings to ordered block list that can be used to write the filter
 
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, fields, replace
 
 from poeclifilter.filters import FilterRef
+from poeclifilter.models import display
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import display_variables, files
 from poeclifilter.models.filter_data.display_variables import (
@@ -12,7 +13,7 @@ from poeclifilter.models.filter_data.display_variables import (
     SoundAlert,
 )
 from poeclifilter.models.filter_data.sections import SectionFilterData
-from poeclifilter.models.rule import Range, RarityCondition
+from poeclifilter.models.rule import Range, RarityCondition, Rule
 from poeclifilter.resources import filter_dir
 from poeclifilter.section_list import SECTIONS
 
@@ -33,9 +34,10 @@ class ResolvedDisplay:
 class Block:
     comment: str
     hide: bool
-    item_classes: Sequence[str] | None
-    base_types: list[str] | None
-    display: ResolvedDisplay | None
+    item_level: Range | None = None
+    item_classes: Sequence[str] | None = None
+    base_types: list[str] | None = None
+    display: ResolvedDisplay | None = None
     sockets: Range | None = None
     rarity: RarityCondition | None = None
 
@@ -66,35 +68,85 @@ def build_blocks(filter_ref: FilterRef):
     return blocks
 
 
-def build_rule_blocks[BandsT](
-    section_filter_data: SectionFilterData[BandsT], display_variables: DisplayVariablesFilterData
-):
+def build_rule_blocks[BandsT](section_filter_data, display_variables):
     blocks = []
     for rule in section_filter_data.rules:
-        display = build_display(rule.display, display_variables)
-
-        if rule.base_types:
-            base_types = rule.base_types
-        elif rule.bands:
-            base_types = section_filter_data.resolve_bands(rule.bands)
-            # Empty bands would render with no BaseType and match every item (plan §5.1)
-            if not base_types:
-                continue
-        else:
-            base_types = None
-
-        blocks.append(
-            Block(
-                comment=rule.comment,
-                hide=rule.hide is True,
-                display=display,
-                base_types=base_types,
-                item_classes=rule.item_classes,
-                sockets=rule.sockets,
-                rarity=rule.rarity,
-            )
-        )
+        blocks.extend(build_block_tree(rule, None, section_filter_data, display_variables))
     return blocks
+
+
+def build_block_tree[BandsT](
+    rule: Rule[BandsT],
+    parent_block: Block | None,
+    section_filter_data: SectionFilterData[BandsT],
+    display_variables: DisplayVariablesFilterData,
+):
+    if not rule.include:
+        return []
+
+    block = build_rule_block(rule, section_filter_data, display_variables)
+    if block is not None and parent_block is not None:
+        block = merge_block(block, parent_block)
+    if block is None:
+        return []
+
+    blocks = []
+    for child in rule.rules or []:
+        # Pass the merged block, so a grandchild narrows the child, not the top rule
+        blocks.extend(build_block_tree(child, block, section_filter_data, display_variables))
+    blocks.append(block)
+    return blocks
+
+
+def build_rule_block[BandsT](
+    rule: Rule[BandsT],
+    section_filter_data: SectionFilterData[BandsT],
+    display_variables: DisplayVariablesFilterData,
+):
+    display = build_display(rule.display, display_variables)
+
+    if rule.base_types:
+        base_types = rule.base_types
+    elif rule.bands:
+        base_types = section_filter_data.resolve_bands(rule.bands)
+        # Empty bands would render with no BaseType and match every item (plan §5.1)
+        if not base_types:
+            return
+    else:
+        base_types = None
+
+    return Block(
+        comment=rule.comment,
+        hide=rule.hide is True,
+        display=display,
+        base_types=base_types,
+        item_classes=rule.item_classes,
+        sockets=rule.sockets,
+        rarity=rule.rarity,
+        item_level=rule.item_level,
+    )
+
+
+def merge_block(child_block: Block, parent_block: Block):
+    return replace(
+        parent_block,
+        **set_fields(child_block, skip={"display"}),
+        display=merge_display(parent_block.display, child_block.display),
+    )
+
+
+def set_fields(record, skip: set[str] = set()):
+    return {
+        field.name: getattr(record, field.name)
+        for field in fields(record)
+        if field.name not in skip and getattr(record, field.name) is not None
+    }
+
+
+def merge_display(parent: ResolvedDisplay | None, child: ResolvedDisplay | None):
+    if parent is None or child is None:
+        return child or parent
+    return replace(parent, **set_fields(child))
 
 
 # Handle color substitions

@@ -1,6 +1,7 @@
 import pytest
 from builders import (
     make_band,
+    make_color_map,
     make_display,
     make_display_variables,
     make_flat_bands_filter_data,
@@ -153,6 +154,279 @@ def test_currency_rule_builds_block_with_resolved_display():
             ),
         )
     ]
+
+
+def make_mirror_filter_data(rules):
+    return make_flat_bands_filter_data(
+        bands={BandNames.S: make_band(base_types=["Mirror of Kalandra"])}, rules=rules
+    )
+
+
+def test_child_rule_block_comes_before_its_parents():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                id="parent",
+                comment="parent",
+                bands=[BandNames.S],
+                rules=[make_rule(id="child", comment="child")],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert [block.comment for block in result] == ["child", "parent"]
+
+
+def test_child_rule_inherits_its_parents_conditions():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                item_classes=[CurrencyClass.STACKABLE_CURRENCY],
+                rarity=make_rarity_condition(),
+                sockets=make_range(min=6),
+                rules=[make_rule(comment="child", item_level=make_range(min=86))],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0] == blocks.Block(
+        comment="child",
+        hide=False,
+        item_classes=[CurrencyClass.STACKABLE_CURRENCY],
+        base_types=["Mirror of Kalandra"],
+        rarity=make_rarity_condition(),
+        sockets=make_range(min=6),
+        item_level=make_range(min=86),
+    )
+
+
+def test_child_rule_condition_overrides_its_parents():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                sockets=make_range(min=5),
+                rules=[make_rule(sockets=make_range(min=6))],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].sockets == make_range(min=6)
+    assert result[1].sockets == make_range(min=5)
+
+
+def test_child_rule_keeps_its_own_comment_and_hide():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                comment="parent",
+                hide=True,
+                bands=[BandNames.S],
+                rules=[make_rule(comment="child", hide=False)],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert (result[0].comment, result[0].hide) == ("child", False)
+    assert (result[1].comment, result[1].hide) == ("parent", True)
+
+
+def test_child_rule_with_unset_hide_is_shown_under_a_hidden_parent():
+    # hide is not inherited (Appendix D)
+    filter_data = make_mirror_filter_data(
+        [make_rule(hide=True, bands=[BandNames.S], rules=[make_rule(hide=None)])]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].hide is False
+
+
+def test_child_rule_display_merges_over_its_parents_field_by_field():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                display=make_display(border_color="$purple", font_size="$normal"),
+                rules=[make_rule(display=make_display(text_color="$purple", font_size=None))],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].display == ResolvedDisplay(
+        text_color="79 0 122 255", border_color="79 0 122 255", font_size="36"
+    )
+
+
+def test_child_rule_display_overrides_a_field_its_parent_sets():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                display=make_display(background_color="$white", border_color="$purple"),
+                rules=[make_rule(display=make_display(background_color="$purple"))],
+            )
+        ]
+    )
+    display_variables = make_display_variables(
+        colors=make_color_map(
+            background={"white": (237, 233, 222, 230), "purple": (79, 0, 122, 240)}
+        )
+    )
+
+    result = blocks.build_rule_blocks(filter_data, display_variables)
+
+    assert result[0].display == ResolvedDisplay(
+        background_color="79 0 122 240", border_color="79 0 122 255"
+    )
+
+
+def test_child_rule_without_display_inherits_its_parents():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                display="$loud",
+                rules=[make_rule()],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert (
+        result[0].display
+        == result[1].display
+        == ResolvedDisplay(border_color="79 0 122 255", font_size="36")
+    )
+
+
+def test_grandchild_rule_inherits_from_the_merged_child():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                bands=[BandNames.S],
+                rarity=make_rarity_condition(),
+                rules=[
+                    make_rule(
+                        item_level=make_range(min=86),
+                        rules=[make_rule(comment="grandchild", sockets=make_range(min=6))],
+                    )
+                ],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result[0].comment == "grandchild"
+    assert result[0].base_types == ["Mirror of Kalandra"]
+    assert result[0].rarity == make_rarity_condition()
+    assert result[0].item_level == make_range(min=86)
+    assert result[0].sockets == make_range(min=6)
+
+
+def test_sibling_child_rules_keep_file_order():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                comment="parent",
+                bands=[BandNames.S],
+                rules=[make_rule(comment="first"), make_rule(comment="second")],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert [block.comment for block in result] == ["first", "second", "parent"]
+
+
+def test_excluded_rule_drops_its_children():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                include=False,
+                bands=[BandNames.S],
+                rules=[make_rule(comment="child")],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result == []
+
+
+def test_excluded_child_rule_is_dropped_and_its_parent_kept():
+    filter_data = make_mirror_filter_data(
+        [
+            make_rule(
+                comment="parent",
+                bands=[BandNames.S],
+                rules=[make_rule(comment="child", include=False)],
+            )
+        ]
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert [block.comment for block in result] == ["parent"]
+
+
+def test_children_of_a_rule_with_empty_bands_produce_no_blocks():
+    # A child only narrows, so it must not render with no BaseType (plan §5.1)
+    filter_data = make_flat_bands_filter_data(
+        bands={BandNames.C: make_band()},
+        rules=[make_rule(bands=[BandNames.C], rules=[make_rule(comment="child")])],
+    )
+
+    result = blocks.build_rule_blocks(filter_data, make_display_variables())
+
+    assert result == []
+
+
+def test_set_fields_keeps_set_fields_including_false_and_zero():
+    block = blocks.Block(comment="", hide=False, sockets=make_range(min=0))
+
+    result = blocks.set_fields(block)
+
+    assert result == {"comment": "", "hide": False, "sockets": make_range(min=0)}
+
+
+def test_set_fields_leaves_out_skipped_fields():
+    block = blocks.Block(comment="kept", hide=False, rarity=make_rarity_condition())
+
+    result = blocks.set_fields(block, skip={"rarity", "hide"})
+
+    assert result == {"comment": "kept"}
+
+
+def test_merge_display_without_child_display_keeps_parents():
+    parent = ResolvedDisplay(font_size="36")
+
+    assert blocks.merge_display(parent, None) == parent
+
+
+def test_merge_display_without_parent_display_uses_childs():
+    child = ResolvedDisplay(font_size="36")
+
+    assert blocks.merge_display(None, child) == child
+
+
+def test_merge_display_without_either_display_is_none():
+    assert blocks.merge_display(None, None) is None
 
 
 def test_rule_with_named_display_resolves_it():

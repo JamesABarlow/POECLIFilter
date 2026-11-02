@@ -23,6 +23,8 @@ def render_block(block: Block):
     if block.item_classes:
         items_classes = " ".join(f'"{item_class}"' for item_class in sorted(block.item_classes))
         lines.append(f"  Class == {items_classes}")
+    if block.item_level:
+        lines.extend(f"  ItemLevel {bound}" for bound in render_range(block.item_level))
     if block.base_types:
         base_types = " ".join(f'"{item}"' for item in sorted(block.base_types))
         lines.append(f"  BaseType == {base_types}")

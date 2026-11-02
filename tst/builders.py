@@ -47,6 +47,7 @@ def make_block(
     display=None,
     sockets=None,
     rarity=None,
+    item_level=None,
 ):
     return Block(
         comment=comment,
@@ -56,6 +57,7 @@ def make_block(
         display=make_resolved_display() if display is None else display,
         sockets=sockets,
         rarity=rarity,
+        item_level=item_level,
     )
 
 

@@ -121,6 +121,34 @@ def test_render_block_emits_a_sockets_line_for_each_end_of_range():
     assert result == "Show\n  Sockets >= 1\n  Sockets <= 6"
 
 
+def test_render_block_emits_item_level_between_class_and_base_type():
+    block = make_block(
+        item_classes=["Body Armours"],
+        base_types=["Astral Plate"],
+        item_level=make_range(min=86),
+    )
+
+    result = renderer.render_block(block)
+
+    assert result == (
+        'Show\n  Class == "Body Armours"\n  ItemLevel >= 86\n  BaseType == "Astral Plate"'
+    )
+
+
+def test_render_block_emits_an_item_level_line_for_each_end_of_range():
+    block = make_block(item_level=make_range(min=68, max=85))
+
+    result = renderer.render_block(block)
+
+    assert result == "Show\n  ItemLevel >= 68\n  ItemLevel <= 85"
+
+
+def test_render_block_without_item_level_emits_no_item_level_line():
+    result = renderer.render_block(make_block())
+
+    assert "ItemLevel" not in result
+
+
 def test_render_block_emits_comment_after_show():
     block = make_block(comment="Rares shown in endgame")
 
