@@ -132,3 +132,19 @@ def test_armour_rule_with_only_empty_bands_produces_no_block():
 
     assert len(result) == 1
     assert result[0].base_types == ["Astral Plate"]
+
+
+def test_armour_rule_with_unset_hide_is_shown():
+    armour_filter_data = make_armour_filter_data(rules=[make_rule(hide=None)])
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert result[0].hide is False
+
+
+def test_armour_rule_with_hide_true_is_hidden():
+    armour_filter_data = make_armour_filter_data(rules=[make_rule(hide=True)])
+
+    result = blocks.build_armour_blocks(armour_filter_data, make_display_variables())
+
+    assert result[0].hide is True

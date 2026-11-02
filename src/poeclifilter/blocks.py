@@ -129,7 +129,7 @@ def build_armour_blocks(
         blocks.append(
             Block(
                 comment=rule.comment,
-                hide=rule.hide,
+                hide=rule.hide is True,
                 display=display,
                 base_types=base_types,
                 item_classes=rule.armour_classes,

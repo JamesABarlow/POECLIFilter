@@ -22,7 +22,7 @@ class RarityCondition:
 class Rule:
     id: str
     comment: str
-    hide: bool
+    hide: bool | None
     include: bool = True
     bands: dict[AttributeGroup, list[BandNames]] | None = None
     base_types: list[str] | None = None
