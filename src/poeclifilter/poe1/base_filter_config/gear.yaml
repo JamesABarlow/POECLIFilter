@@ -209,11 +209,36 @@ rules:
       int_dex: ["A", "S"]
       dex_str: ["A", "S"]
       str_int: ["A", "S"]
-      bows: ["A", "S"]
     rarity: {operator: "==", rarity: Rare}
     rules:
       - id: "endgame_rares_high_ilvl"
         comment: "high ilvl endgame rares"
+        hide: false
+        item_level: {min: 86}
+  - id: "endgame_rare_weapons"
+    comment: "Rare weapons shown in endgame"
+    hide: false
+    bands:
+      bows: ["A", "S"]
+      claws: ["A", "S"]
+      daggers: ["A", "S"]
+      one_hand_swords: ["A", "S"]
+      one_hand_axes: ["A", "S"]
+      one_hand_maces: ["A", "S"]
+      quivers: ["A", "S"]
+      rune_daggers: ["A", "S"]
+      sceptres: ["A", "S"]
+      staves: ["A", "S"]
+      thrusting_one_hand_swords: ["A", "S"]
+      two_hand_axes: ["A", "S"]
+      two_hand_maces: ["A", "S"]
+      two_hand_swords: ["A", "S"]
+      wands: ["A", "S"]
+      warstaves: ["A", "S"]
+    rarity: {operator: "==", rarity: Rare}
+    rules:
+      - id: "endgame_rare_weapons_high_ilvl"
+        comment: "high ilvl endgame rare weapons"
         hide: false
         item_level: {min: 86}
   - id: "six_socket_vendor"
@@ -254,4 +279,67 @@ rules:
       int_dex: ["S", "A", "B", "C"]
       dex_str: ["S", "A", "B", "C"]
       str_int: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Normal}
+  - id: "hidden_rare_weapons"
+    comment: "Hide other rare weapons"
+    hide: true
+    bands:
+      bows: ["B", "C"]
+      claws: ["B", "C"]
+      daggers: ["B", "C"]
+      one_hand_swords: ["B", "C"]
+      one_hand_axes: ["B", "C"]
+      one_hand_maces: ["B", "C"]
+      quivers: ["B", "C"]
+      rune_daggers: ["B", "C"]
+      sceptres: ["B", "C"]
+      staves: ["B", "C"]
+      thrusting_one_hand_swords: ["B", "C"]
+      two_hand_axes: ["B", "C"]
+      two_hand_maces: ["B", "C"]
+      two_hand_swords: ["B", "C"]
+      wands: ["B", "C"]
+      warstaves: ["B", "C"]
+    rarity: {operator: "==", rarity: Rare}
+  - id: "hidden_magic_weapons"
+    comment: "Hide magic weapons"
+    hide: true
+    bands:
+      bows: ["S", "A", "B", "C"]
+      claws: ["S", "A", "B", "C"]
+      daggers: ["S", "A", "B", "C"]
+      one_hand_swords: ["S", "A", "B", "C"]
+      one_hand_axes: ["S", "A", "B", "C"]
+      one_hand_maces: ["S", "A", "B", "C"]
+      quivers: ["S", "A", "B", "C"]
+      rune_daggers: ["S", "A", "B", "C"]
+      sceptres: ["S", "A", "B", "C"]
+      staves: ["S", "A", "B", "C"]
+      thrusting_one_hand_swords: ["S", "A", "B", "C"]
+      two_hand_axes: ["S", "A", "B", "C"]
+      two_hand_maces: ["S", "A", "B", "C"]
+      two_hand_swords: ["S", "A", "B", "C"]
+      wands: ["S", "A", "B", "C"]
+      warstaves: ["S", "A", "B", "C"]
+    rarity: {operator: "==", rarity: Magic}
+  - id: "hidden_normal_weapons"
+    comment: "Hide normal weapons"
+    hide: true
+    bands:
+      bows: ["S", "A", "B", "C"]
+      claws: ["S", "A", "B", "C"]
+      daggers: ["S", "A", "B", "C"]
+      one_hand_swords: ["S", "A", "B", "C"]
+      one_hand_axes: ["S", "A", "B", "C"]
+      one_hand_maces: ["S", "A", "B", "C"]
+      quivers: ["S", "A", "B", "C"]
+      rune_daggers: ["S", "A", "B", "C"]
+      sceptres: ["S", "A", "B", "C"]
+      staves: ["S", "A", "B", "C"]
+      thrusting_one_hand_swords: ["S", "A", "B", "C"]
+      two_hand_axes: ["S", "A", "B", "C"]
+      two_hand_maces: ["S", "A", "B", "C"]
+      two_hand_swords: ["S", "A", "B", "C"]
+      wands: ["S", "A", "B", "C"]
+      warstaves: ["S", "A", "B", "C"]
     rarity: {operator: "==", rarity: Normal}

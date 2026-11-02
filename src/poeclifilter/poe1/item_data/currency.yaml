@@ -6,6 +6,42 @@ categories:
     Chaos Orb: {band: A}
     Scroll of Wisdom: {band: E}
     # Divine Orb: {band: F}
+    Mirror of Kalandra: {band: S}
+    Exalted Orb: {band: A}
+    Orb of Annulment: {band: A}
+    Sacred Orb: {band: A}
+    Orb of Unmaking: {band: A}
+    Enkindling Orb: {band: A}
+    Instilling Orb: {band: A}
+    Gemcutter's Prism: {band: B}
+    Vaal Orb: {band: B}
+    Regal Orb: {band: B}
+    Orb of Regret: {band: B}
+    Orb of Scouring: {band: B}
+    Orb of Alchemy: {band: B}
+    Blessed Orb: {band: B}
+    Cartographer's Chisel: {band: B}
+    Orb of Fusing: {band: B}
+    Jeweller's Orb: {band: B}
+    Chromatic Orb: {band: C}
+    Orb of Chance: {band: C}
+    Glassblower's Bauble: {band: C}
+    Orb of Alteration: {band: D}
+    Orb of Augmentation: {band: D}
+    Orb of Transmutation: {band: D}
+    Blacksmith's Whetstone: {band: D}
+    Armourer's Scrap: {band: D}
+    Portal Scroll: {band: D}
+    Stacked Deck: {band: C}
+  shards:
+    Mirror Shard: {band: S}
+    Exalted Shard: {band: A}
+    Annulment Shard: {band: B}
+    Chaos Shard: {band: B}
+    Regal Shard: {band: B}
+    Alchemy Shard: {band: B}
+    Alteration Shard: {band: B}
+    Transmutation Shard: {band: B}
   fossils:
     Hollow Fossil: {band: S}
     Divine Orb: {band: B}
