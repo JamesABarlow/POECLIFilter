@@ -1,0 +1,19 @@
+schema: 1
+game_version: '3.25'
+categories:
+  bows: {}
+  claws: {}
+  daggers: {}
+  one_hand_swords: {}
+  one_hand_axes: {}
+  one_hand_maces: {}
+  quivers: {}
+  rune_daggers: {}
+  sceptres: {}
+  staves: {}
+  thrusting_one_hand_swords: {}
+  two_hand_axes: {}
+  two_hand_maces: {}
+  two_hand_swords: {}
+  wands: {}
+  warstaves: {}

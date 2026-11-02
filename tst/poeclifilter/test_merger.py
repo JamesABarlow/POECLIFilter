@@ -2,20 +2,22 @@ from unittest.mock import Mock
 
 import pytest
 from builders import (
-    make_armour_band,
     make_armour_entry,
     make_armour_item_data,
     make_band,
     make_banded_item_class,
     make_banded_item_data_class,
+    make_gear_band,
     make_gear_filter_data,
     make_item_entry,
+    make_weapon_entry,
+    make_weapon_item_data,
 )
 
 from poeclifilter import merger, resources
 from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
-from poeclifilter.merger import merge_armour, merge_banded_item_category
+from poeclifilter.merger import merge_armour, merge_banded_item_category, merge_weapons
 
 filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 
@@ -23,8 +25,10 @@ filter_ref = FilterRef(game_version=GameVersion.POE1, name="test")
 def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
     mock_merge_banded_item_category = Mock()
     mock_merge_armour = Mock()
+    mock_merge_weapons = Mock()
     monkeypatch.setattr(merger, "merge_banded_item_category", mock_merge_banded_item_category)
     monkeypatch.setattr(merger, "merge_armour", mock_merge_armour)
+    monkeypatch.setattr(merger, "merge_weapons", mock_merge_weapons)
     resources.filter_dir(filter_ref).mkdir(parents=True)
     assert not (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
     assert not (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
@@ -33,6 +37,7 @@ def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
 
     mock_merge_banded_item_category.assert_called_once()
     mock_merge_armour.assert_called_once()
+    mock_merge_weapons.assert_called_once()
     assert (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
     assert (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
 
@@ -96,7 +101,7 @@ def test_merge_banded_item_category_merges_across_multiple_categories():
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():
-    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_gear_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -114,8 +119,8 @@ def test_merge_armour_leaves_existing_item_alone():
     filter_data = make_gear_filter_data(
         {
             GearGroup.STR: {
-                BandNames.A: make_armour_band(),
-                BandNames.B: make_armour_band(base_types=["Astral Plate"]),
+                BandNames.A: make_gear_band(),
+                BandNames.B: make_gear_band(base_types=["Astral Plate"]),
             }
         }
     )
@@ -150,8 +155,8 @@ def test_merge_armour_raises_when_band_missing_from_filter():
 def test_merge_armour_merges_across_multiple_groups():
     filter_data = make_gear_filter_data(
         {
-            GearGroup.STR: {BandNames.A: make_armour_band()},
-            GearGroup.INT: {BandNames.S: make_armour_band()},
+            GearGroup.STR: {BandNames.A: make_gear_band()},
+            GearGroup.INT: {BandNames.S: make_gear_band()},
         }
     )
     item_data = make_armour_item_data(
@@ -174,7 +179,7 @@ def test_merge_armour_merges_across_multiple_groups():
 
 
 def test_merge_armour_merges_every_armour_class_into_the_group_bands():
-    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_gear_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -190,3 +195,59 @@ def test_merge_armour_merges_every_armour_class_into_the_group_bands():
         "Royal Burgonet",
         "Astral Plate",
     ]
+
+
+def test_merge_weapons_adds_missing_item_to_its_default_band():
+    filter_data = make_gear_filter_data(
+        weapon_categories={GearGroup.BOWS: {BandNames.A: make_gear_band()}}
+    )
+    item_data = make_weapon_item_data(
+        {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
+    )
+
+    merge_weapons(filter_data, item_data)
+
+    assert filter_data.weapon_categories[GearGroup.BOWS][BandNames.A].base_types == ["Thicket Bow"]
+
+
+def test_merge_weapons_leaves_existing_item_alone():
+    filter_data = make_gear_filter_data(
+        weapon_categories={
+            GearGroup.BOWS: {
+                BandNames.A: make_gear_band(),
+                BandNames.B: make_gear_band(base_types=["Thicket Bow"]),
+            }
+        }
+    )
+    item_data = make_weapon_item_data(
+        {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
+    )
+
+    merge_weapons(filter_data, item_data)
+
+    assert filter_data.weapon_categories[GearGroup.BOWS][BandNames.B].base_types == ["Thicket Bow"]
+    assert filter_data.weapon_categories[GearGroup.BOWS][BandNames.A].base_types == []
+
+
+def test_merge_weapons_raises_when_band_missing_from_filter():
+    filter_data = make_gear_filter_data(weapon_categories={GearGroup.BOWS: {}})
+    item_data = make_weapon_item_data(
+        {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
+    )
+
+    with pytest.raises(ValueError, match="Band not found"):
+        merge_weapons(filter_data, item_data)
+
+
+def test_merge_weapons_leaves_armour_bands_alone():
+    filter_data = make_gear_filter_data(
+        armour_categories={GearGroup.STR: {BandNames.A: make_gear_band()}},
+        weapon_categories={GearGroup.BOWS: {BandNames.A: make_gear_band()}},
+    )
+    item_data = make_weapon_item_data(
+        {GearGroup.BOWS: {"Thicket Bow": make_weapon_entry(band=BandNames.A)}}
+    )
+
+    merge_weapons(filter_data, item_data)
+
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.A].base_types == []

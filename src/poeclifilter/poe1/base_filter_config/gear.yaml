@@ -54,6 +54,151 @@ armour_categories:
         base_types: []
       C:
         base_types: []
+weapon_categories:
+  bows:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  claws:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  daggers:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  one_hand_swords:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  one_hand_axes:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  one_hand_maces:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  quivers:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  rune_daggers:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  sceptres:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  staves:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  thrusting_one_hand_swords:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  two_hand_axes:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  two_hand_maces:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  two_hand_swords:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  wands:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
+  warstaves:
+    S:
+      base_types: []
+    A:
+      base_types: []
+    B:
+      base_types: []
+    C:
+      base_types: []
 rules:
   - id: "endgame_rares"
     comment: "Rares shown in endgame"

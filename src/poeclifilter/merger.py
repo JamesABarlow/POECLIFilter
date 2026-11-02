@@ -9,8 +9,10 @@ from poeclifilter.models.filter_data.banded_items import BandedItemClass
 from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import banded
+from poeclifilter.models.item_data import weapons as weapon_item_data_model
 from poeclifilter.models.item_data.armour import ArmourItemData
 from poeclifilter.models.item_data.banded import BandedItemDataClass
+from poeclifilter.models.item_data.weapons import WeaponItemData
 
 
 class HasBaseTypes(Protocol):
@@ -35,6 +37,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
 
         gear_filter_data = gear_filter_data_model.get_filter_data(base_config_dir)
         armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
+        weapon_item_data = weapon_item_data_model.get_item_data(item_config_dir)
     else:
         raise NotImplementedError
 
@@ -43,6 +46,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
     )
 
     merge_armour(gear_filter_data, armour_item_data)
+    merge_weapons(gear_filter_data, weapon_item_data)
 
     filter_dir = resources.filter_dir(filter_ref)
     banded_items.write_filter_data(banded_items_filter_data, filter_dir)
@@ -74,6 +78,28 @@ def merge_armour(filter_data: GearFilterData, armour_item_data: ArmourItemData):
                         target_band.base_types.append(item_name)
                 else:
                     print(f"{item_name} already exists in filter can't handle this yet")
+
+    return False
+
+
+def merge_weapons(filter_data: GearFilterData, weapon_item_data: WeaponItemData):
+    for weapon_category_name, items in weapon_item_data.categories.items():
+        print(f"Merging weapons - {weapon_category_name}")
+        for item_name, item_data in items.items():
+            exists_in_filter = check_item_exists_in_bands(
+                item_name, filter_data.weapon_categories[weapon_category_name]
+            )
+
+            if not exists_in_filter:
+                target_band = filter_data.weapon_categories[weapon_category_name].get(
+                    item_data.band
+                )
+                if not target_band:
+                    raise ValueError(f"Band not found {item_data.band}")
+                else:
+                    target_band.base_types.append(item_name)
+            else:
+                print(f"{item_name} already exists in filter can't handle this yet")
 
     return False
 

@@ -19,7 +19,7 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
-from poeclifilter.models.filter_data.gear import Band as ArmourBand
+from poeclifilter.models.filter_data.gear import Band as GearBand
 from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.banded import (
@@ -27,6 +27,7 @@ from poeclifilter.models.item_data.banded import (
     BandedItemDataClass,
     ItemEntry,
 )
+from poeclifilter.models.item_data.weapons import WeaponEntry, WeaponItemData
 from poeclifilter.models.rule import Range, RarityCondition, Rule
 
 
@@ -123,14 +124,15 @@ def make_banded_item_data(categories=None, schema=1, game_version="3.25"):
     return BandedItemData(currency=make_banded_item_data_class(categories, schema, game_version))
 
 
-def make_armour_band(base_types=None):
-    return ArmourBand(base_types=[] if base_types is None else base_types)
+def make_gear_band(base_types=None):
+    return GearBand(base_types=[] if base_types is None else base_types)
 
 
-def make_gear_filter_data(armour_categories=None, rules=None, schema=1):
+def make_gear_filter_data(armour_categories=None, weapon_categories=None, rules=None, schema=1):
     return GearFilterData(
         schema=schema,
         armour_categories=armour_categories if armour_categories is not None else {},
+        weapon_categories=weapon_categories if weapon_categories is not None else {},
         rules=[make_rule()] if rules is None else rules,
     )
 
@@ -141,6 +143,18 @@ def make_armour_entry(band=BandNames.A):
 
 def make_armour_item_data(categories=None, schema=1, game_version="3.25"):
     return ArmourItemData(
+        schema=schema,
+        game_version=game_version,
+        categories=categories if categories is not None else {},
+    )
+
+
+def make_weapon_entry(band=BandNames.A):
+    return WeaponEntry(band=band)
+
+
+def make_weapon_item_data(categories=None, schema=1, game_version="3.25"):
+    return WeaponItemData(
         schema=schema,
         game_version=game_version,
         categories=categories if categories is not None else {},

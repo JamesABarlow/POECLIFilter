@@ -5,10 +5,16 @@ from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.models.filter_data import gear
 
 
-def raw_config(**groups):
+def raw_config(weapon_categories=None, **groups):
     raw_groups = groups or {"str": {"A": {"base_types": ["Astral Plate"]}}}
+    raw_weapons = weapon_categories or {"bows": {"A": {"base_types": ["Thicket Bow"]}}}
     rule = {"id": "test_id", "comment": "test_comment", "hide": False}
-    return {"schema": 1, "armour_categories": raw_groups, "rules": [rule]}
+    return {
+        "schema": 1,
+        "armour_categories": raw_groups,
+        "weapon_categories": raw_weapons,
+        "rules": [rule],
+    }
 
 
 def test_load_success():
@@ -74,6 +80,29 @@ def test_parse_band_without_base_types_is_empty():
     raw = raw_config(str={"A": {}})
     result = gear.parse(raw)
     assert result.armour_categories[GearGroup.STR][BandNames.A].base_types == []
+
+
+def test_parse_keeps_weapon_groups():
+    raw = raw_config(
+        weapon_categories={
+            "bows": {"A": {"base_types": ["Thicket Bow"]}},
+            "wands": {"S": {"base_types": ["Imbued Wand"]}},
+        }
+    )
+    result = gear.parse(raw)
+    assert set(result.weapon_categories) == {GearGroup.BOWS, GearGroup.WANDS}
+    assert all(type(group) is GearGroup for group in result.weapon_categories)
+
+
+def test_parse_keeps_weapon_band_base_types():
+    result = gear.parse(raw_config())
+    assert result.weapon_categories[GearGroup.BOWS][BandNames.A].base_types == ["Thicket Bow"]
+
+
+def test_parse_rejects_unknown_weapon_group():
+    raw = raw_config(weapon_categories={"bow": {"A": {"base_types": []}}})
+    with pytest.raises(ValueError):
+        gear.parse(raw)
 
 
 def test_write_creates_file(tmp_path):
