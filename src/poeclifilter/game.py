@@ -38,6 +38,25 @@ class ArmourClass(StrEnum):
     SHIELDS = "Shields"
 
 
+class WeaponClass(StrEnum):
+    BOWS = "Bows"
+    CLAWS = "Claws"
+    DAGGERS = "Daggers"
+    ONE_HAND_SWORDS = "One Hand Swords"
+    ONE_HAND_AXES = "One Hand Axes"
+    ONE_HAND_MACES = "One Hand Maces"
+    QUIVERS = "Quivers"
+    RUNE_DAGGERS = "Rune Daggers"
+    SCEPTRES = "Sceptres"
+    STAVES = "Staves"
+    THRUSTING_ONE_HAND_SWORDS = "Thrusting One Hand Swords"
+    TWO_HAND_AXES = "Two Hand Axes"
+    TWO_HAND_MACES = "Two Hand Maces"
+    TWO_HAND_SWORDS = "Two Hand Swords"
+    WANDS = "Wands"
+    WARSTAVES = "Warstaves"
+
+
 class Rarity(StrEnum):
     NORMAL = "Normal"
     MAGIC = "Magic"

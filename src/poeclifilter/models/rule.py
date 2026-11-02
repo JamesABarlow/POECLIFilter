@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from poeclifilter.filters import AttributeGroup, BandNames
+from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.game import ArmourClass, Operator, Rarity
 from poeclifilter.models import display
 from poeclifilter.models.display import Display
@@ -24,7 +24,7 @@ class Rule:
     comment: str
     hide: bool | None
     include: bool = True
-    bands: dict[AttributeGroup, list[BandNames]] | None = None
+    bands: dict[GearGroup, list[BandNames]] | None = None
     base_types: list[str] | None = None
     armour_classes: list[ArmourClass] | None = None
     rarity: RarityCondition | None = None
@@ -65,7 +65,7 @@ def parse_bands(raw_bands):
         return None
 
     return {
-        AttributeGroup(group): [BandNames(band_name) for band_name in band]
+        GearGroup(group): [BandNames(band_name) for band_name in band]
         for group, band in raw_bands.items()
     }
 

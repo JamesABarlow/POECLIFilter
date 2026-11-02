@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from poeclifilter import loader, writer
-from poeclifilter.filters import AttributeGroup, BandNames
+from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
@@ -17,7 +17,7 @@ class Band:
 @dataclass(frozen=True)
 class ArmourFilterData:
     schema: int
-    armour_categories: dict[AttributeGroup, dict[BandNames, Band]]
+    armour_categories: dict[GearGroup, dict[BandNames, Band]]
     rules: list[Rule]
 
 
@@ -30,7 +30,7 @@ def get_filter_data(config_dir: Path):
 def parse(raw):
     # TODO: finish parsing and validation
     armour_categories = {
-        AttributeGroup(name): parse_bands(bands) for name, bands in raw["armour_categories"].items()
+        GearGroup(name): parse_bands(bands) for name, bands in raw["armour_categories"].items()
     }
 
     rules = [rule.parse(rule_data) for rule_data in raw["rules"]]

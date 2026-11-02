@@ -20,13 +20,29 @@ class BandNames(StrEnum):
     F = "F"
 
 
-class AttributeGroup(StrEnum):
+class GearGroup(StrEnum):
     STR = "str"
     DEX = "dex"
     INT = "int"
     STR_INT = "str_int"
     INT_DEX = "int_dex"
     DEX_STR = "dex_str"
+    BOWS = "bows"
+    CLAWS = "claws"
+    DAGGERS = "daggers"
+    ONE_HAND_SWORDS = "one_hand_swords"
+    ONE_HAND_AXES = "one_hand_axes"
+    ONE_HAND_MACES = "one_hand_maces"
+    QUIVERS = "quivers"
+    RUNE_DAGGERS = "rune_daggers"
+    SCEPTRES = "sceptres"
+    STAVES = "staves"
+    THRUSTING_ONE_HAND_SWORDS = "thrusting_one_hand_swords"
+    TWO_HAND_AXES = "two_hand_axes"
+    TWO_HAND_MACES = "two_hand_maces"
+    TWO_HAND_SWORDS = "two_hand_swords"
+    WANDS = "wands"
+    WARSTAVES = "warstaves"
 
 
 @dataclass

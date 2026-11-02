@@ -1,7 +1,7 @@
 import pytest
 
 from poeclifilter import resources
-from poeclifilter.filters import AttributeGroup, BandNames, GameVersion
+from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
 from poeclifilter.models.item_data import armour
 
@@ -34,7 +34,7 @@ def test_parse_keeps_attribute_groups():
         str_int={"Body Armours": {"Sacred Chainmail": {"band": "B"}}},
     )
     result = armour.parse(raw)
-    assert set(result.categories) == {AttributeGroup.STR, AttributeGroup.STR_INT}
+    assert set(result.categories) == {GearGroup.STR, GearGroup.STR_INT}
 
 
 def test_parse_keeps_armour_classes():
@@ -45,7 +45,7 @@ def test_parse_keeps_armour_classes():
         }
     )
     result = armour.parse(raw)
-    assert set(result.categories[AttributeGroup.STR]) == {
+    assert set(result.categories[GearGroup.STR]) == {
         ArmourClass.HELMETS,
         ArmourClass.BODY_ARMOURS,
     }
@@ -54,21 +54,21 @@ def test_parse_keeps_armour_classes():
 def test_parse_keeps_empty_armour_class():
     raw = raw_config(str={"Helmets": {}})
     result = armour.parse(raw)
-    assert result.categories[AttributeGroup.STR][ArmourClass.HELMETS] == {}
+    assert result.categories[GearGroup.STR][ArmourClass.HELMETS] == {}
 
 
 def test_parse_keeps_item_band():
     raw = raw_config(str={"Body Armours": {"Astral Plate": {"band": "A"}}})
     result = armour.parse(raw)
     assert (
-        result.categories[AttributeGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"].band
+        result.categories[GearGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"].band
         == BandNames.A
     )
 
 
 def test_parse_converts_group_to_enum():
     result = armour.parse(raw_config())
-    assert all(type(group) is AttributeGroup for group in result.categories)
+    assert all(type(group) is GearGroup for group in result.categories)
 
 
 def test_parse_converts_armour_class_to_enum():
@@ -94,7 +94,7 @@ def test_parse_rejects_unknown_armour_class():
 
 def test_parse_converts_band_to_enum():
     result = armour.parse(raw_config())
-    entry = result.categories[AttributeGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"]
+    entry = result.categories[GearGroup.STR][ArmourClass.BODY_ARMOURS]["Astral Plate"]
     assert type(entry.band) is BandNames
 
 

@@ -1,7 +1,7 @@
 import pytest
 from builders import make_range, make_rarity_condition, make_rule
 
-from poeclifilter.filters import AttributeGroup, BandNames
+from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.game import ArmourClass, IconColor, Operator, Rarity
 from poeclifilter.models import rule
 from poeclifilter.models.display import Display, PlayEffect
@@ -46,14 +46,22 @@ def test_parse_converts_bands_to_enums():
     result = rule.parse(raw_rule(bands={"str": ["A"], "str_int": ["B"]}))
     assert result.bands is not None
     assert result.bands == {
-        AttributeGroup.STR: [BandNames.A],
-        AttributeGroup.STR_INT: [BandNames.B],
+        GearGroup.STR: [BandNames.A],
+        GearGroup.STR_INT: [BandNames.B],
     }
-    assert all(type(group) is AttributeGroup for group in result.bands)
+    assert all(type(group) is GearGroup for group in result.bands)
     assert all(type(band) is BandNames for bands in result.bands.values() for band in bands)
 
 
-def test_parse_rejects_unknown_attribute_group():
+def test_parse_accepts_weapon_and_armour_groups_in_one_rule():
+    result = rule.parse(raw_rule(bands={"str": ["A"], "bows": ["S"]}))
+    assert result.bands == {
+        GearGroup.STR: [BandNames.A],
+        GearGroup.BOWS: [BandNames.S],
+    }
+
+
+def test_parse_rejects_unknown_gear_group():
     with pytest.raises(ValueError):
         rule.parse(raw_rule(bands={"str_itn": "A"}))
 

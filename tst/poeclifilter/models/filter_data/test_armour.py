@@ -1,7 +1,7 @@
 import pytest
 
 from poeclifilter import resources
-from poeclifilter.filters import AttributeGroup, BandNames, GameVersion
+from poeclifilter.filters import BandNames, GameVersion, GearGroup
 from poeclifilter.models.filter_data import armour
 
 
@@ -28,12 +28,12 @@ def test_parse_keeps_attribute_groups():
         str_int={"A": {"base_types": ["Sacred Chainmail"]}},
     )
     result = armour.parse(raw)
-    assert set(result.armour_categories) == {AttributeGroup.STR, AttributeGroup.STR_INT}
+    assert set(result.armour_categories) == {GearGroup.STR, GearGroup.STR_INT}
 
 
 def test_parse_converts_group_to_enum():
     result = armour.parse(raw_config())
-    assert all(type(group) is AttributeGroup for group in result.armour_categories)
+    assert all(type(group) is GearGroup for group in result.armour_categories)
 
 
 def test_parse_rejects_unknown_group():
@@ -45,13 +45,13 @@ def test_parse_rejects_unknown_group():
 def test_parse_keeps_bands():
     raw = raw_config(str={"S": {"base_types": []}, "A": {"base_types": ["Astral Plate"]}})
     result = armour.parse(raw)
-    assert set(result.armour_categories[AttributeGroup.STR]) == {BandNames.S, BandNames.A}
+    assert set(result.armour_categories[GearGroup.STR]) == {BandNames.S, BandNames.A}
 
 
 def test_parse_converts_band_name_to_enum():
     result = armour.parse(raw_config())
     assert all(
-        type(band_name) is BandNames for band_name in result.armour_categories[AttributeGroup.STR]
+        type(band_name) is BandNames for band_name in result.armour_categories[GearGroup.STR]
     )
 
 
@@ -64,7 +64,7 @@ def test_parse_rejects_unknown_band_name():
 def test_parse_keeps_band_base_types():
     raw = raw_config(str={"A": {"base_types": ["Astral Plate", "Glorious Plate"]}})
     result = armour.parse(raw)
-    assert result.armour_categories[AttributeGroup.STR][BandNames.A].base_types == [
+    assert result.armour_categories[GearGroup.STR][BandNames.A].base_types == [
         "Astral Plate",
         "Glorious Plate",
     ]
@@ -73,7 +73,7 @@ def test_parse_keeps_band_base_types():
 def test_parse_band_without_base_types_is_empty():
     raw = raw_config(str={"A": {}})
     result = armour.parse(raw)
-    assert result.armour_categories[AttributeGroup.STR][BandNames.A].base_types == []
+    assert result.armour_categories[GearGroup.STR][BandNames.A].base_types == []
 
 
 def test_write_creates_file(tmp_path):

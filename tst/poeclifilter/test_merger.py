@@ -13,7 +13,7 @@ from builders import (
 )
 
 from poeclifilter import merger, resources
-from poeclifilter.filters import AttributeGroup, BandNames, FilterRef, GameVersion
+from poeclifilter.filters import BandNames, FilterRef, GameVersion, GearGroup
 from poeclifilter.game import ArmourClass
 from poeclifilter.merger import merge_armour, merge_banded_item_category
 
@@ -96,10 +96,10 @@ def test_merge_banded_item_category_merges_across_multiple_categories():
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():
-    filter_data = make_armour_filter_data({AttributeGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_armour_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band=BandNames.A)}
             }
         }
@@ -107,15 +107,13 @@ def test_merge_armour_adds_missing_item_to_its_default_band():
 
     merge_armour(filter_data, item_data)
 
-    assert filter_data.armour_categories[AttributeGroup.STR][BandNames.A].base_types == [
-        "Astral Plate"
-    ]
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.A].base_types == ["Astral Plate"]
 
 
 def test_merge_armour_leaves_existing_item_alone():
     filter_data = make_armour_filter_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 BandNames.A: make_armour_band(),
                 BandNames.B: make_armour_band(base_types=["Astral Plate"]),
             }
@@ -123,7 +121,7 @@ def test_merge_armour_leaves_existing_item_alone():
     )
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band=BandNames.A)}
             }
         }
@@ -131,17 +129,15 @@ def test_merge_armour_leaves_existing_item_alone():
 
     merge_armour(filter_data, item_data)
 
-    assert filter_data.armour_categories[AttributeGroup.STR][BandNames.B].base_types == [
-        "Astral Plate"
-    ]
-    assert filter_data.armour_categories[AttributeGroup.STR][BandNames.A].base_types == []
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.B].base_types == ["Astral Plate"]
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.A].base_types == []
 
 
 def test_merge_armour_raises_when_band_missing_from_filter():
-    filter_data = make_armour_filter_data({AttributeGroup.STR: {}})
+    filter_data = make_armour_filter_data({GearGroup.STR: {}})
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band=BandNames.A)}
             }
         }
@@ -154,16 +150,16 @@ def test_merge_armour_raises_when_band_missing_from_filter():
 def test_merge_armour_merges_across_multiple_groups():
     filter_data = make_armour_filter_data(
         {
-            AttributeGroup.STR: {BandNames.A: make_armour_band()},
-            AttributeGroup.INT: {BandNames.S: make_armour_band()},
+            GearGroup.STR: {BandNames.A: make_armour_band()},
+            GearGroup.INT: {BandNames.S: make_armour_band()},
         }
     )
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band=BandNames.A)}
             },
-            AttributeGroup.INT: {
+            GearGroup.INT: {
                 ArmourClass.BODY_ARMOURS: {"Twilight Regalia": make_armour_entry(band=BandNames.S)}
             },
         }
@@ -171,19 +167,17 @@ def test_merge_armour_merges_across_multiple_groups():
 
     merge_armour(filter_data, item_data)
 
-    assert filter_data.armour_categories[AttributeGroup.STR][BandNames.A].base_types == [
-        "Astral Plate"
-    ]
-    assert filter_data.armour_categories[AttributeGroup.INT][BandNames.S].base_types == [
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.A].base_types == ["Astral Plate"]
+    assert filter_data.armour_categories[GearGroup.INT][BandNames.S].base_types == [
         "Twilight Regalia"
     ]
 
 
 def test_merge_armour_merges_every_armour_class_into_the_group_bands():
-    filter_data = make_armour_filter_data({AttributeGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_armour_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
     item_data = make_armour_item_data(
         {
-            AttributeGroup.STR: {
+            GearGroup.STR: {
                 ArmourClass.HELMETS: {"Royal Burgonet": make_armour_entry(band=BandNames.A)},
                 ArmourClass.BODY_ARMOURS: {"Astral Plate": make_armour_entry(band=BandNames.A)},
             }
@@ -192,7 +186,7 @@ def test_merge_armour_merges_every_armour_class_into_the_group_bands():
 
     merge_armour(filter_data, item_data)
 
-    assert filter_data.armour_categories[AttributeGroup.STR][BandNames.A].base_types == [
+    assert filter_data.armour_categories[GearGroup.STR][BandNames.A].base_types == [
         "Royal Burgonet",
         "Astral Plate",
     ]

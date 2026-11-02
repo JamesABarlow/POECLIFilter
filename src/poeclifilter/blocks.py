@@ -3,7 +3,7 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from poeclifilter.filters import AttributeGroup, BandNames, FilterRef
+from poeclifilter.filters import BandNames, FilterRef, GearGroup
 from poeclifilter.models.display import Display
 from poeclifilter.models.filter_data import armour as armour_filter_data_model
 from poeclifilter.models.filter_data import banded_items, display_variables
@@ -141,13 +141,13 @@ def build_armour_blocks(
 
 
 def get_bands(
-    band: dict[AttributeGroup, list[BandNames]],
-    armour_bands: dict[AttributeGroup, dict[BandNames, Band]],
+    band: dict[GearGroup, list[BandNames]],
+    armour_bands: dict[GearGroup, dict[BandNames, Band]],
 ):
     base_types = []
-    for attribute_group, band_names in band.items():
+    for gear_group, band_names in band.items():
         for band_name in band_names:
-            target_band = armour_bands[attribute_group][band_name]
+            target_band = armour_bands[gear_group][band_name]
             base_types.extend(target_band.base_types)
 
     return base_types
