@@ -3,10 +3,10 @@ from typing import Protocol
 
 from poeclifilter import resources
 from poeclifilter.filters import FilterRef
-from poeclifilter.models.filter_data import armour as armour_filter_data_model
 from poeclifilter.models.filter_data import banded_items
-from poeclifilter.models.filter_data.armour import ArmourFilterData
+from poeclifilter.models.filter_data import gear as gear_filter_data_model
 from poeclifilter.models.filter_data.banded_items import BandedItemClass
+from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data import armour as armour_item_data_model
 from poeclifilter.models.item_data import banded
 from poeclifilter.models.item_data.armour import ArmourItemData
@@ -33,7 +33,7 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
         banded_items_filter_data = banded_items.get_filter_data(base_config_dir)
         banded_item_data = banded.get_item_data(item_config_dir)
 
-        armour_filter_data = armour_filter_data_model.get_filter_data(base_config_dir)
+        gear_filter_data = gear_filter_data_model.get_filter_data(base_config_dir)
         armour_item_data = armour_item_data_model.get_item_data(item_config_dir)
     else:
         raise NotImplementedError
@@ -42,17 +42,17 @@ def merge_filter(filter_ref: FilterRef, is_filter_update: bool):
         "currency", banded_items_filter_data.currency, banded_item_data.currency
     )
 
-    merge_armour(armour_filter_data, armour_item_data)
+    merge_armour(gear_filter_data, armour_item_data)
 
     filter_dir = resources.filter_dir(filter_ref)
     banded_items.write_filter_data(banded_items_filter_data, filter_dir)
-    armour_filter_data_model.write_filter_data(armour_filter_data, filter_dir)
+    gear_filter_data_model.write_filter_data(gear_filter_data, filter_dir)
 
     # Should also eventually be able to show what's changed in the filter over the default as a report
     return False
 
 
-def merge_armour(filter_data: ArmourFilterData, armour_item_data: ArmourItemData):
+def merge_armour(filter_data: GearFilterData, armour_item_data: ArmourItemData):
     for armour_category_name, armour_classes in armour_item_data.categories.items():
         print(f"Merging armour - {armour_category_name}")
         # Filter data has no armour class level, so every class's bases merge into the group's bands

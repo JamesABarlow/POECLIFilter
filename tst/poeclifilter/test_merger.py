@@ -4,11 +4,11 @@ import pytest
 from builders import (
     make_armour_band,
     make_armour_entry,
-    make_armour_filter_data,
     make_armour_item_data,
     make_band,
     make_banded_item_class,
     make_banded_item_data_class,
+    make_gear_filter_data,
     make_item_entry,
 )
 
@@ -27,14 +27,14 @@ def test_merge_filter_creates_new_filter(in_tmp_config_home, monkeypatch):
     monkeypatch.setattr(merger, "merge_armour", mock_merge_armour)
     resources.filter_dir(filter_ref).mkdir(parents=True)
     assert not (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
-    assert not (resources.filter_dir(filter_ref) / "armour.yaml").is_file()
+    assert not (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
 
     merger.merge_filter(filter_ref, False)
 
     mock_merge_banded_item_category.assert_called_once()
     mock_merge_armour.assert_called_once()
     assert (resources.filter_dir(filter_ref) / "currency.yaml").is_file()
-    assert (resources.filter_dir(filter_ref) / "armour.yaml").is_file()
+    assert (resources.filter_dir(filter_ref) / "gear.yaml").is_file()
 
 
 def test_merge_filter_update_not_implemented():
@@ -96,7 +96,7 @@ def test_merge_banded_item_category_merges_across_multiple_categories():
 
 
 def test_merge_armour_adds_missing_item_to_its_default_band():
-    filter_data = make_armour_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -111,7 +111,7 @@ def test_merge_armour_adds_missing_item_to_its_default_band():
 
 
 def test_merge_armour_leaves_existing_item_alone():
-    filter_data = make_armour_filter_data(
+    filter_data = make_gear_filter_data(
         {
             GearGroup.STR: {
                 BandNames.A: make_armour_band(),
@@ -134,7 +134,7 @@ def test_merge_armour_leaves_existing_item_alone():
 
 
 def test_merge_armour_raises_when_band_missing_from_filter():
-    filter_data = make_armour_filter_data({GearGroup.STR: {}})
+    filter_data = make_gear_filter_data({GearGroup.STR: {}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {
@@ -148,7 +148,7 @@ def test_merge_armour_raises_when_band_missing_from_filter():
 
 
 def test_merge_armour_merges_across_multiple_groups():
-    filter_data = make_armour_filter_data(
+    filter_data = make_gear_filter_data(
         {
             GearGroup.STR: {BandNames.A: make_armour_band()},
             GearGroup.INT: {BandNames.S: make_armour_band()},
@@ -174,7 +174,7 @@ def test_merge_armour_merges_across_multiple_groups():
 
 
 def test_merge_armour_merges_every_armour_class_into_the_group_bands():
-    filter_data = make_armour_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
+    filter_data = make_gear_filter_data({GearGroup.STR: {BandNames.A: make_armour_band()}})
     item_data = make_armour_item_data(
         {
             GearGroup.STR: {

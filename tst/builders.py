@@ -9,8 +9,6 @@ from poeclifilter.models.display import (
     MinimapIcon,
     PlayEffect,
 )
-from poeclifilter.models.filter_data.armour import ArmourFilterData
-from poeclifilter.models.filter_data.armour import Band as ArmourBand
 from poeclifilter.models.filter_data.banded_items import (
     Band,
     BandedItemClass,
@@ -21,6 +19,8 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
+from poeclifilter.models.filter_data.gear import Band as ArmourBand
+from poeclifilter.models.filter_data.gear import GearFilterData
 from poeclifilter.models.item_data.armour import ArmourEntry, ArmourItemData
 from poeclifilter.models.item_data.banded import (
     BandedItemData,
@@ -127,8 +127,8 @@ def make_armour_band(base_types=None):
     return ArmourBand(base_types=[] if base_types is None else base_types)
 
 
-def make_armour_filter_data(armour_categories=None, rules=None, schema=1):
-    return ArmourFilterData(
+def make_gear_filter_data(armour_categories=None, rules=None, schema=1):
+    return GearFilterData(
         schema=schema,
         armour_categories=armour_categories if armour_categories is not None else {},
         rules=[make_rule()] if rules is None else rules,

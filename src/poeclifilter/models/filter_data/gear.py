@@ -6,7 +6,7 @@ from poeclifilter.filters import BandNames, GearGroup
 from poeclifilter.models import rule
 from poeclifilter.models.rule import Rule
 
-file_name = "armour.yaml"
+file_name = "gear.yaml"
 
 
 @dataclass(frozen=True)
@@ -15,7 +15,7 @@ class Band:
 
 
 @dataclass(frozen=True)
-class ArmourFilterData:
+class GearFilterData:
     schema: int
     armour_categories: dict[GearGroup, dict[BandNames, Band]]
     rules: list[Rule]
@@ -35,7 +35,7 @@ def parse(raw):
 
     rules = [rule.parse(rule_data) for rule_data in raw["rules"]]
 
-    return ArmourFilterData(schema=raw["schema"], armour_categories=armour_categories, rules=rules)
+    return GearFilterData(schema=raw["schema"], armour_categories=armour_categories, rules=rules)
 
 
 def parse_bands(raw_bands):
@@ -48,5 +48,5 @@ def parse_band(raw_band):
     return Band(base_types=base_types)
 
 
-def write_filter_data(armour: ArmourFilterData, filter_dir: Path):
-    Path(f"{filter_dir}/{file_name}").write_text(writer.dump(armour))
+def write_filter_data(gear: GearFilterData, filter_dir: Path):
+    Path(f"{filter_dir}/{file_name}").write_text(writer.dump(gear))

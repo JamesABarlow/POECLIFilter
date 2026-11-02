@@ -5,9 +5,8 @@ from dataclasses import dataclass
 
 from poeclifilter.filters import BandNames, FilterRef, GearGroup
 from poeclifilter.models.display import Display
-from poeclifilter.models.filter_data import armour as armour_filter_data_model
 from poeclifilter.models.filter_data import banded_items, display_variables
-from poeclifilter.models.filter_data.armour import ArmourFilterData, Band
+from poeclifilter.models.filter_data import gear as gear_filter_data_model
 from poeclifilter.models.filter_data.banded_items import (
     BandedItemClass,
     BandedItemsFilterData,
@@ -17,6 +16,7 @@ from poeclifilter.models.filter_data.display_variables import (
     DisplayVariablesFilterData,
     SoundAlert,
 )
+from poeclifilter.models.filter_data.gear import Band, GearFilterData
 from poeclifilter.models.rule import Range, RarityCondition
 from poeclifilter.resources import filter_dir
 
@@ -48,7 +48,7 @@ def build_blocks(filter_ref: FilterRef):
     # TODO: These should be input as args, simplifies the testing
     display_variables_filter_data = display_variables.get_filter_data(filter_dir(filter_ref))
     banded_items_filter_data = banded_items.get_filter_data(filter_dir(filter_ref))
-    armour_filter_data = armour_filter_data_model.get_filter_data(filter_dir(filter_ref))
+    gear_filter_data = gear_filter_data_model.get_filter_data(filter_dir(filter_ref))
 
     blocks = []
 
@@ -56,7 +56,7 @@ def build_blocks(filter_ref: FilterRef):
     blocks.extend(
         build_banded_items_blocks(banded_items_filter_data, display_variables_filter_data)
     )
-    blocks.extend(build_armour_blocks(armour_filter_data, display_variables_filter_data))
+    blocks.extend(build_gear_blocks(gear_filter_data, display_variables_filter_data))
 
     # Add misc filter blocks including the final catch all here
     # TODO: This needs to be built better but here for now
@@ -106,11 +106,11 @@ def build_bands(banded_class: BandedItemClass, display_variables: DisplayVariabl
     return blocks
 
 
-def build_armour_blocks(
-    armour_filter_data: ArmourFilterData, display_variables: DisplayVariablesFilterData
+def build_gear_blocks(
+    gear_filter_data: GearFilterData, display_variables: DisplayVariablesFilterData
 ):
     blocks = []
-    for rule in armour_filter_data.rules:
+    for rule in gear_filter_data.rules:
         if isinstance(rule.display, str):
             display = None
         else:
@@ -119,7 +119,7 @@ def build_armour_blocks(
         if rule.base_types:
             base_types = rule.base_types
         elif rule.bands:
-            base_types = get_bands(rule.bands, armour_filter_data.armour_categories)
+            base_types = get_bands(rule.bands, gear_filter_data.armour_categories)
             # Empty bands would render with no BaseType and match every item (plan §5.1)
             if not base_types:
                 continue
