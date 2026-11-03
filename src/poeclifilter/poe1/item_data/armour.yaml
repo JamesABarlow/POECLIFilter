@@ -4,13 +4,13 @@ game_version: '3.25'
 categories:
   str:
     Helmets:
-      Giantslayer Helmet: {band: S}
-      Conqueror's Helmet: {band: S}
-      General's Helmet: {band: C}
-      Eternal Burgonet: {band: C}
-      Royal Burgonet: {band: C}
-      Ezomyte Burgonet: {band: C}
-      Samnite Helmet: {band: C}
+      Giantslayer Helmet: {band: A}
+      Conqueror's Helmet: {band: B}
+      General's Helmet: {band: B}
+      Eternal Burgonet: {band: B}
+      Royal Burgonet: {band: B}
+      Ezomyte Burgonet: {band: B}
+      Samnite Helmet: {band: B}
       Siege Helmet: {band: C}
       Reaver Helmet: {band: C}
       Gladiator Helmet: {band: C}
@@ -19,14 +19,14 @@ categories:
       Cone Helmet: {band: C}
       Iron Hat: {band: C}
     Body Armours:
-      Royal Plate: {band: S}
-      Legion Plate: {band: S}
-      Titan Plate: {band: C}
-      Glorious Plate: {band: C}
-      Gladiator Plate: {band: C}
-      Astral Plate: {band: C}
-      Crusader Plate: {band: C}
-      Golden Plate: {band: C}
+      Royal Plate: {band: A}
+      Legion Plate: {band: B}
+      Titan Plate: {band: B}
+      Glorious Plate: {band: B}
+      Gladiator Plate: {band: B}
+      Astral Plate: {band: A}
+      Crusader Plate: {band: B}
+      Golden Plate: {band: B}
       Majestic Plate: {band: C}
       Colosseum Plate: {band: C}
       Sun Plate: {band: C}
@@ -40,12 +40,12 @@ categories:
       Chestplate: {band: C}
       Plate Vest: {band: C}
     Gloves:
-      Leviathan Gauntlets: {band: S}
-      Precursor Gauntlets: {band: S}
-      Spiked Gloves: {band: C}
-      Thwarting Gauntlets: {band: C}
-      Titan Gauntlets: {band: C}
-      Vaal Gauntlets: {band: C}
+      Leviathan Gauntlets: {band: A}
+      Precursor Gauntlets: {band: B}
+      Spiked Gloves: {band: S}
+      Thwarting Gauntlets: {band: S}
+      Titan Gauntlets: {band: B}
+      Vaal Gauntlets: {band: B}
       Goliath Gauntlets: {band: C}
       Ancient Gauntlets: {band: C}
       Guarding Gauntlets: {band: C}
@@ -56,11 +56,11 @@ categories:
       Preserving Gauntlets: {band: C}
       Iron Gauntlets: {band: C}
     Boots:
-      Leviathan Greaves: {band: S}
+      Leviathan Greaves: {band: A}
       Brimstone Treads: {band: S}
-      Precursor Greaves: {band: C}
-      Titan Greaves: {band: C}
-      Vaal Greaves: {band: C}
+      Precursor Greaves: {band: A}
+      Titan Greaves: {band: B}
+      Vaal Greaves: {band: B}
       Goliath Greaves: {band: C}
       Darksteel Treads: {band: C}
       Ancient Greaves: {band: C}
@@ -72,11 +72,11 @@ categories:
       Iron Greaves: {band: C}
     Shields:
       Heat-attuned Tower Shield: {band: S}
-      Pinnacle Tower Shield: {band: S}
-      Colossal Tower Shield: {band: C}
-      Ezomyte Tower Shield: {band: C}
-      Ebony Tower Shield: {band: C}
-      Shagreen Tower Shield: {band: C}
+      Pinnacle Tower Shield: {band: A}
+      Colossal Tower Shield: {band: A}
+      Ezomyte Tower Shield: {band: A}
+      Ebony Tower Shield: {band: B}
+      Shagreen Tower Shield: {band: B}
       Crested Tower Shield: {band: C}
       Girded Tower Shield: {band: C}
       Magmatic Tower Shield: {band: C}
@@ -93,12 +93,12 @@ categories:
       Splintered Tower Shield: {band: C}
   dex:
     Helmets:
-      Majestic Pelt: {band: S}
-      Grizzly Pelt: {band: S}
-      Dire Pelt: {band: C}
-      Lion Pelt: {band: C}
-      Sinner Tricorne: {band: C}
-      Silken Hood: {band: C}
+      Majestic Pelt: {band: A}
+      Grizzly Pelt: {band: A}
+      Dire Pelt: {band: B}
+      Lion Pelt: {band: A}
+      Sinner Tricorne: {band: B}
+      Silken Hood: {band: B}
       Ursine Pelt: {band: C}
       Noble Tricorne: {band: C}
       Hunter Hood: {band: C}
@@ -107,14 +107,14 @@ categories:
       Tricorne: {band: C}
       Leather Cap: {band: C}
     Body Armours:
-      Syndicate's Garb: {band: S}
-      Astral Leather: {band: S}
-      Supreme Leather: {band: C}
-      Assassin's Garb: {band: C}
-      Zodiac Leather: {band: C}
-      Exquisite Leather: {band: C}
-      Destiny Leather: {band: C}
-      Sharkskin Tunic: {band: C}
+      Syndicate's Garb: {band: A}
+      Astral Leather: {band: B}
+      Supreme Leather: {band: B}
+      Assassin's Garb: {band: B}
+      Zodiac Leather: {band: B}
+      Exquisite Leather: {band: B}
+      Destiny Leather: {band: B}
+      Sharkskin Tunic: {band: B}
       Cutthroat's Garb: {band: C}
       Coronal Leather: {band: C}
       Glorious Leather: {band: C}
@@ -128,12 +128,12 @@ categories:
       Strapped Leather: {band: C}
       Shabby Jerkin: {band: C}
     Gloves:
-      Velour Gloves: {band: S}
-      Harpyskin Gloves: {band: S}
-      Gripped Gloves: {band: C}
-      Slink Gloves: {band: C}
-      Trapsetter Gloves: {band: C}
-      Stealth Gloves: {band: C}
+      Velour Gloves: {band: A}
+      Harpyskin Gloves: {band: A}
+      Gripped Gloves: {band: B}
+      Slink Gloves: {band: A}
+      Trapsetter Gloves: {band: S}
+      Stealth Gloves: {band: B}
       Shagreen Gloves: {band: C}
       Sharkskin Gloves: {band: C}
       Apprentice Gloves: {band: C}
@@ -144,11 +144,11 @@ categories:
       Goathide Gloves: {band: C}
       Rawhide Gloves: {band: C}
     Boots:
-      Velour Boots: {band: S}
-      Stormrider Boots: {band: S}
-      Harpyskin Boots: {band: C}
-      Slink Boots: {band: C}
-      Stealth Boots: {band: C}
+      Velour Boots: {band: A}
+      Stormrider Boots: {band: A}
+      Harpyskin Boots: {band: A}
+      Slink Boots: {band: A}
+      Stealth Boots: {band: B}
       Shagreen Boots: {band: C}
       Windbreak Boots: {band: C}
       Sharkskin Boots: {band: C}
@@ -160,11 +160,11 @@ categories:
       Rawhide Boots: {band: C}
     Shields:
       Cold-attuned Buckler: {band: S}
-      Imperial Buckler: {band: S}
-      Crusader Buckler: {band: C}
-      Vaal Buckler: {band: C}
-      Lacquered Buckler: {band: C}
-      Ironwood Buckler: {band: C}
+      Imperial Buckler: {band: A}
+      Crusader Buckler: {band: A}
+      Vaal Buckler: {band: A}
+      Lacquered Buckler: {band: S}
+      Ironwood Buckler: {band: B}
       Golden Buckler: {band: C}
       Battle Buckler: {band: C}
       Polar Buckler: {band: C}
@@ -180,11 +180,11 @@ categories:
       Goathide Buckler: {band: C}
   int:
     Helmets:
-      Lich's Circlet: {band: S}
-      Sunfire Circlet: {band: S}
-      Moonlit Circlet: {band: C}
-      Hubris Circlet: {band: A}
-      Mind Cage: {band: C}
+      Lich's Circlet: {band: A}
+      Sunfire Circlet: {band: B}
+      Moonlit Circlet: {band: B}
+      Hubris Circlet: {band: B}
+      Mind Cage: {band: B}
       Solaris Circlet: {band: C}
       Necromancer Circlet: {band: C}
       Steel Circlet: {band: C}
@@ -195,14 +195,14 @@ categories:
       Iron Circlet: {band: C}
       Vine Circlet: {band: C}
     Body Armours:
-      Twilight Regalia: {band: S}
-      Nightweave Robe: {band: S}
-      Arcane Vestment: {band: C}
-      Vaal Regalia: {band: C}
-      Widowsilk Robe: {band: C}
-      Occultist's Vestment: {band: C}
-      Necromancer Silks: {band: C}
-      Savant's Robe: {band: C}
+      Twilight Regalia: {band: A}
+      Nightweave Robe: {band: B}
+      Arcane Vestment: {band: B}
+      Vaal Regalia: {band: B}
+      Widowsilk Robe: {band: B}
+      Occultist's Vestment: {band: B}
+      Necromancer Silks: {band: B}
+      Savant's Robe: {band: B}
       Destroyer Regalia: {band: C}
       Spidersilk Robe: {band: C}
       Conjurer's Vestment: {band: C}
@@ -216,12 +216,12 @@ categories:
       Silken Vest: {band: C}
       Simple Robe: {band: C}
     Gloves:
-      Warlock Gloves: {band: S}
-      Sage Gloves: {band: S}
-      Fingerless Silk Gloves: {band: C}
-      Nexus Gloves: {band: C}
-      Sorcerer Gloves: {band: C}
-      Arcanist Gloves: {band: C}
+      Warlock Gloves: {band: A}
+      Sage Gloves: {band: B}
+      Fingerless Silk Gloves: {band: B}
+      Nexus Gloves: {band: S}
+      Sorcerer Gloves: {band: B}
+      Arcanist Gloves: {band: B}
       Conjurer Gloves: {band: C}
       Samite Gloves: {band: C}
       Satin Gloves: {band: C}
@@ -232,11 +232,11 @@ categories:
       Leyline Gloves: {band: C}
       Wool Gloves: {band: C}
     Boots:
-      Warlock Boots: {band: S}
+      Warlock Boots: {band: A}
       Dreamquest Slippers: {band: S}
-      Sage Slippers: {band: C}
-      Sorcerer Boots: {band: C}
-      Arcanist Slippers: {band: C}
+      Sage Slippers: {band: B}
+      Sorcerer Boots: {band: B}
+      Arcanist Slippers: {band: B}
       Conjurer Boots: {band: C}
       Nightwind Slippers: {band: C}
       Samite Slippers: {band: C}
@@ -248,11 +248,11 @@ categories:
       Wool Shoes: {band: C}
     Shields:
       Transfer-attuned Spirit Shield: {band: S}
-      Titanium Spirit Shield: {band: S}
-      Harmonic Spirit Shield: {band: C}
-      Vaal Spirit Shield: {band: C}
-      Fossilised Spirit Shield: {band: C}
-      Lacewood Spirit Shield: {band: C}
+      Titanium Spirit Shield: {band: A}
+      Harmonic Spirit Shield: {band: B}
+      Vaal Spirit Shield: {band: B}
+      Fossilised Spirit Shield: {band: B}
+      Lacewood Spirit Shield: {band: B}
       Thorium Spirit Shield: {band: C}
       Subsuming Spirit Shield: {band: C}
       Chiming Spirit Shield: {band: C}
@@ -268,14 +268,14 @@ categories:
       Twig Spirit Shield: {band: C}
   str_int:
     Helmets:
-      Divine Crown: {band: S}
-      Paladin Crown: {band: S}
-      Archdemon Crown: {band: C}
-      Bone Helmet: {band: C}
-      Faithful Helmet: {band: C}
-      Praetor Crown: {band: C}
-      Prophet Crown: {band: C}
-      Magistrate Crown: {band: C}
+      Divine Crown: {band: A}
+      Paladin Crown: {band: B}
+      Archdemon Crown: {band: S}
+      Bone Helmet: {band: S}
+      Faithful Helmet: {band: B}
+      Praetor Crown: {band: B}
+      Prophet Crown: {band: B}
+      Magistrate Crown: {band: B}
       Great Crown: {band: C}
       Demon Crown: {band: C}
       Zealot Helmet: {band: C}
@@ -286,14 +286,14 @@ categories:
       Soldier Helmet: {band: C}
       Rusted Coif: {band: C}
     Body Armours:
-      Sacred Chainmail: {band: S}
-      Paladin's Hauberk: {band: S}
-      Grand Ringmail: {band: C}
-      Saintly Chainmail: {band: C}
-      Saint's Hauberk: {band: C}
-      Elegant Ringmail: {band: C}
-      Conquest Chainmail: {band: C}
-      Loricated Ringmail: {band: C}
+      Sacred Chainmail: {band: A}
+      Paladin's Hauberk: {band: B}
+      Grand Ringmail: {band: B}
+      Saintly Chainmail: {band: B}
+      Saint's Hauberk: {band: B}
+      Elegant Ringmail: {band: B}
+      Conquest Chainmail: {band: B}
+      Loricated Ringmail: {band: B}
       Devout Chainmail: {band: C}
       Chain Hauberk: {band: C}
       Ornate Ringmail: {band: C}
@@ -307,11 +307,11 @@ categories:
       Chainmail Tunic: {band: C}
       Chainmail Vest: {band: C}
     Gloves:
-      Paladin Gloves: {band: S}
-      Martyr Gloves: {band: S}
-      Apothecary's Gloves: {band: C}
-      Crusader Gloves: {band: C}
-      Legion Gloves: {band: C}
+      Paladin Gloves: {band: A}
+      Martyr Gloves: {band: B}
+      Apothecary's Gloves: {band: B}
+      Crusader Gloves: {band: B}
+      Legion Gloves: {band: B}
       Soldier Gloves: {band: C}
       Zealot Gloves: {band: C}
       Riveted Gloves: {band: C}
@@ -319,11 +319,11 @@ categories:
       Ringmail Gloves: {band: C}
       Chain Gloves: {band: C}
     Boots:
-      Paladin Boots: {band: S}
-      Martyr Boots: {band: S}
-      Two-Toned Boots: {band: C}
-      Crusader Boots: {band: C}
-      Legion Boots: {band: C}
+      Paladin Boots: {band: A}
+      Martyr Boots: {band: B}
+      Two-Toned Boots: {band: B}
+      Crusader Boots: {band: B}
+      Legion Boots: {band: B}
       Soldier Boots: {band: C}
       Zealot Boots: {band: C}
       Riveted Boots: {band: C}
@@ -331,10 +331,10 @@ categories:
       Ringmail Boots: {band: C}
       Chain Boots: {band: C}
     Shields:
-      Archon Kite Shield: {band: S}
-      Mosaic Kite Shield: {band: S}
-      Champion Kite Shield: {band: C}
-      Branded Kite Shield: {band: C}
+      Archon Kite Shield: {band: A}
+      Mosaic Kite Shield: {band: B}
+      Champion Kite Shield: {band: A}
+      Branded Kite Shield: {band: B}
       Angelic Kite Shield: {band: C}
       Laminated Kite Shield: {band: C}
       Steel Kite Shield: {band: C}
@@ -346,15 +346,15 @@ categories:
       Plank Kite Shield: {band: C}
   int_dex:
     Helmets:
-      Torturer's Mask: {band: S}
-      Ancient Mask: {band: S}
-      Blizzard Crown: {band: C}
-      Jester Mask: {band: C}
-      Deicide Mask: {band: C}
-      Vaal Mask: {band: C}
-      Harlequin Mask: {band: C}
-      Regicide Mask: {band: C}
-      Callous Mask: {band: C}
+      Torturer's Mask: {band: A}
+      Ancient Mask: {band: B}
+      Blizzard Crown: {band: S}
+      Jester Mask: {band: B}
+      Deicide Mask: {band: B}
+      Vaal Mask: {band: B}
+      Harlequin Mask: {band: B}
+      Regicide Mask: {band: B}
+      Callous Mask: {band: B}
       Winter Crown: {band: C}
       Raven Mask: {band: C}
       Golden Mask: {band: C}
@@ -364,15 +364,15 @@ categories:
       Plague Mask: {band: C}
       Scare Mask: {band: C}
     Body Armours:
-      Necrotic Armour: {band: S}
-      Torturer Garb: {band: S}
-      Sanguine Raiment: {band: C}
-      Carnal Armour: {band: C}
-      Sadist Garb: {band: C}
-      Blood Raiment: {band: C}
-      Varnished Coat: {band: C}
-      Sentinel Jacket: {band: C}
-      Crypt Armour: {band: C}
+      Necrotic Armour: {band: A}
+      Torturer Garb: {band: B}
+      Sanguine Raiment: {band: B}
+      Carnal Armour: {band: B}
+      Sadist Garb: {band: B}
+      Blood Raiment: {band: B}
+      Varnished Coat: {band: B}
+      Sentinel Jacket: {band: B}
+      Crypt Armour: {band: B}
       Lacquered Garb: {band: C}
       Crimson Raiment: {band: C}
       Sleek Coat: {band: C}
@@ -385,10 +385,10 @@ categories:
       Oiled Vest: {band: C}
       Padded Vest: {band: C}
     Gloves:
-      Phantom Mitts: {band: S}
-      Infiltrator Mitts: {band: S}
-      Murder Mitts: {band: C}
-      Assassin's Mitts: {band: C}
+      Phantom Mitts: {band: A}
+      Infiltrator Mitts: {band: B}
+      Murder Mitts: {band: B}
+      Assassin's Mitts: {band: B}
       Carnal Mitts: {band: C}
       Ambush Mitts: {band: C}
       Trapper Mitts: {band: C}
@@ -396,12 +396,12 @@ categories:
       Strapped Mitts: {band: C}
       Wrapped Mitts: {band: C}
     Boots:
-      Phantom Boots: {band: S}
-      Infiltrator Boots: {band: S}
-      Fugitive Boots: {band: C}
-      Two-Toned Boots: {band: C}
-      Murder Boots: {band: C}
-      Assassin's Boots: {band: C}
+      Phantom Boots: {band: A}
+      Infiltrator Boots: {band: B}
+      Fugitive Boots: {band: A}
+      Two-Toned Boots: {band: B}
+      Murder Boots: {band: B}
+      Assassin's Boots: {band: B}
       Carnal Boots: {band: C}
       Ambush Boots: {band: C}
       Trapper Boots: {band: C}
@@ -410,10 +410,10 @@ categories:
       Strapped Boots: {band: C}
       Wrapped Boots: {band: C}
     Shields:
-      Supreme Spiked Shield: {band: S}
-      Mirrored Spiked Shield: {band: S}
-      Ezomyte Spiked Shield: {band: C}
-      Alder Spiked Shield: {band: C}
+      Supreme Spiked Shield: {band: A}
+      Mirrored Spiked Shield: {band: B}
+      Ezomyte Spiked Shield: {band: B}
+      Alder Spiked Shield: {band: B}
       Sovereign Spiked Shield: {band: C}
       Polished Spiked Shield: {band: C}
       Compound Spiked Shield: {band: C}
@@ -425,14 +425,14 @@ categories:
       Spiked Bundle: {band: C}
   dex_str:
     Helmets:
-      Haunted Bascinet: {band: S}
-      Conquest Helmet: {band: S}
-      Penitent Mask: {band: C}
-      Knight Helm: {band: C}
-      Nightmare Bascinet: {band: C}
-      Pig-Faced Bascinet: {band: C}
-      Fluted Bascinet: {band: C}
-      Lacquered Helmet: {band: C}
+      Haunted Bascinet: {band: A}
+      Conquest Helmet: {band: A}
+      Penitent Mask: {band: S}
+      Knight Helm: {band: B}
+      Nightmare Bascinet: {band: B}
+      Pig-Faced Bascinet: {band: B}
+      Fluted Bascinet: {band: B}
+      Lacquered Helmet: {band: B}
       Atonement Mask: {band: C}
       Fencer Helm: {band: C}
       Secutor Helm: {band: C}
@@ -442,14 +442,14 @@ categories:
       Sallet: {band: C}
       Battered Helm: {band: C}
     Body Armours:
-      Conquest Lamellar: {band: S}
-      Marshall's Brigandine: {band: S}
-      Full Wyvernscale: {band: C}
-      Triumphant Lamellar: {band: C}
-      General's Brigandine: {band: C}
-      Full Dragonscale: {band: C}
-      Desert Brigandine: {band: C}
-      Dragonscale Doublet: {band: C}
+      Conquest Lamellar: {band: A}
+      Marshall's Brigandine: {band: B}
+      Full Wyvernscale: {band: B}
+      Triumphant Lamellar: {band: B}
+      General's Brigandine: {band: B}
+      Full Dragonscale: {band: B}
+      Desert Brigandine: {band: B}
+      Dragonscale Doublet: {band: B}
       Battle Lamellar: {band: C}
       Commander's Brigandine: {band: C}
       Full Wyrmscale: {band: C}
@@ -463,10 +463,10 @@ categories:
       Light Brigandine: {band: C}
       Scale Vest: {band: C}
     Gloves:
-      Wyvernscale Gauntlets: {band: S}
-      Chimerascale Gauntlets: {band: S}
-      Dragonscale Gauntlets: {band: C}
-      Hydrascale Gauntlets: {band: C}
+      Wyvernscale Gauntlets: {band: A}
+      Chimerascale Gauntlets: {band: A}
+      Dragonscale Gauntlets: {band: A}
+      Hydrascale Gauntlets: {band: A}
       Wyrmscale Gauntlets: {band: C}
       Serpentscale Gauntlets: {band: C}
       Steelscale Gauntlets: {band: C}
@@ -474,11 +474,11 @@ categories:
       Ironscale Gauntlets: {band: C}
       Fishscale Gauntlets: {band: C}
     Boots:
-      Wyvernscale Boots: {band: S}
-      Chimerascale Boots: {band: S}
-      Two-Toned Boots: {band: C}
-      Dragonscale Boots: {band: C}
-      Hydrascale Boots: {band: C}
+      Wyvernscale Boots: {band: A}
+      Chimerascale Boots: {band: A}
+      Two-Toned Boots: {band: A}
+      Dragonscale Boots: {band: A}
+      Hydrascale Boots: {band: A}
       Wyrmscale Boots: {band: C}
       Serpentscale Boots: {band: C}
       Steelscale Boots: {band: C}
@@ -486,10 +486,10 @@ categories:
       Ironscale Boots: {band: C}
       Leatherscale Boots: {band: C}
     Shields:
-      Elegant Round Shield: {band: S}
-      Cardinal Round Shield: {band: S}
-      Spiny Round Shield: {band: C}
-      Teak Round Shield: {band: C}
+      Elegant Round Shield: {band: A}
+      Cardinal Round Shield: {band: A}
+      Spiny Round Shield: {band: B}
+      Teak Round Shield: {band: B}
       Baroque Round Shield: {band: C}
       Crimson Round Shield: {band: C}
       Spiked Round Shield: {band: C}
