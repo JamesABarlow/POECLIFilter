@@ -199,42 +199,42 @@ bands:
     C:
       base_types: []
 rules:
-  - id: "endgame_rares"
+  - id: "endgame_rares" # changed from what default should be
     comment: "Rares shown in endgame"
     hide: false
     bands:
-      int: ["A", "S"]
+      int: ["B", "A", "S"]
       dex: ["A", "S"]
       str: ["A", "S"]
-      int_dex: ["A", "S"]
+      int_dex: ["B", "A", "S"]
       dex_str: ["A", "S"]
-      str_int: ["A", "S"]
+      str_int: ["B", "A", "S"]
     rarity: {operator: "==", rarity: Rare}
     rules:
       - id: "endgame_rares_high_ilvl"
         comment: "high ilvl endgame rares"
         hide: false
         item_level: {min: 86}
-  - id: "endgame_rare_weapons"
+  - id: "endgame_rare_weapons" # changed from what default should be
     comment: "Rare weapons shown in endgame"
     hide: false
     bands:
-      bows: ["A", "S"]
-      claws: ["A", "S"]
-      daggers: ["A", "S"]
-      one_hand_swords: ["A", "S"]
-      one_hand_axes: ["A", "S"]
-      one_hand_maces: ["A", "S"]
-      quivers: ["A", "S"]
-      rune_daggers: ["A", "S"]
-      sceptres: ["A", "S"]
-      staves: ["A", "S"]
-      thrusting_one_hand_swords: ["A", "S"]
-      two_hand_axes: ["A", "S"]
-      two_hand_maces: ["A", "S"]
-      two_hand_swords: ["A", "S"]
-      wands: ["A", "S"]
-      warstaves: ["A", "S"]
+      bows: ["S"]
+      claws: ["S"]
+      daggers: ["S"]
+      one_hand_swords: ["S"]
+      one_hand_axes: ["S"]
+      one_hand_maces: ["S"]
+      quivers: ["S"]
+      rune_daggers: ["S"]
+      staves: ["S"]
+      thrusting_one_hand_swords: ["S"]
+      two_hand_axes: ["S"]
+      two_hand_maces: ["S"]
+      two_hand_swords: ["S"]
+      warstaves: ["S"]
+      sceptres: ["S", "A", "B"]
+      wands: ["S", "A", "B"]
     rarity: {operator: "==", rarity: Rare}
     rules:
       - id: "endgame_rare_weapons_high_ilvl"
@@ -246,7 +246,6 @@ rules:
     hide: false
     display: "$vendor_gear"
     sockets: {min: 6}
-    # This rule is needed to avoid the main catch all rule for bases that have been chossen not to be shown
   - id: "hidden_rares"
     comment: "Hide other rares"
     hide: true
@@ -280,26 +279,26 @@ rules:
       dex_str: ["S", "A", "B", "C"]
       str_int: ["S", "A", "B", "C"]
     rarity: {operator: "==", rarity: Normal}
-  - id: "hidden_rare_weapons"
+  - id: "hidden_rare_weapons" # changed from what default should be
     comment: "Hide other rare weapons"
     hide: true
     bands:
-      bows: ["B", "C"]
-      claws: ["B", "C"]
-      daggers: ["B", "C"]
-      one_hand_swords: ["B", "C"]
-      one_hand_axes: ["B", "C"]
-      one_hand_maces: ["B", "C"]
-      quivers: ["B", "C"]
-      rune_daggers: ["B", "C"]
-      sceptres: ["B", "C"]
-      staves: ["B", "C"]
-      thrusting_one_hand_swords: ["B", "C"]
-      two_hand_axes: ["B", "C"]
-      two_hand_maces: ["B", "C"]
-      two_hand_swords: ["B", "C"]
-      wands: ["B", "C"]
-      warstaves: ["B", "C"]
+      bows: ["A", "B", "C"]
+      claws: ["A", "B", "C"]
+      daggers: ["A", "B", "C"]
+      one_hand_swords: ["A", "B", "C"]
+      one_hand_axes: ["A", "B", "C"]
+      one_hand_maces: ["A", "B", "C"]
+      quivers: ["A", "B", "C"]
+      rune_daggers: ["A", "B", "C"]
+      staves: ["A", "B", "C"]
+      thrusting_one_hand_swords: ["A", "B", "C"]
+      two_hand_axes: ["A", "B", "C"]
+      two_hand_maces: ["A", "B", "C"]
+      two_hand_swords: ["A", "B", "C"]
+      warstaves: ["A", "B", "C"]
+      wands: ["C"]
+      sceptres: ["C"]
     rarity: {operator: "==", rarity: Rare}
   - id: "hidden_magic_weapons"
     comment: "Hide magic weapons"

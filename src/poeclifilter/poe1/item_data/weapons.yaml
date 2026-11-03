@@ -3,16 +3,16 @@ game_version: '3.25'
 # Ordered by drop level, highest first
 categories:
   bows:
-    Maraketh Bow: {band: C}
-    Solarine Bow: {band: C}
-    Harbinger Bow: {band: C}
-    Imperial Bow: {band: C}
+    Maraketh Bow: {band: B}
+    Solarine Bow: {band: S}
+    Harbinger Bow: {band: B}
+    Imperial Bow: {band: B}
     Spine Bow: {band: S}
-    Assassin Bow: {band: C}
-    Ranger Bow: {band: C}
-    Citadel Bow: {band: C}
-    Steelwood Bow: {band: C}
-    Thicket Bow: {band: S}
+    Assassin Bow: {band: B}
+    Ranger Bow: {band: B}
+    Citadel Bow: {band: B}
+    Steelwood Bow: {band: B}
+    Thicket Bow: {band: A}
     Decimation Bow: {band: C}
     Foundry Bow: {band: C}
     Highborn Bow: {band: C}
@@ -32,17 +32,17 @@ categories:
     Short Bow: {band: C}
     Crude Bow: {band: C}
   claws:
-    Gemini Claw: {band: S}
-    Terror Claw: {band: C}
-    Void Fangs: {band: C}
+    Gemini Claw: {band: A}
+    Terror Claw: {band: B}
+    Void Fangs: {band: S}
     Imperial Claw: {band: S}
-    Vaal Claw: {band: C}
-    Eye Gouger: {band: C}
-    Hellion's Paw: {band: C}
-    Throat Stabber: {band: C}
-    Great White Claw: {band: C}
-    Twin Claw: {band: C}
-    Eagle Claw: {band: C}
+    Vaal Claw: {band: B}
+    Eye Gouger: {band: B}
+    Hellion's Paw: {band: B}
+    Throat Stabber: {band: B}
+    Great White Claw: {band: B}
+    Twin Claw: {band: B}
+    Eagle Claw: {band: B}
     Noble Claw: {band: C}
     Malign Fangs: {band: C}
     Prehistoric Claw: {band: C}
@@ -61,12 +61,12 @@ categories:
     Sharktooth Claw: {band: C}
     Nailed Fist: {band: C}
   daggers:
-    Pneumatic Dagger: {band: C}
+    Pneumatic Dagger: {band: S}
     Sai: {band: S}
-    Ambusher: {band: S}
-    Gutting Knife: {band: C}
+    Ambusher: {band: A}
+    Gutting Knife: {band: A}
     Trisula: {band: C}
-    Pressurised Dagger: {band: C}
+    Pressurised Dagger: {band: S}
     Poignard: {band: C}
     Prong Dagger: {band: C}
     Flaying Knife: {band: C}
@@ -75,19 +75,19 @@ categories:
     Skinning Knife: {band: C}
     Glass Shank: {band: C}
   one_hand_swords:
-    Anarchic Spiritblade: {band: C}
+    Anarchic Spiritblade: {band: S}
     Tiger Hook: {band: S}
-    Ghostflame Blade: {band: C}
-    Midnight Blade: {band: C}
-    Eternal Sword: {band: S}
-    Vaal Blade: {band: C}
-    Legion Sword: {band: C}
-    Gladius: {band: C}
-    Corsair Sword: {band: C}
-    Gemstone Sword: {band: C}
+    Ghostflame Blade: {band: B}
+    Midnight Blade: {band: B}
+    Eternal Sword: {band: B}
+    Vaal Blade: {band: B}
+    Legion Sword: {band: B}
+    Gladius: {band: B}
+    Corsair Sword: {band: A}
+    Gemstone Sword: {band: B}
     Grappler: {band: C}
     Twilight Blade: {band: C}
-    Capricious Spiritblade: {band: C}
+    Capricious Spiritblade: {band: A}
     Graceful Sword: {band: C}
     Elder Sword: {band: C}
     Battle Sword: {band: C}
@@ -106,15 +106,15 @@ categories:
     Golden Blade: {band: C}
     Rusted Sword: {band: C}
   one_hand_axes:
-    Runic Hatchet: {band: S}
-    Psychotic Axe: {band: C}
-    Infernal Axe: {band: C}
-    Royal Axe: {band: C}
-    Vaal Hatchet: {band: S}
-    Butcher Axe: {band: C}
-    Reaver Axe: {band: C}
-    Siege Axe: {band: C}
-    Karui Axe: {band: C}
+    Runic Hatchet: {band: B}
+    Psychotic Axe: {band: B}
+    Infernal Axe: {band: B}
+    Royal Axe: {band: B}
+    Vaal Hatchet: {band: B}
+    Butcher Axe: {band: B}
+    Reaver Axe: {band: A}
+    Siege Axe: {band: A}
+    Karui Axe: {band: B}
     Engraved Hatchet: {band: C}
     Wraith Axe: {band: C}
     Ceremonial Axe: {band: C}
@@ -136,14 +136,14 @@ categories:
     Rusted Hatchet: {band: C}
   one_hand_maces:
     Behemoth Mace: {band: S}
-    Boom Mace: {band: C}
-    Nightmare Mace: {band: C}
-    Auric Mace: {band: S}
-    Pernach: {band: C}
-    Legion Hammer: {band: C}
-    Gavel: {band: C}
-    Tenderizer: {band: C}
-    Ancestral Club: {band: C}
+    Boom Mace: {band: S}
+    Nightmare Mace: {band: A}
+    Auric Mace: {band: A}
+    Pernach: {band: A}
+    Legion Hammer: {band: A}
+    Gavel: {band: A}
+    Tenderizer: {band: A}
+    Ancestral Club: {band: A}
     Dragon Mace: {band: C}
     Phantom Mace: {band: C}
     Crack Mace: {band: C}
@@ -164,27 +164,27 @@ categories:
     Tribal Club: {band: C}
     Driftwood Club: {band: C}
   quivers:
-    Artillery Quiver: {band: S}
-    Primal Arrow Quiver: {band: S}
-    Heavy Arrow Quiver: {band: C}
-    Vile Arrow Quiver: {band: C}
-    Broadhead Arrow Quiver: {band: C}
+    Artillery Quiver: {band: B}
+    Primal Arrow Quiver: {band: A}
+    Heavy Arrow Quiver: {band: B}
+    Vile Arrow Quiver: {band: B}
+    Broadhead Arrow Quiver: {band: S}
     Blazing Arrow Quiver: {band: C}
-    Spike-Point Arrow Quiver: {band: C}
-    Penetrating Arrow Quiver: {band: C}
-    Two-Point Arrow Quiver: {band: C}
+    Spike-Point Arrow Quiver: {band: A}
+    Penetrating Arrow Quiver: {band: A}
+    Two-Point Arrow Quiver: {band: B}
     Blunt Arrow Quiver: {band: C}
     Fire Arrow Quiver: {band: C}
-    Feathered Arrow Quiver: {band: C}
+    Feathered Arrow Quiver: {band: A}
     Sharktooth Arrow Quiver: {band: C}
     Serrated Arrow Quiver: {band: C}
   rune_daggers:
-    Infernal Blade: {band: C}
-    Demon Dagger: {band: C}
-    Imperial Skean: {band: S}
-    Platinum Kris: {band: S}
-    Ezomyte Dagger: {band: C}
-    Slaughter Knife: {band: C}
+    Infernal Blade: {band: S}
+    Demon Dagger: {band: B}
+    Imperial Skean: {band: A}
+    Platinum Kris: {band: A}
+    Ezomyte Dagger: {band: B}
+    Slaughter Knife: {band: B}
     Fiend Dagger: {band: C}
     Flashfire Blade: {band: C}
     Royal Skean: {band: C}
@@ -198,14 +198,14 @@ categories:
     Boot Knife: {band: C}
     Carving Knife: {band: C}
   sceptres:
-    Alternating Sceptre: {band: C}
-    Sambar Sceptre: {band: C}
-    Void Sceptre: {band: S}
-    Carnal Sceptre: {band: C}
-    Vaal Sceptre: {band: C}
-    Platinum Sceptre: {band: C}
-    Opal Sceptre: {band: S}
-    Tyrant's Sekhem: {band: C}
+    Alternating Sceptre: {band: S}
+    Sambar Sceptre: {band: B}
+    Void Sceptre: {band: A}
+    Carnal Sceptre: {band: B}
+    Vaal Sceptre: {band: B}
+    Platinum Sceptre: {band: B}
+    Opal Sceptre: {band: A}
+    Tyrant's Sekhem: {band: B}
     Karui Sceptre: {band: C}
     Stag Sceptre: {band: C}
     Abyssal Sceptre: {band: C}
@@ -227,14 +227,14 @@ categories:
     Darkwood Sceptre: {band: C}
     Driftwood Sceptre: {band: C}
   staves:
-    Battery Staff: {band: C}
-    Eclipse Staff: {band: S}
-    Imperial Staff: {band: S}
-    Lathi: {band: C}
-    Primordial Staff: {band: C}
+    Battery Staff: {band: S}
+    Eclipse Staff: {band: B}
+    Imperial Staff: {band: B}
+    Lathi: {band: A}
+    Primordial Staff: {band: A}
     Moon Staff: {band: C}
     Highborn Staff: {band: C}
-    Reciprocation Staff: {band: C}
+    Reciprocation Staff: {band: B}
     Quarterstaff: {band: C}
     Woodful Staff: {band: C}
     Crescent Staff: {band: C}
@@ -245,13 +245,13 @@ categories:
     Gnarled Branch: {band: C}
   thrusting_one_hand_swords:
     Dragoon Sword: {band: S}
-    Harpy Rapier: {band: C}
-    Jewelled Foil: {band: S}
-    Vaal Rapier: {band: C}
-    Spiraled Foil: {band: C}
-    Pecoraro: {band: C}
-    Tempered Foil: {band: C}
-    Dragonbone Rapier: {band: C}
+    Harpy Rapier: {band: B}
+    Jewelled Foil: {band: A}
+    Vaal Rapier: {band: B}
+    Spiraled Foil: {band: B}
+    Pecoraro: {band: B}
+    Tempered Foil: {band: B}
+    Dragonbone Rapier: {band: B}
     Courtesan Sword: {band: C}
     Apex Rapier: {band: C}
     Fancy Foil: {band: C}
@@ -270,15 +270,15 @@ categories:
     Whalebone Rapier: {band: C}
     Rusted Spike: {band: C}
   two_hand_axes:
-    Apex Cleaver: {band: C}
+    Apex Cleaver: {band: S}
     Fleshripper: {band: S}
-    Void Axe: {band: C}
-    Despot Axe: {band: C}
-    Vaal Axe: {band: S}
-    Ezomyte Axe: {band: C}
-    Sundering Axe: {band: C}
+    Void Axe: {band: B}
+    Despot Axe: {band: B}
+    Vaal Axe: {band: A}
+    Ezomyte Axe: {band: B}
+    Sundering Axe: {band: A}
     Talon Axe: {band: C}
-    Karui Chopper: {band: C}
+    Karui Chopper: {band: B}
     Abyssal Axe: {band: C}
     Noble Axe: {band: C}
     Honed Cleaver: {band: C}
@@ -296,14 +296,14 @@ categories:
     Jade Chopper: {band: C}
     Stone Axe: {band: C}
   two_hand_maces:
-    Impact Force Propagator: {band: C}
-    Coronal Maul: {band: S}
-    Terror Maul: {band: S}
-    Imperial Maul: {band: C}
-    Meatgrinder: {band: C}
-    Piledriver: {band: C}
-    Colossus Mallet: {band: C}
-    Karui Maul: {band: C}
+    Impact Force Propagator: {band: A}
+    Coronal Maul: {band: A}
+    Terror Maul: {band: B}
+    Imperial Maul: {band: A}
+    Meatgrinder: {band: A}
+    Piledriver: {band: A}
+    Colossus Mallet: {band: A}
+    Karui Maul: {band: A}
     Solar Maul: {band: C}
     Dread Maul: {band: C}
     Plated Maul: {band: C}
@@ -322,14 +322,14 @@ categories:
     Tribal Maul: {band: C}
     Driftwood Maul: {band: C}
   two_hand_swords:
-    Banishing Blade: {band: C}
-    Exquisite Blade: {band: S}
-    Infernal Sword: {band: C}
-    Lion Sword: {band: C}
-    Vaal Greatsword: {band: C}
-    Ezomyte Blade: {band: C}
-    Reaver Sword: {band: S}
-    Headman's Sword: {band: C}
+    Banishing Blade: {band: S}
+    Exquisite Blade: {band: B}
+    Infernal Sword: {band: B}
+    Lion Sword: {band: B}
+    Vaal Greatsword: {band: B}
+    Ezomyte Blade: {band: B}
+    Reaver Sword: {band: A}
+    Headman's Sword: {band: B}
     Lithe Blade: {band: C}
     Wraith Sword: {band: C}
     Tiger Sword: {band: C}
@@ -348,22 +348,22 @@ categories:
     Longsword: {band: C}
     Corroded Blade: {band: C}
   wands:
-    Convoking Wand: {band: S}
-    Accumulator Wand: {band: C}
+    Convoking Wand: {band: B}
+    Accumulator Wand: {band: S}
     Profane Wand: {band: S}
-    Prophecy Wand: {band: C}
-    Tornado Wand: {band: C}
-    Opal Wand: {band: C}
-    Imbued Wand: {band: C}
-    Kinetic Wand: {band: C}
-    Demon's Horn: {band: C}
-    Heathen Wand: {band: C}
-    Omen Wand: {band: C}
+    Prophecy Wand: {band: B}
+    Tornado Wand: {band: B}
+    Opal Wand: {band: B}
+    Imbued Wand: {band: B}
+    Kinetic Wand: {band: A}
+    Demon's Horn: {band: B}
+    Heathen Wand: {band: B}
+    Omen Wand: {band: B}
     Congregator Wand: {band: C}
     Convening Wand: {band: C}
     Coiled Wand: {band: C}
     Crystal Wand: {band: C}
-    Blasting Wand: {band: C}
+    Blasting Wand: {band: S}
     Engraved Wand: {band: C}
     Faun's Horn: {band: C}
     Pagan Wand: {band: C}
@@ -377,10 +377,10 @@ categories:
     Goat's Horn: {band: C}
     Driftwood Wand: {band: C}
   warstaves:
-    Eventuality Rod: {band: C}
-    Judgement Staff: {band: S}
-    Maelström Staff: {band: S}
-    Ezomyte Staff: {band: C}
+    Eventuality Rod: {band: S}
+    Judgement Staff: {band: A}
+    Maelström Staff: {band: A}
+    Ezomyte Staff: {band: A}
     Foul Staff: {band: C}
     Potentiality Rod: {band: C}
     Serpentine Staff: {band: C}
